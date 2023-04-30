@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>372544211642-n7i20ppe8itebegek26l4gpbov21bl40.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.372544211642-n7i20ppe8itebegek26l4gpbov21bl40</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>372544211642-hg5s8eubkul66771unjuc74pkccq4sc3.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCYGpdiBVdXYAzTf-DeD1qJxfOjfleeeP4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>372544211642</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.hueveriaNietoClientes</string>
+	<key>PROJECT_ID</key>
+	<string>hueveria-project</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hueveria-project.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:372544211642:ios:41e2c46c24eb8361d85083</string>
+</dict>
+</plist>

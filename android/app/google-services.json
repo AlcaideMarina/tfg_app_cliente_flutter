@@ -1,0 +1,162 @@
+{
+  "project_info": {
+    "project_number": "372544211642",
+    "project_id": "hueveria-project",
+    "storage_bucket": "hueveria-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372544211642:android:356797923a5b8033d85083",
+        "android_client_info": {
+          "package_name": "com.example.hueveria_nieto_clientes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372544211642-g2d815tuoh201uh3960bnqq5st3fiq9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANdeZdnKA8qECMJRFrRDp3qqB_k3y6jGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372544211642-g2d815tuoh201uh3960bnqq5st3fiq9e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "372544211642-5cma6obds3thdrvmruep1th4m2t3a9ov.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hueveriaNietoInterna"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372544211642:android:906106b86b0e7d71d85083",
+        "android_client_info": {
+          "package_name": "com.example.hueveria_nieto_interna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372544211642-g2d815tuoh201uh3960bnqq5st3fiq9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANdeZdnKA8qECMJRFrRDp3qqB_k3y6jGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372544211642-g2d815tuoh201uh3960bnqq5st3fiq9e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "372544211642-5cma6obds3thdrvmruep1th4m2t3a9ov.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hueveriaNietoInterna"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372544211642:android:8ddf4340b584a7ead85083",
+        "android_client_info": {
+          "package_name": "com.example.hueverianieto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372544211642-hg5s8eubkul66771unjuc74pkccq4sc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hueverianieto",
+            "certificate_hash": "052b721d3ccb899e98c9707f28128139250fadbf"
+          }
+        },
+        {
+          "client_id": "372544211642-g2d815tuoh201uh3960bnqq5st3fiq9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANdeZdnKA8qECMJRFrRDp3qqB_k3y6jGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372544211642-g2d815tuoh201uh3960bnqq5st3fiq9e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "372544211642-5cma6obds3thdrvmruep1th4m2t3a9ov.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hueveriaNietoInterna"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372544211642:android:519044644bca80aad85083",
+        "android_client_info": {
+          "package_name": "com.example.hueverianietoclientes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372544211642-g2d815tuoh201uh3960bnqq5st3fiq9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANdeZdnKA8qECMJRFrRDp3qqB_k3y6jGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372544211642-g2d815tuoh201uh3960bnqq5st3fiq9e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "372544211642-5cma6obds3thdrvmruep1th4m2t3a9ov.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hueveriaNietoInterna"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
