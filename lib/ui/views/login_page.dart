@@ -98,8 +98,12 @@ class _LoginPageState extends State<LoginPage> {
 
   navigateToMainPage(ClientModel clientModel) {
     // TODO: Evitar que al dar al botón de atrás, vuelva aquí - investigar
-    Navigator.pushAndRemoveUntil(context, 
-      MaterialPageRoute(builder: (_) => HomePage(clientModel)), (route) => false);
+    Navigator.pushAndRemoveUntil(
+      context, 
+      MaterialPageRoute(
+        builder: (_) => HomePage(clientModel)
+      ), 
+      (route) => false);
   }
 
   // TODO: Esto debería estar en una clase aparte
