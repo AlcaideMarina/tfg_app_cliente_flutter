@@ -8,6 +8,7 @@ import '../../values/firebase_auth_constants.dart';
 import '../../values/image_routes.dart';
 import '../components/component_text_input.dart';
 import '../components/constants/hn_button.dart';
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -48,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                     HNComponentTextInput(
                       labelText: 'Correo',
                       textInputType: TextInputType.emailAddress,
+                      textCapitalization: TextCapitalization.none,
                       onChange: (text) {
                         user = text;
                         setState(() {});
@@ -58,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     HNComponentTextInput(
                       labelText: 'Contraseña',
+                      textCapitalization: TextCapitalization.none,
                       obscureText: true,
                       onChange: (text) {
                         password = text;
@@ -95,6 +98,8 @@ class _LoginPageState extends State<LoginPage> {
 
   navigateToMainPage(ClientModel clientModel) {
     // TODO: Evitar que al dar al botón de atrás, vuelva aquí - investigar
+    Navigator.pushAndRemoveUntil(context, 
+      MaterialPageRoute(builder: (_) => HomePage(clientModel)), (route) => false);
   }
 
   // TODO: Esto debería estar en una clase aparte
@@ -107,29 +112,13 @@ class _LoginPageState extends State<LoginPage> {
     
     String id = querySnapshot.docs[0].id;
     DocumentSnapshot document =
-        await FirebaseFirestore.instance.collection('user_info').doc(id).get();
+        await FirebaseFirestore.instance.collection('client_info').doc(id).get();
 
     if (document.exists) {
       final Map<String, dynamic>? userInfo = document.data() as Map<String, dynamic>?;
       if (userInfo != null) {
-        // TODO: hacer un .fromMap
-        return ClientModel(
-          userInfo['cif'], 
-          userInfo['city'], 
-          userInfo['company'], 
-          userInfo['created_by'], 
-          userInfo['deleted'], 
-          userInfo['direction'], 
-          userInfo['email'], 
-          userInfo['has_account'], 
-          userInfo['id'], 
-          userInfo['phone'], 
-          userInfo['postal_code'], 
-          userInfo['province'], 
-          userInfo['uid'], 
-          userInfo['user'], 
-          document.id
-        );
+        userInfo['document_id'] = document.id;
+        return ClientModel.fromMap(userInfo);
       } else {
         return null;
       }
@@ -147,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
         context: context, 
         builder: (_) => const Center(
           child: CircularProgressIndicator()));
+
       developer.log('Empieza la función signInWithEmailAndPassword()', name: 'Login');
       // TODO: Esto va muy lento - investigar
       await FirebaseAuth.instance.signInWithEmailAndPassword(
