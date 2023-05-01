@@ -89,9 +89,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+            iconTheme: const IconThemeData(
+              color: Colors.black, //change your color here
+            ),
             toolbarHeight: 56.0,
             title: const Text(
-              'Nuevo cliente',
+              'Mi perfil',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: 24.0),
             )),
