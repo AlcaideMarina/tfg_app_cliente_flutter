@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
+import '../../firebase/firebase_utils.dart';
 import '../../model/client_model.dart';
 import '../../values/firebase_auth_constants.dart';
 import '../../values/image_routes.dart';
@@ -109,10 +110,7 @@ class _LoginPageState extends State<LoginPage> {
   // TODO: Esto debería estar en una clase aparte
   Future<ClientModel?>? getUserInfo() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-        .collection('client_info')
-        .where('uid', isEqualTo: uid)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseUtils.instance.getUserFromUid(uid!);
     
     String id = querySnapshot.docs[0].id;
     DocumentSnapshot document =
