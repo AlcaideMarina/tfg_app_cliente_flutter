@@ -122,48 +122,23 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Empresa', null, TextInputType.text,
-            (value) {
-          company = value;
-          // format user
-          companyUserName = value.toLowerCase().replaceAll(RegExp(' '), '_');
-          userController.text =
-              companyUserName + '_' + phone1NameUserName + '_' + phone1UserName;
-        }),
-        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text,
-            (value) {
-          direction = value;
-        }),
-        getCompanyComponentSimpleForm('Ciudad', null, TextInputType.text,
-            (value) {
-          city = value;
-        }),
-        getCompanyComponentSimpleForm('Provincia', null, TextInputType.text,
-            (value) {
-          province = value;
-        }),
-        getCompanyComponentSimpleForm(
-            'Código postal', null, TextInputType.number, (value) {
-          postalCode = int.parse(value);
-        }),
-        getCompanyComponentSimpleForm('CIF', null, TextInputType.text, (value) {
-          cif = value;
-        }, textCapitalization: TextCapitalization.characters),
+        getCompanyComponentSimpleForm('Empresa', null, TextInputType.text, clientModel.company),
+        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, clientModel.direction),
+        getCompanyComponentSimpleForm('Ciudad', null, TextInputType.text, clientModel.city),
+        getCompanyComponentSimpleForm('Provincia', null, TextInputType.text, clientModel.province),
+        getCompanyComponentSimpleForm('Código postal', null, TextInputType.number, clientModel.postalCode.toString()),
+        getCompanyComponentSimpleForm('CIF', null, TextInputType.text, clientModel.cif, textCapitalization: TextCapitalization.characters),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getCompanyComponentSimpleForm(
-            'Usuario', null, TextInputType.emailAddress, (value) {
-          email = value;
-        }, textCapitalization: TextCapitalization.none),
+            'Usuario', null, TextInputType.emailAddress, clientModel.user, textCapitalization: TextCapitalization.none),
         getCompanyComponentSimpleForm(
-            'Correo', null, TextInputType.emailAddress, (value) {
-          email = value;
-        }, textCapitalization: TextCapitalization.none),
+            'Correo', null, TextInputType.emailAddress, clientModel.email, textCapitalization: TextCapitalization.none),
       ],
     );
   }
 
   Widget getCompanyComponentSimpleForm(String label, String? labelInputText,
-      TextInputType textInputType, Function(String)? onChange,
+      TextInputType textInputType, String value,
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
@@ -175,7 +150,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        label + ':',
+        '$label:',
         8,
         40,
         const EdgeInsets.symmetric(horizontal: 16),
@@ -185,7 +160,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
-          onChange: onChange,
+          isEnabled: false,
+          initialValue: value,
         ),
         EdgeInsets.only(top: topMargin, bottom: bottomMargin));
   }
@@ -222,20 +198,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              onChange: (value) {
-                phone1 = int.parse(value);
-                // format user
-                if (value.length > 2) {
-                  phone1UserName = value.substring(value.length - 2);
-                } else {
-                  phone1UserName = '';
-                }
-                userController.text = companyUserName +
-                    '_' +
-                    phone1NameUserName +
-                    '_' +
-                    phone1UserName;
-              },
+              initialValue: clientModel.phone[0].keys.first,
             )),
         HNComponentCellTableForm(
             40,
@@ -245,22 +208,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              onChange: (value) {
-                namePhone1 = value;
-                // format user
-                phone1NameUserName = '';
-                final list = namePhone1.split(' ');
-                for (String word in list) {
-                  if (word.isNotEmpty) {
-                    phone1NameUserName += word.toLowerCase().substring(0, 1);
-                  }
-                }
-                userController.text = companyUserName +
-                    '_' +
-                    phone1NameUserName +
-                    '_' +
-                    phone1UserName;
-              },
+              initialValue: clientModel.phone[0].values.first.toString()
             )),
       ]),
       TableRow(children: [
@@ -272,9 +220,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              onChange: (value) {
-                phone2 = int.parse(value);
-              },
+              initialValue: clientModel.phone[1].keys.first
             )),
         HNComponentCellTableForm(
             40,
@@ -284,50 +230,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              onChange: (value) {
-                namePhone2 = value;
-              },
+              initialValue: clientModel.phone[1].values.first.toString()
             )),
       ]),
     ];
-  }
-
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
-    int cont = 0;
-    for (var key in eggTypes.keys) {
-      double bottomMargin = 8;
-      if (cont == eggTypes.length) {
-        bottomMargin = 0;
-      }
-
-      list.add(TableRow(children: [
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text(eggTypes[key] ?? 'error - ' + key)),
-        Container(
-          height: 40,
-          margin: EdgeInsets.only(left: 8, right: 16, bottom: bottomMargin),
-          child: HNComponentTextInput(
-            initialValue: prices[key] != null ? prices[key].toString() : '0.0',
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            textInputType: const TextInputType.numberWithOptions(),
-            onChange: (value) {
-              // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
-              prices[key] = double.parse(value);
-            },
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(right: 16),
-          child: const Text('€'),
-        )
-      ]));
-
-      cont++;
-    }
-    return list;
   }
 
   Widget getClientComponentSimpleForm(
