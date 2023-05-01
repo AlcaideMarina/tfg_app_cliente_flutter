@@ -109,6 +109,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     children: [
                       getAllFormElements(),
                       const SizedBox(
+                        height: 32,
+                      ),
+                      Text(
+                        "Lamentablemente, no está permitida la modificación de los datos de su perfil. Si desean modificar alguno, por favor, llámenos a Huevería Nieto, y estaremos encantados de atenderle.",
+                        textAlign: TextAlign.center,),
+                      const SizedBox(
                         height: 8,
                       ),
                     ],
