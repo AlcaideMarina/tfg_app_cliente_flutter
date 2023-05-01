@@ -204,6 +204,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[0].keys.first,
+              isEnabled: false,
             )),
         HNComponentCellTableForm(
             40,
@@ -212,7 +213,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[0].values.first.toString()
+              initialValue: clientModel.phone[0].values.first.toString(),
+              isEnabled: false,
             )),
       ]),
       TableRow(children: [
@@ -223,7 +225,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[1].keys.first
+              initialValue: clientModel.phone[1].keys.first,
+              isEnabled: false,
             )),
         HNComponentCellTableForm(
             40,
@@ -232,7 +235,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[1].values.first.toString()
+              initialValue: clientModel.phone[1].values.first.toString(),
+              isEnabled: false,
             )),
       ]),
     ];
