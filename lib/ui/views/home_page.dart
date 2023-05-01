@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                   SingleTableCard(
                     Icons.person_outline_outlined,
                     CustomColors.blackColor,
-                    'Mi perfil',
+                    HomeMenuOptions.myProfile,
                     clientModel.id,
                     SingleTableCardPositions.leftPosition,
                     clientModel
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                   SingleTableCard(
                     Icons.person_outline_outlined,
                     CustomColors.blackColor,
-                    'Facturación',
+                    HomeMenuOptions.billing,
                     clientModel.id,
                     SingleTableCardPositions.rightPosition,
                     clientModel
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   SingleTableCard(
                     Icons.person_outline_outlined,
                     CustomColors.blackColor,
-                    'Mis pedidos',
+                    HomeMenuOptions.myOrders,
                     clientModel.id,
                     SingleTableCardPositions.leftPosition,
                     clientModel
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                   SingleTableCard(
                     Icons.person_outline_outlined,
                     CustomColors.blackColor,
-                    'Nuevo pedido',
+                    HomeMenuOptions.newOrder,
                     clientModel.id,
                     SingleTableCardPositions.rightPosition,
                     clientModel
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
               child: SingleTableCard(
                 Icons.person_outline_outlined,
                 CustomColors.blackColor,
-                'Ajustes',
+                HomeMenuOptions.settings,
                 clientModel.id,
                 SingleTableCardPositions.centerPosition,
                 clientModel

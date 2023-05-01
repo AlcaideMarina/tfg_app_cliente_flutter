@@ -12,7 +12,7 @@ import '../../values/image_routes.dart';
 class SingleTableCard extends StatelessWidget {
   final IconData icono;
   final Color color;
-  final String label;
+  final HomeMenuOptions homeMenuOption;
   final String id;
   final SingleTableCardPositions position;
   final ClientModel clientModel;
@@ -20,7 +20,7 @@ class SingleTableCard extends StatelessWidget {
   const SingleTableCard(
       this.icono,
       this.color,
-      this.label,
+      this.homeMenuOption,
       this.id,
       this.position,
       this.clientModel,
@@ -30,6 +30,9 @@ class SingleTableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final homeMenuOptionStr = mapHomeMenuOptions[homeMenuOption];
+
     return Container(
       margin: position == SingleTableCardPositions.leftPosition 
         ? const EdgeInsets.fromLTRB(16, 8, 8, 8) 
@@ -53,20 +56,29 @@ class SingleTableCard extends StatelessWidget {
                           width: 104, height: 104),
                         SizedBox(height: 10.0),
                         Text(
-                          this.label,
-                          style: TextStyle(
-                              color: CustomColors.redGraySecondaryColor, fontSize: 15.0),
+                          homeMenuOptionStr ?? "",
+                          style: const TextStyle(
+                              color: CustomColors.redGraySecondaryColor, 
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold
+                          ),
                         )
                       ])),
               onTap: () {
-                if (label == 'Mis datos') {
+                if (homeMenuOption == HomeMenuOptions.myProfile) {
                   
                 }
-                if (label == 'Mi familia') {
+                if (homeMenuOption == HomeMenuOptions.billing) {
                   
                 }
-                if (label == 'Constantes'){
+                if (homeMenuOption == HomeMenuOptions.myOrders) {
                   
+                }
+                if (homeMenuOption == HomeMenuOptions.newOrder) {
+
+                }
+                if (homeMenuOption == HomeMenuOptions.settings) {
+
                 }
               },
             )),
