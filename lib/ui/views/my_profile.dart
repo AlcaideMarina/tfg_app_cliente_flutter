@@ -200,7 +200,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
             40,
             const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             HNComponentTextInput(
-              labelText: 'Teléfono',
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -210,7 +209,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
             40,
             const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             HNComponentTextInput(
-              labelText: 'Nombre contacto',
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -222,7 +220,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
             40,
             const EdgeInsets.only(left: 16, right: 8),
             HNComponentTextInput(
-              labelText: 'Teléfono',
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -232,7 +229,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
             40,
             const EdgeInsets.only(left: 8, right: 16),
             HNComponentTextInput(
-              labelText: 'Nombre contacto',
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
