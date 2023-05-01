@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
+import 'package:hueveria_nieto_clientes/ui/views/my_profile.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart';
 
 import '../../model/client_model.dart';
@@ -66,7 +67,11 @@ class SingleTableCard extends StatelessWidget {
                       ])),
               onTap: () {
                 if (homeMenuOption == HomeMenuOptions.myProfile) {
-                  
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyProfilePage(clientModel),
+                    ));
                 }
                 if (homeMenuOption == HomeMenuOptions.billing) {
                   
