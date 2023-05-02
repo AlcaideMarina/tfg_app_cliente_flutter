@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_clientes/ui/components/component_dropdown.dart';
 
 import 'component_text_input.dart';
 
@@ -8,16 +9,22 @@ import 'component_text_input.dart';
 class HNComponentCellTableForm extends StatelessWidget {
   final double height;
   final EdgeInsets containerMargin;
-  final HNComponentTextInput componentTextInput;
+  final HNComponentTextInput? componentTextInput;
+  final HNComponentDropdown? componentDropdown;
 
   const HNComponentCellTableForm(
-      this.height, this.containerMargin, this.componentTextInput,
-      {Key? key})
+      this.height, 
+      this.containerMargin,
+      {Key? key,  
+      this.componentTextInput,
+      this.componentDropdown,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: height, margin: containerMargin, child: componentTextInput);
+        height: height, 
+        margin: containerMargin, 
+        child: componentTextInput ?? componentDropdown);
   }
 }

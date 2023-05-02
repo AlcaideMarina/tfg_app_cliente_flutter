@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
+import 'package:hueveria_nieto_clientes/ui/components/component_dropdown.dart';
 
 import '../../custom/app_theme.dart';
 import '../components/component_cell_table_form.dart';
@@ -107,13 +108,16 @@ class _NewOrderPageState extends State<NewOrderPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, 
-          clientModel.direction, false, 
+          clientModel.direction, false, true,
           (value) {
             direction = value;
           }),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getComponentTableForm('Pedido', getPricePerUnitTableRow()),
-        Container(
+        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, 
+          clientModel.direction, true, false,
+          null),
+        /*Container(
           margin: EdgeInsets.only(top: 4, bottom: 4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,33 +175,57 @@ class _NewOrderPageState extends State<NewOrderPage> {
               )
             ],
           )
-        )
+        )*/
       ]
     );
   }
 
   Widget getCompanyComponentSimpleForm(String label, String? labelInputText,
-      TextInputType textInputType, String initialValue, bool isEnabled, 
-      Function(String)? onChange, {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
+      TextInputType textInputType, String initialValue, bool isEnabled, bool isText,
+      Function(dynamic)? onChange, {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
 
-    return HNComponentSimpleForm(
+    if (isText) {
+      return HNComponentSimpleForm(
         '$label:',
         8,
         40,
         const EdgeInsets.symmetric(horizontal: 16),
-        HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          initialValue: initialValue,
-          isEnabled: isEnabled,
-          onChange: onChange,
-        ),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin));
+        EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
+        componentTextInput: 
+          HNComponentTextInput(
+            textCapitalization: textCapitalization,
+            labelText: labelInputText,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            textInputType: textInputType,
+            initialValue: initialValue,
+            isEnabled: isEnabled,
+            onChange: onChange,
+          ),
+        );
+    } else {
+      return HNComponentSimpleForm(
+        '$label:',
+        8,
+        40,
+        const EdgeInsets.symmetric(horizontal: 16),
+        EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
+        componentDropdown: 
+          HNComponentDropdown(
+            items,
+            labelText: labelInputText,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            textInputType: textInputType,
+            isEnabled: isEnabled,
+            onChange: onChange,
+          ),
+        );
+    }
+
+    
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -221,7 +249,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 16, right: 8, bottom: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -231,7 +259,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 8, right: 16, bottom: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -325,14 +353,14 @@ class _NewOrderPageState extends State<NewOrderPage> {
       8,
       40,
       const EdgeInsets.only(left: 0),
-      HNComponentTextInput(
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         textCapitalization: TextCapitalization.none,
         textInputType: textInputType,
         onChange: onChange,
         textEditingController: controller,
       ),
-      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
     );
   }
