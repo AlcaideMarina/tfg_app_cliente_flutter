@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
 
 import '../../custom/app_theme.dart';
@@ -29,6 +30,22 @@ class _NewOrderPageState extends State<NewOrderPage> {
 
   List<String> productClasses = ["XL", "L", "M", "S"];
   Map<String, double> productQuantities = {};
+  
+  // Initial Selected Value
+  String dropdownvalue = 'Item 1';   
+
+  late String direction;
+
+  
+  
+  // List of items in our dropdown menu
+  var items = [    
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -89,19 +106,79 @@ class _NewOrderPageState extends State<NewOrderPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, clientModel.direction),
+        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, 
+          clientModel.direction, false, 
+          (value) {
+            direction = value;
+          }),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getComponentTableForm('Pedido', getPricePerUnitTableRow()),
-        // TODO: Componente de pedido
-        // TODO: Método de pago - Dropdown
-        // TODO: Fecha de entrega - DatePicker
-      ],
+        Container(
+          margin: EdgeInsets.only(top: 4, bottom: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container( child: Text("Método de pago: ")),
+              SizedBox(
+                height: 8,
+              ),
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                child: DropdownButtonFormField(
+                  icon: Icon(Icons.keyboard_arrow_down_rounded),
+                  decoration: const InputDecoration(
+                    filled: null,
+                    fillColor: null,
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    hintText: "Método de pago",
+                    labelText: null,
+                    helperText: null,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        borderSide: BorderSide(color: CustomColors.redGraySecondaryColor)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
+                  ),
+                  items: items.map((e) {
+                    return DropdownMenuItem(
+                      value: e,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          e,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) { 
+                    setState(() {
+                      dropdownvalue = newValue!;
+                    });
+                  },
+                  isDense: true,
+                  isExpanded: true,
+                )
+          
+                  // TODO: Método de pago - Dropdown
+                  // TODO: Fecha de entrega - DatePicker
+              )
+            ],
+          )
+        )
+      ]
     );
   }
 
   Widget getCompanyComponentSimpleForm(String label, String? labelInputText,
-      TextInputType textInputType, String value,
-      {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
+      TextInputType textInputType, String initialValue, bool isEnabled, 
+      Function(String)? onChange, {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
 
@@ -116,8 +193,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
-          isEnabled: false,
-          initialValue: value,
+          initialValue: initialValue,
+          isEnabled: isEnabled,
+          onChange: onChange,
         ),
         EdgeInsets.only(top: topMargin, bottom: bottomMargin));
   }
