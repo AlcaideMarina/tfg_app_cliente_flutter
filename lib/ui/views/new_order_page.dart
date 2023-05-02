@@ -27,6 +27,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
     clientModel = widget.clientModel;
   }
 
+  List<String> productClasses = ["XL", "L", "M", "S"];
+  Map<String, double> productQuantities = {};
+
   @override
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
@@ -88,6 +91,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
       children: [
         getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, clientModel.direction),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
+        getComponentTableForm('Pedido', getPricePerUnitTableRow()),
         // TODO: Componente de pedido
         // TODO: Método de pago - Dropdown
         // TODO: Fecha de entrega - DatePicker
@@ -159,6 +163,77 @@ class _NewOrderPageState extends State<NewOrderPage> {
       ]),
       
     ];
+  }
+
+  List<TableRow> getPricePerUnitTableRow() {
+    List<TableRow> list = [];
+
+    for (var item in productClasses) {
+      list.add(
+        TableRow(
+          children: [
+            Container(
+              child: Text(item),
+              margin: const EdgeInsets.only(left: 12, right: 16),
+            ),
+            Container()
+          ]
+        )
+      );
+
+      list.add(
+        TableRow(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("Docena")),
+            Container(
+              height: 40,
+              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+              child: HNComponentTextInput(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                textInputType: const TextInputType.numberWithOptions(),
+                onChange: (value) {
+                  // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
+                  String key = "${item}_dozen";
+                  productQuantities[key] = double.parse(value);
+                },
+              ),
+            ),
+          ],
+        )
+      );
+
+      list.add(
+        TableRow(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("Caja")),
+            Container(
+              height: 40,
+              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+              child: HNComponentTextInput(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                textInputType: const TextInputType.numberWithOptions(),
+                onChange: (value) {
+                  // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
+                  String key = "${item}_box";
+                  productQuantities[key] = double.parse(value);
+                },
+              ),
+            ),
+          ]
+        )
+      );
+    }
+
+
+    
+    return list;
+
   }
 
   Widget getClientComponentSimpleForm(
