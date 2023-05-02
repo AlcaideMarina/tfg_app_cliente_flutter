@@ -18,4 +18,15 @@ class FirebaseUtils {
         .get();
   }
 
+  Future<int> getNewOrderId(String documentId) async{
+    QuerySnapshot allOrders = await FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(documentId)
+        .collection("orders")
+        .get();
+    return allOrders.size;
+  }
+
+ // Future<dynamic> saveNewOrder()
+
 }
