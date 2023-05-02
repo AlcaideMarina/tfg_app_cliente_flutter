@@ -29,6 +29,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
     clientModel = widget.clientModel;
   }
 
+  // TODO: Esto se tiene que sacar de las constantes
   List<String> productClasses = ["XL", "L", "M", "S"];
   Map<String, double> productQuantities = {};
   
@@ -36,16 +37,13 @@ class _NewOrderPageState extends State<NewOrderPage> {
   String dropdownvalue = 'Item 1';   
 
   late String direction;
+  late String paymentMethod;
 
-  
-  
-  // List of items in our dropdown menu
+  // TODO: Esto se tiene que sacar de las constantes
   var items = [    
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
+    'Al contado',
+    'Por recibo',
+    'Por transferencia',
   ];
 
   @override
@@ -114,68 +112,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
           }),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getComponentTableForm('Pedido', getPricePerUnitTableRow()),
-        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, 
+        getCompanyComponentSimpleForm('Método de pago', null, TextInputType.text, 
           clientModel.direction, true, false,
-          null),
-        /*Container(
-          margin: EdgeInsets.only(top: 4, bottom: 4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container( child: Text("Método de pago: ")),
-              SizedBox(
-                height: 8,
-              ),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                child: DropdownButtonFormField(
-                  icon: Icon(Icons.keyboard_arrow_down_rounded),
-                  decoration: const InputDecoration(
-                    filled: null,
-                    fillColor: null,
-                    isDense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    hintText: "Método de pago",
-                    labelText: null,
-                    helperText: null,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        borderSide: BorderSide(color: CustomColors.redGraySecondaryColor)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
-                  ),
-                  items: items.map((e) {
-                    return DropdownMenuItem(
-                      value: e,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          e,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) { 
-                    setState(() {
-                      dropdownvalue = newValue!;
-                    });
-                  },
-                  isDense: true,
-                  isExpanded: true,
-                )
-          
-                  // TODO: Método de pago - Dropdown
-                  // TODO: Fecha de entrega - DatePicker
-              )
-            ],
-          )
-        )*/
+          (value) => {
+            paymentMethod = value!,
+          },),
+        // TODO: Fecha de entrega - DatePicker
       ]
     );
   }
