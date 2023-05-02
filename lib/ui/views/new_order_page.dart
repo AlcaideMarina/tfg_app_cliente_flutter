@@ -29,6 +29,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
     clientModel = widget.clientModel;
   }
 
+  TextEditingController dateController = TextEditingController();
+
   // TODO: Esto se tiene que sacar de las constantes
   List<String> productClasses = ["XL", "L", "M", "S"];
   Map<String, double> productQuantities = {};
@@ -118,6 +120,49 @@ class _NewOrderPageState extends State<NewOrderPage> {
             paymentMethod = value!,
           },),
         // TODO: Fecha de entrega - DatePicker
+        TextFormField(
+          controller: dateController,
+          decoration: const InputDecoration(
+            filled: false,
+            fillColor: null,
+            isDense: false,
+            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            hintText: "hintText",
+            labelText: "labelText",
+            helperText: "helperText",
+            suffixIcon: null,
+            icon: null,
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+                borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+                borderSide: BorderSide(color: CustomColors.redGraySecondaryColor)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+                borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
+          ),
+          readOnly: true,
+          onTap: () async {
+            DateTime minDate = DateTime.now().add(const Duration(days: 3));
+            // TODO: Cambiar el color
+            DateTime? pickedDate = await showDatePicker(
+              context: context, 
+              initialDate: minDate, 
+              firstDate: minDate, 
+              lastDate: DateTime(
+                DateTime.now().year + 1,
+                DateTime.now().month,
+                minDate.day
+              )
+            );
+            if (pickedDate != null) {
+              setState(() {
+                dateController.text = pickedDate.toString();
+              });
+            }
+          },
+        ),
       ]
     );
   }

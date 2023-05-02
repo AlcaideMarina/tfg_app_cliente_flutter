@@ -41,7 +41,7 @@ class HNComponentDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
             autofocus: autofocus,
-            icon: dropdownIcon == null ? null : Icon(Icons.keyboard_arrow_down_rounded),
+            icon: dropdownIcon == null ? null : const Icon(Icons.keyboard_arrow_down_rounded),
             isExpanded: isExpanded,
             decoration: InputDecoration(
               filled: backgroundColor != null,
