@@ -37,15 +37,36 @@ class DBOrderFieldData{
     this.sDozenQuantity
   );
 
-  Map<String, Map<String, num?>> toMap() => {
-    'xl_dozen': {'price': xlDozenPrice, 'quantity': xlDozenQuantity},
-    'xl_box': {'price': xlBoxPrice, 'quantity': xlBoxQuantity},
-    'l_dozen': {'price': lDozenPrice, 'quantity': lDozenQuantity},
-    'l_box': {'price': lBoxPrice, 'quantity': lBoxQuantity},
-    'm_dozen': {'price': mDozenPrice, 'quantity': mDozenQuantity},
-    'm_box': {'price': mBoxQuantity, 'quantity': mBoxPrice},
-    's_dozen': {'price': sDozenPrice, 'quantity': sDozenQuantity},
-    's_box': {'price': sBoxPrice, 'quantity': sBoxQuantity},
-  };
+  Map<String, Map<String, num?>> toMap() {
+    
+    Map<String, Map<String, num?>> map = {};
+
+    if (xlDozenQuantity != null && xlDozenQuantity != 0) {
+      map['xl_dozen'] = {'price': xlDozenPrice, 'quantity': xlDozenQuantity};
+    }
+    if (xlBoxQuantity != null && xlBoxQuantity != 0) {
+      map['xl_box'] = {'price': xlBoxPrice, 'quantity': xlBoxQuantity};
+    }
+    if (lDozenQuantity != null && lDozenQuantity != 0) {
+      map['l_dozen'] = {'price': lDozenPrice, 'quantity': lDozenQuantity};
+    }
+    if (lBoxQuantity != null && lBoxQuantity != 0) {
+      map['l_box'] = {'price': lBoxPrice, 'quantity': lBoxQuantity};
+    }
+    if (mDozenQuantity != null && mDozenQuantity != 0) {
+      map['m_dozen'] = {'price': mDozenPrice, 'quantity': mDozenQuantity};
+    }
+    if (mBoxQuantity != null && mBoxQuantity != 0) {
+      map['m_box'] = {'price': mBoxPrice, 'quantity': mBoxQuantity};
+    }
+    if (sDozenQuantity != null && sDozenQuantity != 0) {
+      map['s_dozen'] = {'price': sDozenPrice, 'quantity': sDozenQuantity};
+    }
+    if (sBoxQuantity != null && sBoxQuantity != 0) {
+      map['s_box'] = {'price': sBoxPrice, 'quantity': sBoxQuantity};
+    }
+
+    return map;
+  }
   
 }
