@@ -31,6 +31,7 @@ class NewOrderPage extends StatefulWidget {
 // TODO: Faltan todas las validaciones
 class _NewOrderPageState extends State<NewOrderPage> {
   late ClientModel clientModel;
+  bool showProgress = false;
 
   int step = 1;
 
@@ -84,7 +85,20 @@ class _NewOrderPageState extends State<NewOrderPage> {
               style: TextStyle(
                   color: AppTheme.primary, fontSize: 24.0),
             )),
-        body: SafeArea(
+        body: showProgress ?
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      child: Center(
+                        // use ternary operator to decide when to show progress indicator
+                        child: showProgress
+                            ? const CircularProgressIndicator()
+                            : const SizedBox(),
+                      ),
+                    ),
+                  ],
+                ) : SafeArea(
           top: false,
           child: SingleChildScrollView(
             child: Container(
@@ -362,6 +376,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
     return Column(children: [
       HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
         step == 1 ? "GUARDAR" : "CONFIRMAR", null, null, () async { 
+          setState(() {
+            showProgress = true;
+          });
           if (checkFields()) {
             if (step == 1) {
               showDialog(
@@ -448,7 +465,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   ],
                 ));
           }
-          
+          setState(() {
+            showProgress = false;
+          });
         }, () { }
       ),
       step == 2 ? Column(

@@ -18,7 +18,7 @@ final Map<HomeMenuOptions, String> mapHomeMenuOptions = {
   HomeMenuOptions.billing: "Facturación",
   HomeMenuOptions.myOrders: "Mis pedidos",
   HomeMenuOptions.newOrder: "Nuevo pedido",
-  HomeMenuOptions.settings: "Ajutes",
+  HomeMenuOptions.settings: "Ajustes",
 };
 
 final Map<String, int> paymentMethod = {
