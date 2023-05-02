@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
@@ -24,11 +25,15 @@ class NewOrderPage extends StatefulWidget {
 class _NewOrderPageState extends State<NewOrderPage> {
   late ClientModel clientModel;
 
+  int step = 1;
+
   @override
   void initState() {
     super.initState();
     clientModel = widget.clientModel;
     dateController.text = dateFormat.format(minDate);
+    datePickerTimestamp = Timestamp.fromDate(minDate);
+    step = 1;
   }
 
   TextEditingController dateController = TextEditingController();
@@ -39,7 +44,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
   Map<String, double> productQuantities = {}; 
 
   late String direction;
-  late String paymentMethod;
+  String? paymentMethod;
+  Timestamp? datePickerTimestamp;
 
   // TODO: Esto se tiene que sacar de las constantes
   var items = [    
@@ -78,18 +84,22 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Por favor, revise los datos que hhya a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
-                        textAlign: TextAlign.center,),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        "Recuerde que una vez haya concluido el pedido, no se podrá modificar ni cancelar, salvo con causa justificada llamándonos directamente.",
-                        textAlign: TextAlign.center,),
-                      const SizedBox(
-                        height: 32,
-                      ),
+                      step == 2 ? const Column(
+                        children: [
+                          Text(
+                            "Por favor, revise los datos que hhya a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
+                            textAlign: TextAlign.center,),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            "Recuerde que una vez haya concluido el pedido, no se podrá modificar ni cancelar, salvo con causa justificada llamándonos directamente.",
+                            textAlign: TextAlign.center,),
+                          SizedBox(
+                            height: 32,
+                          ),
+                        ],
+                      ) : const SizedBox(),
                       getAllFormElements(),
                       const SizedBox(
                         height: 32,
@@ -137,6 +147,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
             );
             if (pickedDate != null) {
               setState(() {
+                datePickerTimestamp = Timestamp.fromDate(pickedDate);
                 dateController.text = dateFormat.format(pickedDate);
               });
             }
@@ -273,9 +284,10 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 textInputType: const TextInputType.numberWithOptions(),
                 onChange: (value) {
                   // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
-                  String key = "${item}_dozen";
+                  String key = "${item.toLowerCase()}_dozen";
                   productQuantities[key] = double.parse(value);
                 },
+                isEnabled: step == 1 ? true : false,
               ),
             ),
           ],
@@ -300,6 +312,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   String key = "${item}_box";
                   productQuantities[key] = double.parse(value);
                 },
+                isEnabled: step == 1 ? true : false,
               ),
             ),
           ]
@@ -339,8 +352,88 @@ class _NewOrderPageState extends State<NewOrderPage> {
   Widget getButtonComponent() {
     return Column(children: [
       HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-        "GUARDAR", null, null, () { }, () { }),
+        step == 1 ? "GUARDAR" : "CONFIRMAR", null, null, () { 
+          if (checkFields()) {
+            if (step == 1) {
+              showDialog(
+                context: context, 
+                builder: (_) => AlertDialog(
+                  title: const Text('Aviso'),
+                  content: const Text('Una vez realizado el pedido, no se podrán modificar los datos directamente. Tendrá que llamarnos y solicitar el cambio. ¿Desea continuar o prefiere revisar los datos?'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Revisar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text('Continuar'),
+                      onPressed: () {
+                        setState(() {
+                          step = 2;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
+            } else if (step == 2) {
+              // Conseguir nuevo id para el pedido
+              // Guardamos
+            }
+          } else {
+            showDialog(
+                context: context, 
+                builder: (_) => AlertDialog(
+                  title: const Text('Formulario incorrecto'),
+                  content: const Text('Por favor, compruebe los datos. Hay errores o faltan campos por rellenar.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ));
+          }
+          
+        }, () { }
+      ),
+      step == 2 ? Column(
+        children: [
+          const SizedBox(
+            height: 8,
+          ),
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+            "Modificar datos", null, null, () { }, () { }),
+        ],
+      ) : const SizedBox()
+      
     ],);
   }
-  
+
+  bool checkFields() {
+    if (paymentMethod != null && datePickerTimestamp != null && isOrder()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool isOrder() {
+    if ((productQuantities.containsKey("xl_box") && productQuantities["xl_box"] != 0) || 
+        (productQuantities.containsKey("xl_dozen") && productQuantities["xl_dozen"] != 0) || 
+        (productQuantities.containsKey("l_box") && productQuantities["l_box"] != 0) || 
+        (productQuantities.containsKey("l_dozen") && productQuantities["l_dozen"] != 0) || 
+        (productQuantities.containsKey("m_box") && productQuantities["m_box"] != 0) || 
+        (productQuantities.containsKey("m_dozen") && productQuantities["m_dozen"] != 0) || 
+        (productQuantities.containsKey("s_box") && productQuantities["s_box"] != 0) || 
+        (productQuantities.containsKey("s_dozen") && productQuantities["s_dozen"] != 0)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
