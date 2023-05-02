@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
 import 'package:hueveria_nieto_clientes/ui/components/component_dropdown.dart';
+import 'package:intl/intl.dart';
 
 import '../../custom/app_theme.dart';
 import '../components/component_cell_table_form.dart';
@@ -27,16 +28,15 @@ class _NewOrderPageState extends State<NewOrderPage> {
   void initState() {
     super.initState();
     clientModel = widget.clientModel;
+    dateController.text = dateFormat.format(minDate);
   }
 
   TextEditingController dateController = TextEditingController();
+  DateTime minDate = DateTime.now().add(const Duration(days: 3));
 
   // TODO: Esto se tiene que sacar de las constantes
   List<String> productClasses = ["XL", "L", "M", "S"];
-  Map<String, double> productQuantities = {};
-  
-  // Initial Selected Value
-  String dropdownvalue = 'Item 1';   
+  Map<String, double> productQuantities = {}; 
 
   late String direction;
   late String paymentMethod;
@@ -47,6 +47,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
     'Por recibo',
     'Por transferencia',
   ];
+
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   @override
   Widget build(BuildContext context) {
@@ -108,43 +110,20 @@ class _NewOrderPageState extends State<NewOrderPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, 
-          clientModel.direction, false, true,
+          clientModel.direction, false, true, true,
           (value) {
             direction = value;
-          }),
+          }, null),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getComponentTableForm('Pedido', getPricePerUnitTableRow()),
         getCompanyComponentSimpleForm('Método de pago', null, TextInputType.text, 
-          clientModel.direction, true, false,
+          null, true, false, false,
           (value) => {
             paymentMethod = value!,
-          },),
-        // TODO: Fecha de entrega - DatePicker
-        TextFormField(
-          controller: dateController,
-          decoration: const InputDecoration(
-            filled: false,
-            fillColor: null,
-            isDense: false,
-            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            hintText: "hintText",
-            labelText: "labelText",
-            helperText: "helperText",
-            suffixIcon: null,
-            icon: null,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-                borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-                borderSide: BorderSide(color: CustomColors.redGraySecondaryColor)),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-                borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
-          ),
-          readOnly: true,
-          onTap: () async {
-            DateTime minDate = DateTime.now().add(const Duration(days: 3));
+          }, null),
+        getCompanyComponentSimpleForm('Fecha de entrega', null, TextInputType.text, 
+          null, true, true, true, null,
+          () async {
             // TODO: Cambiar el color
             DateTime? pickedDate = await showDatePicker(
               context: context, 
@@ -158,18 +137,20 @@ class _NewOrderPageState extends State<NewOrderPage> {
             );
             if (pickedDate != null) {
               setState(() {
-                dateController.text = pickedDate.toString();
+                dateController.text = dateFormat.format(pickedDate);
               });
             }
           },
-        ),
+          textEditingController: dateController),
       ]
     );
   }
 
   Widget getCompanyComponentSimpleForm(String label, String? labelInputText,
-      TextInputType textInputType, String initialValue, bool isEnabled, bool isText,
-      Function(dynamic)? onChange, {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
+      TextInputType textInputType, String? initialValue, bool isEnabled, bool isReadyOnly, bool isText,
+      Function(dynamic)? onChange, Future<dynamic> Function()? onTap, 
+      {TextCapitalization textCapitalization = TextCapitalization.sentences,
+      TextEditingController? textEditingController}) {
     double topMargin = 4;
     double bottomMargin = 4;
 
@@ -189,7 +170,10 @@ class _NewOrderPageState extends State<NewOrderPage> {
             textInputType: textInputType,
             initialValue: initialValue,
             isEnabled: isEnabled,
+            readOnly: isEnabled,
             onChange: onChange,
+            onTap: onTap,
+            textEditingController: textEditingController,
           ),
         );
     } else {
