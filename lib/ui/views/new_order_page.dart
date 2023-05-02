@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
+import 'package:hueveria_nieto_clientes/firebase/firebase_utils.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
+import 'package:hueveria_nieto_clientes/model/db_order_field_data.dart';
+import 'package:hueveria_nieto_clientes/model/order_model.dart';
 import 'package:hueveria_nieto_clientes/ui/components/component_dropdown.dart';
+import 'package:hueveria_nieto_clientes/ui/views/my_profile.dart';
 import 'package:intl/intl.dart';
 
 import '../../custom/app_theme.dart';
@@ -41,7 +45,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
 
   // TODO: Esto se tiene que sacar de las constantes
   List<String> productClasses = ["XL", "L", "M", "S"];
-  Map<String, double> productQuantities = {}; 
+  Map<String, int> productQuantities = {}; 
 
   late String direction;
   String? paymentMethod;
@@ -87,7 +91,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                       step == 2 ? const Column(
                         children: [
                           Text(
-                            "Por favor, revise los datos que hhya a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
+                            "Por favor, revise los datos que hay a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
                             textAlign: TextAlign.center,),
                           SizedBox(
                             height: 8,
@@ -126,13 +130,14 @@ class _NewOrderPageState extends State<NewOrderPage> {
           }, null),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getComponentTableForm('Pedido', getPricePerUnitTableRow()),
+        // TODO: Esto no se inhabilita en el segundo paso
         getCompanyComponentSimpleForm('Método de pago', null, TextInputType.text, 
-          null, true, false, false,
+          null, step == 1 ? true : false, step == 1 ? false : true, false,
           (value) => {
             paymentMethod = value!,
           }, null),
         getCompanyComponentSimpleForm('Fecha de entrega', null, TextInputType.text, 
-          null, true, true, true, null,
+          null, step == 1 ? true : false, true, true, null,
           () async {
             // TODO: Cambiar el color
             DateTime? pickedDate = await showDatePicker(
@@ -285,7 +290,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 onChange: (value) {
                   // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
                   String key = "${item.toLowerCase()}_dozen";
-                  productQuantities[key] = double.parse(value);
+                  productQuantities[key] = int.parse(value);
                 },
                 isEnabled: step == 1 ? true : false,
               ),
@@ -309,8 +314,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 textInputType: const TextInputType.numberWithOptions(),
                 onChange: (value) {
                   // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
-                  String key = "${item}_box";
-                  productQuantities[key] = double.parse(value);
+                  String key = "${item.toLowerCase()}_box";
+                  productQuantities[key] = int.parse(value);
                 },
                 isEnabled: step == 1 ? true : false,
               ),
@@ -352,7 +357,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
   Widget getButtonComponent() {
     return Column(children: [
       HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-        step == 1 ? "GUARDAR" : "CONFIRMAR", null, null, () { 
+        step == 1 ? "GUARDAR" : "CONFIRMAR", null, null, () async { 
           if (checkFields()) {
             if (step == 1) {
               showDialog(
@@ -374,13 +379,54 @@ class _NewOrderPageState extends State<NewOrderPage> {
                           step = 2;
                         });
                         Navigator.of(context).pop();
+                        //Subir scroll
                       },
                     )
                   ],
                 ));
             } else if (step == 2) {
-              // Conseguir nuevo id para el pedido
-              // Guardamos
+              int newId = await FirebaseUtils.instance.getNewOrderId(clientModel.doocumentId);
+              OrderModel orderModel = OrderModel(
+                datePickerTimestamp!, 
+                clientModel.id, 
+                null, 
+                null, 
+                null, 
+                null, 
+                null, 
+                getOrderStructure().toMap(), 
+                Timestamp.now(), 
+                newId, 
+                false, 
+                0, 
+                0, 
+                null);
+                bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
+                if (conf) {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    // TODO: Cambiar esto - ahora debería ir a ver todos los pedidos, con un flag que indique que tiene que mostrar el popup
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => MyProfilePage(clientModel)));
+                  }
+                } else {
+                  if (context.mounted) {
+                    showDialog(
+                      context: context, 
+                      builder: (_) => AlertDialog(
+                        title: const Text('Se ha producido un error'),
+                        content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('De acuerdo'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      )
+                    );
+                  }
+                }
             }
           } else {
             showDialog(
@@ -435,5 +481,60 @@ class _NewOrderPageState extends State<NewOrderPage> {
     } else {
       return false;
     }
+  }
+
+  DBOrderFieldData getOrderStructure() {
+    int xlBox = 0;
+    int xlDozen = 0;
+    int lBox = 0;
+    int lDozen = 0;
+    int mBox = 0;
+    int mDozen = 0;
+    int sBox = 0;
+    int sDozen = 0;
+
+    if (productQuantities.containsKey("xl_box") && productQuantities['xl_box'] != null){
+      xlBox = productQuantities['xl_box']!;
+    }
+    if (productQuantities.containsKey("xl_dozen") && productQuantities['xl_dozen'] != null){
+      xlDozen = productQuantities['xl_dozen']!;
+    }
+    if (productQuantities.containsKey("l_box") && productQuantities['l_box'] != null){
+      lBox = productQuantities['l_box']!;
+    }
+    if (productQuantities.containsKey("l_dozen") && productQuantities['l_dozen'] != null){
+      lDozen = productQuantities['l_dozen']!;
+    }
+    if (productQuantities.containsKey("m_box") && productQuantities['m_box'] != null){
+      mBox = productQuantities['m_box']!;
+    }
+    if (productQuantities.containsKey("m_dozen") && productQuantities['m_dozen'] != null){
+      mDozen = productQuantities['m_dozen']!;
+    }
+    if (productQuantities.containsKey("s_box") && productQuantities['s_box'] != null){
+      sBox = productQuantities['s_box']!;
+    }
+    if (productQuantities.containsKey("s_dozen") && productQuantities['s_dozen'] != null){
+      sDozen = productQuantities['s_dozen']!;
+    }
+
+    return DBOrderFieldData(
+      null,
+      xlBox,
+      null,
+      xlDozen,
+      null,
+      lBox,
+      null,
+      lDozen,
+      null,
+      mBox,
+      null,
+      mDozen,
+      null,
+      sBox,
+      null,
+      sDozen,
+    );
   }
 }
