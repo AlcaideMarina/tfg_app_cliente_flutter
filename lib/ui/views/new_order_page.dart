@@ -7,6 +7,7 @@ import 'package:hueveria_nieto_clientes/model/db_order_field_data.dart';
 import 'package:hueveria_nieto_clientes/model/order_model.dart';
 import 'package:hueveria_nieto_clientes/ui/components/component_dropdown.dart';
 import 'package:hueveria_nieto_clientes/ui/views/my_profile.dart';
+import 'package:hueveria_nieto_clientes/values/utils.dart';
 import 'package:intl/intl.dart';
 
 import '../../custom/app_theme.dart';
@@ -15,6 +16,8 @@ import '../components/component_simple_form.dart';
 import '../components/component_table_form.dart';
 import '../components/component_text_input.dart';
 import '../components/constants/hn_button.dart';
+import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
+
 
 class NewOrderPage extends StatefulWidget {
   const NewOrderPage(this.clientModel, {Key? key}) : super(key: key);
@@ -52,11 +55,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
   Timestamp? datePickerTimestamp;
 
   // TODO: Esto se tiene que sacar de las constantes
-  var items = [    
-    'Al contado',
-    'Por recibo',
-    'Por transferencia',
-  ];
+  List<String> items = [];
 
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
@@ -66,6 +65,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
     final double _height = MediaQuery.of(context).size.height;
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    
+    if (items.isEmpty) {
+      for (String key in constants.paymentMethod.keys) {
+        items.add(key);
+      }
+    }
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -288,7 +293,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 onChange: (value) {
-                  // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
                   String key = "${item.toLowerCase()}_dozen";
                   productQuantities[key] = int.parse(value);
                 },
@@ -398,7 +402,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 Timestamp.now(), 
                 newId, 
                 false, 
-                0, 
+                Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
                 0, 
                 null);
                 bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
