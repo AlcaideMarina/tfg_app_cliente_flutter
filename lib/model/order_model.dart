@@ -16,7 +16,7 @@ class OrderModel {
   final bool paid;
   final int paymentMethod;
   final int status;
-  final double totalPrice;
+  final double? totalPrice;
 
   OrderModel(
     this.approxDatetime, 

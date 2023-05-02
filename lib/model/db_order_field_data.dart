@@ -36,5 +36,16 @@ class DBOrderFieldData{
     this.sDozenPrice, 
     this.sDozenQuantity
   );
+
+  Map<String, Map<String, num?>> toMap() => {
+    'xl_dozen': {'price': xlDozenPrice, 'quantity': xlDozenQuantity},
+    'xl_box': {'price': xlBoxPrice, 'quantity': xlBoxQuantity},
+    'l_dozen': {'price': lDozenPrice, 'quantity': lDozenQuantity},
+    'l_box': {'price': lBoxPrice, 'quantity': lBoxQuantity},
+    'm_dozen': {'price': mDozenPrice, 'quantity': mDozenQuantity},
+    'm_box': {'price': mBoxQuantity, 'quantity': mBoxPrice},
+    's_dozen': {'price': sDozenPrice, 'quantity': sDozenQuantity},
+    's_box': {'price': sBoxPrice, 'quantity': sBoxQuantity},
+  };
   
 }
