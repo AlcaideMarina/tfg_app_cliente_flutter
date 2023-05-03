@@ -22,11 +22,9 @@ import 'dart:developer' as developer;
 class BillingPage extends StatefulWidget {
 
   final ClientModel clientModel;
-  final bool fromNewOrderPage;
 
   const BillingPage(
     this.clientModel, 
-    this.fromNewOrderPage,
     {Key? key}) : super(key: key);
 
   @override
