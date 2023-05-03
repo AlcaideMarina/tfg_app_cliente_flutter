@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'component_cell_table_form.dart';
+import 'component_dropdown.dart';
 import 'component_text_input.dart';
 
 /// Forms component.
@@ -11,7 +12,8 @@ class HNComponentSimpleForm extends StatelessWidget {
   final double spaceBetween;
   final double textInputHeight;
   final EdgeInsets textInputMargin;
-  final HNComponentTextInput componentTextInput;
+  final HNComponentTextInput? componentTextInput;
+  final HNComponentDropdown? componentDropdown;
   final EdgeInsets containerMargin;
   final EdgeInsets? textMargin;
 
@@ -20,9 +22,10 @@ class HNComponentSimpleForm extends StatelessWidget {
       this.spaceBetween,
       this.textInputHeight,
       this.textInputMargin,
-      this.componentTextInput,
       this.containerMargin,
       {Key? key,
+      this.componentTextInput,
+      this.componentDropdown,
       this.textMargin})
       : super(key: key);
 
@@ -38,7 +41,10 @@ class HNComponentSimpleForm extends StatelessWidget {
             height: spaceBetween,
           ),
           HNComponentCellTableForm(
-              textInputHeight, textInputMargin, componentTextInput),
+              textInputHeight, 
+              textInputMargin, 
+              componentTextInput: componentTextInput,
+              componentDropdown: componentDropdown,),
         ],
       ),
     );

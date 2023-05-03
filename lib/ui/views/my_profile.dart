@@ -160,7 +160,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
         8,
         40,
         const EdgeInsets.symmetric(horizontal: 16),
-        HNComponentTextInput(
+        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+        componentTextInput: HNComponentTextInput(
           textCapitalization: textCapitalization,
           labelText: labelInputText,
           contentPadding:
@@ -168,8 +169,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           textInputType: textInputType,
           isEnabled: false,
           initialValue: value,
-        ),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin));
+        ),);
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -199,40 +199,44 @@ class _MyProfilePageState extends State<MyProfilePage> {
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 16, right: 8, bottom: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[0].keys.first,
+              isEnabled: false,
             )),
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 8, right: 16, bottom: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[0].values.first.toString()
+              initialValue: clientModel.phone[0].values.first.toString(),
+              isEnabled: false,
             )),
       ]),
       TableRow(children: [
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 16, right: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[1].keys.first
+              initialValue: clientModel.phone[1].keys.first,
+              isEnabled: false,
             )),
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 8, right: 16),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[1].values.first.toString()
+              initialValue: clientModel.phone[1].values.first.toString(),
+              isEnabled: false,
             )),
       ]),
     ];
@@ -255,14 +259,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
       8,
       40,
       const EdgeInsets.only(left: 0),
-      HNComponentTextInput(
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         textCapitalization: TextCapitalization.none,
         textInputType: textInputType,
         onChange: onChange,
         textEditingController: controller,
       ),
-      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
     );
   }

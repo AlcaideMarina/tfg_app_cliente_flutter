@@ -1,6 +1,6 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../model/order_model.dart';
 
 class FirebaseUtils {
 
@@ -17,5 +17,36 @@ class FirebaseUtils {
         .where('uid', isEqualTo: uid)
         .get();
   }
+
+  Future<int> getNewOrderId(String documentId) async {
+    QuerySnapshot allOrders = await FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(documentId)
+        .collection("orders")
+        .get();
+    return allOrders.size;
+  }
+
+  Future<bool> saveNewOrder(String documentId, OrderModel orderModel) async {
+    return await FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(documentId)
+        .collection("orders")
+        .add(orderModel.toMap())
+        .then((value) {
+          var a = value;
+          return true;
+        })
+        .catchError((error) => false);
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getOrders(String documentId) {
+    return FirebaseFirestore.instance
+        .collection('client_info')
+        .doc(documentId)
+        .collection("orders")
+        .orderBy("order_datetime", descending: true)
+        .snapshots();
+}
 
 }
