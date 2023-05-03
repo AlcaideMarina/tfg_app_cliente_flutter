@@ -19,6 +19,12 @@ class Utils {
     return key;
   }
 
+  dynamic getKey(Map map, dynamic value) {
+    var key = map.keys.firstWhere(
+      (k) => map[k] == value);
+    return key;
+  }
+
   String getOrderSummary(DBOrderFieldData dbOrderFieldData) {
     List<String> list = [];
     if (dbOrderFieldData.xlDozenQuantity != null && dbOrderFieldData.xlDozenQuantity != 0) {
