@@ -48,36 +48,17 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
         key: _scaffoldKey,
         backgroundColor: Colors.white,
         appBar: AppBar(
+            iconTheme: const IconThemeData(
+              color: Colors.black, //change your color here
+            ),
             toolbarHeight: 56.0,
             title: const Text(
-              "Ver clientes",
+              'Nuevo pedido',
               style: TextStyle(
-                  color: AppTheme.primary, fontSize: 24),
+                  color: AppTheme.primary, fontSize: 24.0),
             )),
         body: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
-              child: Column(
-                children: [
-                  HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-                      .getTypedButton(
-                          "Nuevo", null, null, (){}, () {}),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  HNButton(ButtonTypes.grayBlackRoundedButton).getTypedButton(
-                      "Clientes eliminadas",
-                      null,
-                      null,
-                      () {},
-                      () {})
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
             StreamBuilder(
                 stream: FirebaseUtils.instance.getOrders(clientModel.doocumentId),
                 builder:
