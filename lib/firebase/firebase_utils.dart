@@ -40,4 +40,13 @@ class FirebaseUtils {
         .catchError((error) => false);
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getOrders(String documentId) {
+    return FirebaseFirestore.instance
+        .collection('client_info')
+        .doc(documentId)
+        .collection("orders")
+        .orderBy("order_datetime", descending: true)
+        .snapshots();
+}
+
 }
