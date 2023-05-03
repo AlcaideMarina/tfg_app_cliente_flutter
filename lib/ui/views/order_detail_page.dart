@@ -1,13 +1,17 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../custom/app_theme.dart';
 import '../../model/client_model.dart';
 import '../../model/order_model.dart';
+import '../../values/utils.dart';
 import '../components/component_cell_table_form.dart';
 import '../components/component_simple_form.dart';
 import '../components/component_table_form.dart';
 import '../components/component_text_input.dart';
+import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
+
 
 class OrderDetailPage extends StatefulWidget {
   const OrderDetailPage(this.clientModel, this.orderModel, {Key? key}) : super(key: key);
@@ -31,6 +35,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   List<String> productClasses = ["XL", "L", "M", "S"];
+  final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   
   @override
   Widget build(BuildContext context) {
@@ -75,6 +80,33 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Widget getAllFormElements() {
+
+    List<int> statusApproxDeliveryDatetimeList = [0, 1, 2];
+    String deliveryDatetimeAux;
+    if (statusApproxDeliveryDatetimeList.contains(orderModel.status)) {
+      String status = Utils().getKey(constants.orderStatus, orderModel.status);
+      deliveryDatetimeAux = "$status - ${dateFormat.format(orderModel.approxDatetime.toDate())}";
+    } else if (orderModel.status == 4) {
+      deliveryDatetimeAux = dateFormat.format(orderModel.deliveryDatetime!.toDate());
+    } else if (orderModel.status == 5) {
+      String status = Utils().getKey(constants.orderStatus, orderModel.status);
+      String dt;
+      if (orderModel.deliveryDatetime != null) {
+        dt = dateFormat.format(orderModel.deliveryDatetime!.toDate());
+      } else {
+        dt = "";
+      }
+      deliveryDatetimeAux = "$status - $dt";
+    } else {
+      String dt;
+      if (orderModel.deliveryDatetime != null) {
+        dt = dateFormat.format(orderModel.deliveryDatetime!.toDate());
+      } else {
+        dt = dateFormat.format(orderModel.approxDatetime.toDate());
+      }
+      deliveryDatetimeAux = dt;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -82,13 +114,20 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, clientModel.direction),
         getCompanyComponentSimpleForm('CIF', null, TextInputType.text, clientModel.cif, textCapitalization: TextCapitalization.characters),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow()),
-        // TODO: Falta el precio total
-        // TODO: Falta la fecha del pedido
-        // TODO: Falta la fecha de entrega
-        // TODO: Falta el repartidor
-        // TODO: Falta el albarán
-        // TODO: Falta el DNI de entrega
+        getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
+            columnWidhts: {
+              0: const IntrinsicColumnWidth(),
+              2: const IntrinsicColumnWidth()
+            }),
+        getComponentTableForm('Precio total', getTotalPriceComponentSimpleForm(),
+            columnWidhts: {
+              1: const IntrinsicColumnWidth()
+            }),
+        getCompanyComponentSimpleForm('Fecha pedido', null, TextInputType.text, dateFormat.format(orderModel.orderDatetime.toDate())),
+        getCompanyComponentSimpleForm('Fecha de entrega', null, TextInputType.text, deliveryDatetimeAux),
+        getCompanyComponentSimpleForm('Repartidor', null, TextInputType.text, (orderModel.deliveryPerson ?? "-").toString()),
+        getCompanyComponentSimpleForm('Albarán', null, TextInputType.text, (orderModel.deliveryNote ?? "-").toString()),
+        getCompanyComponentSimpleForm('DNI de entrega', null, TextInputType.text, (orderModel.deliveryDni ?? "-").toString()),
       ],
     );
   }
@@ -189,7 +228,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       num dozenQuantity = 0;
       num? boxPrice;
       num boxQuantity = 0;
-      
+
       if (orderModel.order.containsKey(dozenKey) && orderModel.order[dozenKey] != null) {
         if (orderModel.order[dozenKey]!.containsKey("price")) {
           dozenPrice = orderModel.order[dozenKey]!["price"];
@@ -275,4 +314,44 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return list;
 
   }
+
+  List<TableRow> getTotalPriceComponentSimpleForm() {
+    double topMargin = 4;
+    double bottomMargin = 4;
+    
+    List<TableRow> list = [];
+    bool pricePending = true;
+    String totalPriceAux = "Pendiente de precio";
+    if (orderModel.totalPrice != null) {
+      pricePending = false;
+      totalPriceAux = orderModel.totalPrice.toString();
+    }
+
+    list.add(
+      TableRow(
+        children: [
+          Container(
+              height: 40,
+              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+              child: HNComponentTextInput(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                textInputType: const TextInputType.numberWithOptions(),
+                initialValue: totalPriceAux,
+                isEnabled: false,
+              ),
+            ),
+          pricePending 
+            ? Container() 
+            : Container(
+              child: Text("€"),
+              margin: const EdgeInsets.only(left: 12, right: 16),
+            )
+        ]
+      )
+    );
+
+    return list;
+  }
+
 }
