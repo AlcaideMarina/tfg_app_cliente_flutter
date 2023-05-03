@@ -82,12 +82,18 @@ class _BillingPageState extends State<BillingPage> {
                                 itemCount: billingContainerDataList.length,
                                 itemBuilder: (context, i) {
                                   final BillingContainerData billingContainerData = billingContainerDataList[i];
+                                  bool isCurrentMonth;
+                                  if (billingContainerData.initDate.toDate().month == DateTime.now().month) {
+                                    isCurrentMonth = true;
+                                  } else {
+                                    isCurrentMonth = false;
+                                  }
                                   return Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 32, vertical: 8),
                                     child: HNComponentBilling(
                                         () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (_) => BillingDetailPage(billingContainerData.billingData!)));
+                                          Navigator.push(context, MaterialPageRoute(builder: (_) => BillingDetailPage(billingContainerData.billingData!, isCurrentMonth)));
                                         },
                                         billingContainerData
                                     ),

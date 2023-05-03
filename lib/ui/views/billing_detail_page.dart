@@ -4,9 +4,10 @@ import 'package:hueveria_nieto_clientes/model/billing_data.dart';
 import '../../custom/app_theme.dart';
 
 class BillingDetailPage extends StatefulWidget {
-  const BillingDetailPage(this.billingData, {Key? key}) : super(key: key);
+  const BillingDetailPage(this.billingData, this.isCurrentMonth, {Key? key}) : super(key: key);
 
   final BillingData billingData;
+  final bool isCurrentMonth;
 
   @override
   State<BillingDetailPage> createState() => _BillingDetailPageState();
@@ -14,9 +15,11 @@ class BillingDetailPage extends StatefulWidget {
 
 class _BillingDetailPageState extends State<BillingDetailPage> {
   late BillingData billingData;
+  late bool isCurrentMonth;
   void initState() {
     super.initState();
     billingData = widget.billingData;
+    isCurrentMonth = widget.isCurrentMonth;
   }
 
   @override
@@ -43,10 +46,14 @@ class _BillingDetailPageState extends State<BillingDetailPage> {
           child: Column(
             children: [
               // TODO: Ocultar este texto cuando corresponda
-              Text("Esta factura es del mes vigente, por lo que no es una versión definitiva."),
-              const SizedBox(
-                height: 16,
-              ),
+              isCurrentMonth ? const Column(
+                children: [
+                  Text("Esta factura es del mes vigente, por lo que no es una versión definitiva."),
+                  SizedBox(
+                    height: 16,
+                  ),
+                ]
+              ) : const SizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
