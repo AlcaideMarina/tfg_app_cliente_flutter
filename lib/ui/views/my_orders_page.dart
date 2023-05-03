@@ -3,6 +3,7 @@ import 'package:hueveria_nieto_clientes/model/client_model.dart';
 import 'package:hueveria_nieto_clientes/model/db_order_field_data.dart';
 import 'package:hueveria_nieto_clientes/ui/components/component_order.dart';
 import 'package:hueveria_nieto_clientes/firebase/firebase_utils.dart';
+import 'package:hueveria_nieto_clientes/ui/views/order_detail_page.dart';
 import 'package:hueveria_nieto_clientes/values/utils.dart';
 
 import '../../custom/app_theme.dart';
@@ -87,7 +88,9 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                         order.totalPrice,
                                         order.status,
                                         order.deliveryDni,
-                                        onTap: () {},),
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (_) => OrderDetailPage(clientModel, order)));
+                                        },),
                                   );
                                 }));
                       } else {
