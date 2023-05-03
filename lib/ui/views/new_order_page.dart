@@ -6,6 +6,7 @@ import 'package:hueveria_nieto_clientes/model/client_model.dart';
 import 'package:hueveria_nieto_clientes/model/db_order_field_data.dart';
 import 'package:hueveria_nieto_clientes/model/order_model.dart';
 import 'package:hueveria_nieto_clientes/ui/components/component_dropdown.dart';
+import 'package:hueveria_nieto_clientes/ui/views/my_orders_page.dart';
 import 'package:hueveria_nieto_clientes/ui/views/my_profile.dart';
 import 'package:hueveria_nieto_clientes/values/utils.dart';
 import 'package:intl/intl.dart';
@@ -425,9 +426,24 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
                 if (conf) {
                   if (context.mounted) {
+                    showDialog(
+                      context: context, 
+                      builder: (_) => AlertDialog(
+                        title: const Text("Pedido realizado"),
+                        content: const Text("Su pedido se ha realizado correctamente. En un plazo máximo de 24 horas, nos pondremos en contacto con usted para confirmar los datos. ¡Gracias por la confianza!"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(this.context).pop();
                     Navigator.pop(context);
                     // TODO: Cambiar esto - ahora debería ir a ver todos los pedidos, con un flag que indique que tiene que mostrar el popup
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => MyProfilePage(clientModel)));
+                    Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => MyOrdersPage(clientModel, true)));
+                            }, 
+                            child: const Text("De acuerdo")
+                          )
+                        ],
+                      ));
                   }
                 } else {
                   if (context.mounted) {
@@ -439,8 +455,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
                         actions: <Widget>[
                           TextButton(
                             child: const Text('De acuerdo'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
+                            onPressed: () async {
+                              dispose();
                             },
                           ),
                         ],

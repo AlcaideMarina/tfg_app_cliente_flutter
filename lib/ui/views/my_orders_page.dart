@@ -30,12 +30,14 @@ class MyOrdersPage extends StatefulWidget {
 
 class _MyOrdersPageState extends State<MyOrdersPage> {
   late ClientModel clientModel;
+  late bool fromNewOrderPage;
   bool showProgress = false;
 
   @override
   void initState() {
     super.initState();
     clientModel = widget.clientModel;
+    fromNewOrderPage = widget.fromNewOrderPage;
   }
 
   @override
