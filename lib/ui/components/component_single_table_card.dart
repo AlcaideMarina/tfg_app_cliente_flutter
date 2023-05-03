@@ -8,6 +8,7 @@ import 'package:hueveria_nieto_clientes/ui/views/billing_page.dart';
 import 'package:hueveria_nieto_clientes/ui/views/my_orders_page.dart';
 import 'package:hueveria_nieto_clientes/ui/views/my_profile.dart';
 import 'package:hueveria_nieto_clientes/ui/views/new_order_page.dart';
+import 'package:hueveria_nieto_clientes/ui/views/settings_page.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart';
 
 import '../../model/client_model.dart';
@@ -97,7 +98,11 @@ class SingleTableCard extends StatelessWidget {
                     ));
                 }
                 if (homeMenuOption == HomeMenuOptions.settings) {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(clientModel),
+                    ));
                 }
               },
             )),
