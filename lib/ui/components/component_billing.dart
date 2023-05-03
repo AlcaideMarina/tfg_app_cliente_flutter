@@ -32,12 +32,12 @@ class HNComponentBilling extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(right: 8),
-                  child: Text(orderDatetimeStr, style: TextStyle(fontSize: 10),),
+                  child: Text(orderDatetimeStr),
                 ),
               ),
               // TODO: Cambiar icono - creo que se va a tener que importar
