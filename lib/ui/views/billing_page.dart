@@ -185,7 +185,7 @@ class _BillingPageState extends State<BillingPage> {
 
     for (var item in orderBillingDataListAux) {
       // TODO: Revisar comparación, creo que aquí está el fallo
-      if (Timestamp.now().compareTo(initDateTimestamp) >= 0) {
+      if (item.orderDatetime.compareTo(initDateTimestamp) < 0) {
             BillingData billingData = BillingData(
               paymentByCash,
               paymentByReceipt,
@@ -200,6 +200,14 @@ class _BillingPageState extends State<BillingPage> {
               billingData
             );
             billingContainerDataList.add(billingContainerData);
+            endDateTimestamp = initDateTimestamp;
+            initDateTimestamp = Timestamp.fromDate(
+              DateTime(
+                initDateTimestamp.toDate().year, 
+                initDateTimestamp.toDate().month - 1, 
+                initDateTimestamp.toDate().day
+              )
+            );
             paymentByCash = 0;
             paymentByReceipt = 0;
             paymentByTransfer = 0;
