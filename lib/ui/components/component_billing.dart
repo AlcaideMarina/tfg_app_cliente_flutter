@@ -3,21 +3,26 @@ import 'package:hueveria_nieto_clientes/model/billing_container_data.dart';
 import 'package:intl/intl.dart';
 
 import '../../custom/custom_colors.dart';
+import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
 
 class HNComponentBilling extends StatelessWidget {
 
   final BillingContainerData data;
   final Function()? onTap;
-  final DateFormat dateFormat = DateFormat("MMMM, yyyy");
 
-  HNComponentBilling(this.onTap, this.data, {Key? key}) : super(key: key);
+  const HNComponentBilling(this.onTap, this.data, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
 
-    String orderDatetimeStr = dateFormat.format(data.initDate.toDate());
+    String m = data.initDate.toDate().month.toString();
+    while (m.length < 2) {
+      m = "0$m";
+    }
+    String monthInSpanish = constants.monthInSpanish[m] ?? "mes";
+    String orderDatetimeSpanish = "$monthInSpanish, ${data.initDate.toDate().year}";
 
     return GestureDetector(
         onTap: onTap,
@@ -37,7 +42,7 @@ class HNComponentBilling extends StatelessWidget {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(right: 8),
-                  child: Text(orderDatetimeStr),
+                  child: Text(orderDatetimeSpanish),
                 ),
               ),
               // TODO: Cambiar icono - creo que se va a tener que importar
