@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_clientes/model/billing_container_data.dart';
+import 'package:hueveria_nieto_clientes/model/billing_data.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
 import 'package:hueveria_nieto_clientes/model/db_order_field_data.dart';
+import 'package:hueveria_nieto_clientes/model/order_billing_data.dart';
+import 'package:hueveria_nieto_clientes/ui/components/component_billing.dart';
 import 'package:hueveria_nieto_clientes/ui/components/component_order.dart';
 import 'package:hueveria_nieto_clientes/firebase/firebase_utils.dart';
 import 'package:hueveria_nieto_clientes/ui/views/order_detail_page.dart';
@@ -68,29 +73,23 @@ class _BillingPageState extends State<BillingPage> {
                     if (snapshot.hasData) {
                       final data = snapshot.data;
                       final List orderList = data.docs;
-                      if (orderList.isNotEmpty) {
+                      List<OrderBillingData> orderBillingDataList = getOrderBillingData(orderList);
+                      List<BillingContainerData> billingContainerDataList = getBillingContainerFromOrderData(orderBillingDataList);
+                      if (billingContainerDataList.isNotEmpty) {
                         return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: orderList.length,
+                                itemCount: billingContainerDataList.length,
                                 itemBuilder: (context, i) {
-                                  final OrderModel order =
-                                      OrderModel.fromMap(orderList[i].data()
-                                          as Map<String, dynamic>);
+                                  final BillingContainerData billingContainerData = billingContainerDataList[i];
                                   return Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 32, vertical: 8),
-                                    child: HNComponentOrders(
-                                        order.orderDatetime,
-                                        order.orderId.toString(),
-                                        Utils().getOrderSummary(DBOrderFieldData.fromMap(order.order)),
-                                        order.totalPrice,
-                                        order.status,
-                                        order.deliveryDni,
-                                        onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (_) => OrderDetailPage(clientModel, order)));
-                                        },),
+                                    child: HNComponentBilling(
+                                        () {},
+                                        billingContainerData
+                                    ),
                                   );
                                 }));
                       } else {
@@ -131,4 +130,116 @@ class _BillingPageState extends State<BillingPage> {
           ],
         ));
   }
+
+  List<OrderBillingData> getOrderBillingData(List list) {
+    List<OrderBillingData> orderBillingModelList = [];
+
+    for (var item in list) {
+      if (item != null && item.data() != null) {
+        final OrderModel order = OrderModel.fromMap(item.data() as Map<String, dynamic>);
+        orderBillingModelList.add(
+          OrderBillingData(
+            order.orderId, 
+            order.orderDatetime, 
+            order.paymentMethod, 
+            order.totalPrice, 
+            order.paid
+          )
+        );
+      }
+    }
+    return orderBillingModelList;
+  }
+
+  List<BillingContainerData> getBillingContainerFromOrderData(List<OrderBillingData> orderBillingDataList) {
+    List<BillingContainerData> billingContainerDataList = [];
+    List<OrderBillingData> orderBillingDataListAux = orderBillingDataList;
+
+    double paymentByCash = 0;
+    double paymentByReceipt = 0;
+    double paymentByTransfer = 0;
+    double paid = 0;
+    double toBePaid = 0;
+    double totalPrice = 0;
+    
+    // TODO: Revisar esto: no estoy nada segura de que lo esté haciendo bien
+    orderBillingDataListAux.sort((a, b) => b.orderDatetime.compareTo(a.orderDatetime));
+
+    OrderBillingData firstOrder = orderBillingDataListAux[0];
+    DateTime firstDate = firstOrder.orderDatetime.toDate();
+
+    var m = firstDate.month.toString();
+    while (m.length < 2) {
+      m = "0$m";
+    }
+    var y = firstDate.year.toString();
+    while (y.length < 4) {
+      y = "0$y";
+    }
+
+    Timestamp initDateTimestamp = Utils().parseStringToTimestamp("01/$m/$y");
+    Timestamp endDateTimestamp = Timestamp.fromDate(initDateTimestamp.toDate().add(const Duration(days: 3)));
+
+    for (var item in orderBillingDataListAux) {
+      if (Timestamp.now().compareTo(initDateTimestamp) >= 0 && 
+          Timestamp.now().compareTo(endDateTimestamp) < 0) {
+            BillingData billingData = BillingData(
+              paymentByCash,
+              paymentByReceipt,
+              paymentByTransfer,
+              paid,
+              toBePaid,
+              totalPrice
+            );
+            BillingContainerData billingContainerData = BillingContainerData(
+              initDateTimestamp,
+              endDateTimestamp,
+              billingData
+            );
+            billingContainerDataList.add(billingContainerData);
+            paymentByCash = 0;
+            paymentByReceipt = 0;
+            paymentByTransfer = 0;
+            paid = 0;
+            toBePaid = 0;
+            totalPrice = 0;
+      }
+
+      if (item.paymentMethod == 0) {
+        paymentByCash += (item.totalPrice ?? 0).toDouble();
+      } else if (item.paymentMethod == 1) {
+        paymentByReceipt += (item.totalPrice ?? 0).toDouble();
+      } else if (item.paymentMethod == 2) {
+        paymentByTransfer += (item.totalPrice ?? 0).toDouble();
+      }
+
+      if (item.paid) {
+        paid += (item.totalPrice ?? 0).toDouble();
+      } else {
+        toBePaid += (item.totalPrice ?? 0).toDouble();
+      }
+
+      totalPrice += (item.totalPrice ?? 0).toDouble();
+
+      if (orderBillingDataListAux.last == item) {
+        BillingData billingData = BillingData(
+          paymentByCash, 
+          paymentByReceipt, 
+          paymentByTransfer, 
+          paid, 
+          toBePaid, 
+          totalPrice
+        );
+        BillingContainerData billingContainerData = BillingContainerData(
+          initDateTimestamp,
+          endDateTimestamp,
+          billingData
+        );
+        billingContainerDataList.add(billingContainerData);
+      }
+
+    }
+    return billingContainerDataList;
+  }
+
 }
