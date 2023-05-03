@@ -8,6 +8,7 @@ import 'package:hueveria_nieto_clientes/model/order_billing_data.dart';
 import 'package:hueveria_nieto_clientes/ui/components/component_billing.dart';
 import 'package:hueveria_nieto_clientes/ui/components/component_order.dart';
 import 'package:hueveria_nieto_clientes/firebase/firebase_utils.dart';
+import 'package:hueveria_nieto_clientes/ui/views/billing_detail_page.dart';
 import 'package:hueveria_nieto_clientes/ui/views/order_detail_page.dart';
 import 'package:hueveria_nieto_clientes/values/utils.dart';
 
@@ -85,7 +86,9 @@ class _BillingPageState extends State<BillingPage> {
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 32, vertical: 8),
                                     child: HNComponentBilling(
-                                        () {},
+                                        () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (_) => BillingDetailPage(billingContainerData.billingData!)));
+                                        },
                                         billingContainerData
                                     ),
                                   );
