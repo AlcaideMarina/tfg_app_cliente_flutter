@@ -71,81 +71,81 @@ class DBOrderFieldData{
 
   factory DBOrderFieldData.fromMap(Map<String, Map<String, num?>> json) {
 
-    int? xlDozenQuantityMap;
-    double? xlDozenPriceMap;
     int? xlBoxQuantityMap;
     double? xlBoxPriceMap;
-    int? lDozenQuantityMap;
-    double? lDozenPriceMap;
+    int? xlDozenQuantityMap;
+    double? xlDozenPriceMap;
     int? lBoxQuantityMap;
     double? lBoxPriceMap;
-    int? mDozenQuantityMap;
-    double? mDozenPriceMap;
+    int? lDozenQuantityMap;
+    double? lDozenPriceMap;
     int? mBoxQuantityMap;
     double? mBoxPriceMap;
-    int? sDozenQuantityMap;
-    double? sDozenPriceMap;
+    int? mDozenQuantityMap;
+    double? mDozenPriceMap;
     int? sBoxQuantityMap;
     double? sBoxPriceMap;
+    int? sDozenQuantityMap;
+    double? sDozenPriceMap;
 
-    if (json.containsKey("xl_dozen")) {
-      Map<String, dynamic> aux = json["xl_dozen"]!;
-      if (aux.containsKey("quantity")) xlDozenQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) xlDozenPriceMap = aux["price"];
-    }
     if (json.containsKey("xl_box")) {
       Map<String, dynamic> aux = json["xl_box"]!;
       if (aux.containsKey("quantity")) xlBoxQuantityMap = aux["quantity"];
       if (aux.containsKey("price")) xlBoxPriceMap = aux["price"];
     }
-    if (json.containsKey("l_dozen")) {
-      Map<String, dynamic> aux = json["l_dozen"]!;
-      if (aux.containsKey("quantity")) lDozenQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) lDozenPriceMap = aux["price"];
+    if (json.containsKey("xl_dozen")) {
+      Map<String, dynamic> aux = json["xl_dozen"]!;
+      if (aux.containsKey("quantity")) xlDozenQuantityMap = aux["quantity"];
+      if (aux.containsKey("price")) xlDozenPriceMap = aux["price"];
     }
     if (json.containsKey("l_box")) {
       Map<String, dynamic> aux = json["l_box"]!;
       if (aux.containsKey("quantity")) lBoxQuantityMap = aux["quantity"];
       if (aux.containsKey("price")) lBoxPriceMap = aux["price"];
     }
-    if (json.containsKey("m_dozen")) {
-      Map<String, dynamic> aux = json["m_dozen"]!;
-      if (aux.containsKey("quantity")) mDozenQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) mDozenPriceMap = aux["price"];
+    if (json.containsKey("l_dozen")) {
+      Map<String, dynamic> aux = json["l_dozen"]!;
+      if (aux.containsKey("quantity")) lDozenQuantityMap = aux["quantity"];
+      if (aux.containsKey("price")) lDozenPriceMap = aux["price"];
     }
     if (json.containsKey("m_box")) {
       Map<String, dynamic> aux = json["m_box"]!;
       if (aux.containsKey("quantity")) mBoxQuantityMap = aux["quantity"];
       if (aux.containsKey("price")) mBoxPriceMap = aux["price"];
     }
-    if (json.containsKey("s_dozen")) {
-      Map<String, dynamic> aux = json["s_dozen"]!;
-      if (aux.containsKey("quantity")) sDozenQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) sDozenPriceMap = aux["price"];
+    if (json.containsKey("m_dozen")) {
+      Map<String, dynamic> aux = json["m_dozen"]!;
+      if (aux.containsKey("quantity")) mDozenQuantityMap = aux["quantity"];
+      if (aux.containsKey("price")) mDozenPriceMap = aux["price"];
     }
     if (json.containsKey("s_box")) {
       Map<String, dynamic> aux = json["s_box"]!;
       if (aux.containsKey("quantity")) sBoxQuantityMap = aux["quantity"];
       if (aux.containsKey("price")) sBoxPriceMap = aux["price"];
     }
+    if (json.containsKey("s_dozen")) {
+      Map<String, dynamic> aux = json["s_dozen"]!;
+      if (aux.containsKey("quantity")) sDozenQuantityMap = aux["quantity"];
+      if (aux.containsKey("price")) sDozenPriceMap = aux["price"];
+    }
 
     return DBOrderFieldData(
-      xlDozenPriceMap,
-      xlDozenQuantityMap,
       xlBoxPriceMap,
       xlBoxQuantityMap,
-      lDozenPriceMap,
-      lDozenQuantityMap,
+      xlDozenPriceMap,
+      xlDozenQuantityMap,
       lBoxPriceMap,
       lBoxQuantityMap,
-      mDozenPriceMap,
-      mDozenQuantityMap,
+      lDozenPriceMap,
+      lDozenQuantityMap,
       mBoxPriceMap,
       mBoxQuantityMap,
-      sDozenPriceMap,
-      sDozenQuantityMap,
+      mDozenPriceMap,
+      mDozenQuantityMap,
       sBoxPriceMap,
       sBoxQuantityMap,
+      sDozenPriceMap,
+      sDozenQuantityMap,
     );
   }
   
