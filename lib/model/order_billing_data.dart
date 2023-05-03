@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class OrderBillingModel {
+class OrderBillingData {
   final int orderId;
   final Timestamp orderDatetime;
   final int paymentMethod;
   final double? totalPrice;
   final bool paid;
 
-  OrderBillingModel(
+  OrderBillingData(
     this.orderId, 
     this.orderDatetime, 
     this.paymentMethod, 
