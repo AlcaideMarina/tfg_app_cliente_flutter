@@ -48,7 +48,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             ),
             toolbarHeight: 56.0,
             title: const Text(
-              'Mi perfil',
+              'Ver pedido',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: 24.0),
             )),
@@ -309,10 +309,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       );
     }
 
-
-    
     return list;
-
   }
 
   List<TableRow> getTotalPriceComponentSimpleForm() {
