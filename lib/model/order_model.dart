@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -41,6 +42,26 @@ class OrderModel {
   String toJson() => jsonEncode(toMap());
 
   factory OrderModel.fromMap(Map<String, dynamic> json) {
+
+    Map<String, Map<String, num?>> orderMap = {};
+    (json['order'] as Map<String, dynamic>).forEach(
+      (k1, v1) {
+        orderMap[k1] = {};
+        try {
+          Map<String, num?> orderMapAux = {};
+          (v1 as Map<String, dynamic>).forEach(
+            (k2, v2) {
+              orderMapAux[k2] = v2; 
+            }
+          );
+          orderMap[k1] = orderMapAux;
+        } catch (e) {
+          orderMap[k1] = {"price": null, "quantity": 0};
+          developer.log(
+              'Error - OrderModel - OrderModel.fromMap() - order: $e');
+        }
+      },
+    );
     return OrderModel(
       json['approximate_delivery_datetime'], 
       json['created_by'], 
@@ -49,7 +70,7 @@ class OrderModel {
       json['delivery_note'], 
       json['delivery_person'], 
       json['notes'], 
-      json['order'], 
+      orderMap, 
       json['order_datetime'], 
       json['order_id'], 
       json['paid'], 
