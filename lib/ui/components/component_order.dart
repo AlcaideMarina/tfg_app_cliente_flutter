@@ -29,38 +29,46 @@ class HNComponentOrders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double _width = MediaQuery.of(context).size.width;
+    final double _height = MediaQuery.of(context).size.height;
 
     String orderDatetimeStr = dateFormat.format(orderDatetime.toDate());
 
     return GestureDetector(
         onTap: onTap,
         child: Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: CustomColors.redGraySecondaryColor,
-        border: Border.all(
-          color: CustomColors.redGraySecondaryColor,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(20))
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: CustomColors.redGraySecondaryColor,
+            border: Border.all(
+              color: CustomColors.redGraySecondaryColor,
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(20))
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(orderDatetimeStr, style: TextStyle(fontSize: 10),),
-              Text("Pedido: $id"),
-              Text(orderSummary),
-              Text("Precio: $price €"),
-              Text(Utils().orderStatusIntToString(status) ?? "Estado desconocido"),
-              deliveryDni != null ? Text("DNI de recogida: $deliveryDni") : const SizedBox(),
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(right: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(orderDatetimeStr, style: TextStyle(fontSize: 10),),
+                      Text("Pedido: $id"),
+                      Text(orderSummary),
+                      Text("Precio: ${price ?? "-"} €"),
+                      Text(Utils().orderStatusIntToString(status) ?? "Estado desconocido"),
+                      deliveryDni != null ? Text("DNI de recogida: $deliveryDni") : const SizedBox(),
+                    ],
+                  ),
+                ),
+              ),
+              // TODO: Cambiar icono - creo que se va a tener que importar
+              const Icon(Icons.arrow_right_alt_outlined)
             ],
           ),
-          // TODO: Cambiar icono - creo que se va a tener que importar
-          const Icon(Icons.arrow_right_alt_outlined)
-        ],
-      ),
-    ));
+        ));
   }
 }
