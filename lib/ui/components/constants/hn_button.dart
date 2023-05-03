@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../custom/custom_colors.dart';
-import '../component_ button.dart';
+import '../component_button.dart';
 
 /// In this class, you will find all the types of buttons available in design.
 

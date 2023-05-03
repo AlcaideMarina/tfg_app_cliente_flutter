@@ -1,4 +1,6 @@
 
+import 'package:intl/intl.dart';
+
 enum SingleTableCardPositions {
   leftPosition,
   rightPosition,
@@ -35,3 +37,6 @@ final Map<String, int> orderStatus = {
   "Intento de entrega": 4,
   "Cancelado": 5
 };
+
+String dateFormatPatter = "dd/MM/yyyy";
+DateFormat dateFormat = DateFormat(dateFormatPatter);

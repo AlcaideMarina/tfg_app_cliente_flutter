@@ -1,5 +1,6 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hueveria_nieto_clientes/model/db_order_field_data.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
 
@@ -60,5 +61,8 @@ class Utils {
     return summary;
   }
 
+  Timestamp parseStringToTimestamp(String dateStr) {
+    return Timestamp.fromDate(DateTime.parse(dateStr));
+  }
 
 }
