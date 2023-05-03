@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 
 import '../../custom/custom_colors.dart';
 import '../../values/utils.dart';
-class HNComponentClients extends StatelessWidget {
+
+class HNComponentOrders extends StatelessWidget {
   
   final Timestamp orderDatetime;
   final String id;
@@ -14,15 +15,14 @@ class HNComponentClients extends StatelessWidget {
   final String? deliveryDni;
   final Function()? onTap;
 
-  HNComponentClients(
+  HNComponentOrders(
     this.orderDatetime, 
     this.id,
     this.orderSummary, 
     this.price,
     this.status,
     this.deliveryDni,
-    this.onTap,
-    {Key? key}) : super(key: key);
+    {Key? key, this.onTap,}) : super(key: key);
 
     
   final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
