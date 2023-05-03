@@ -160,7 +160,6 @@ class _BillingPageState extends State<BillingPage> {
     double toBePaid = 0;
     double totalPrice = 0;
     
-    // TODO: Revisar esto: no estoy nada segura de que lo esté haciendo bien
     orderBillingDataListAux.sort((a, b) => b.orderDatetime.compareTo(a.orderDatetime));
 
     OrderBillingData firstOrder = orderBillingDataListAux[0];
@@ -175,12 +174,18 @@ class _BillingPageState extends State<BillingPage> {
       y = "0$y";
     }
 
-    Timestamp initDateTimestamp = Utils().parseStringToTimestamp("01/$m/$y");
-    Timestamp endDateTimestamp = Timestamp.fromDate(initDateTimestamp.toDate().add(const Duration(days: 3)));
+    Timestamp initDateTimestamp = Utils().parseStringToTimestamp("$y-$m-01");
+    Timestamp endDateTimestamp = Timestamp.fromDate(
+      DateTime(
+        initDateTimestamp.toDate().year, 
+        initDateTimestamp.toDate().month + 1, 
+        initDateTimestamp.toDate().day
+      )
+    );
 
     for (var item in orderBillingDataListAux) {
-      if (Timestamp.now().compareTo(initDateTimestamp) >= 0 && 
-          Timestamp.now().compareTo(endDateTimestamp) < 0) {
+      // TODO: Revisar comparación, creo que aquí está el fallo
+      if (Timestamp.now().compareTo(initDateTimestamp) >= 0) {
             BillingData billingData = BillingData(
               paymentByCash,
               paymentByReceipt,
