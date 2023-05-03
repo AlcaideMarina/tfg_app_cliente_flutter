@@ -37,15 +37,64 @@ class _BillingDetailPageState extends State<BillingDetailPage> {
               style: TextStyle(
                   color: AppTheme.primary, fontSize: 24.0),
             )),
-        body: SizedBox(
+        body: Container(
           width: double.infinity,
+          margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
           child: Column(
             children: [
               // TODO: Ocultar este texto cuando corresponda
               Text("Esta factura es del mes vigente, por lo que no es una versión definitiva."),
-              SizedBox(
+              const SizedBox(
                 height: 16,
-              )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Pagos al contado:"),
+                  Text("${billingData.paymentByCash.toString()} €")
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Pagos por recibo:"),
+                  Text("${billingData.paymentByReceipt.toString()} €")
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Pagos por transferencia:"),
+                  Text("${billingData.paymentByTransfer.toString()} €")
+                ],
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Pagado hasta ahora:"),
+                  Text("${billingData.paid.toString()} €")
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Pendiente de pago:"),
+                  Text("${billingData.toBePaid.toString()} €")
+                ],
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Pago total:"),
+                  Text("${billingData.totalPrice.toString()} €")
+                ],
+              ),
             ],
           ),
         )
