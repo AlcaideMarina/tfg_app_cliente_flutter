@@ -29,6 +29,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     clientModel = widget.clientModel;
     orderModel = widget.orderModel;
   }
+
+  List<String> productClasses = ["XL", "L", "M", "S"];
   
   @override
   Widget build(BuildContext context) {
@@ -80,7 +82,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, clientModel.direction),
         getCompanyComponentSimpleForm('CIF', null, TextInputType.text, clientModel.cif, textCapitalization: TextCapitalization.characters),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        // TODO: Falta la parte del pedido
+        getComponentTableForm('Pedido', getPricePerUnitTableRow()),
+        // TODO: Falta el precio total
+        // TODO: Falta la fecha del pedido
+        // TODO: Falta la fecha de entrega
+        // TODO: Falta el repartidor
+        // TODO: Falta el albarán
+        // TODO: Falta el DNI de entrega
       ],
     );
   }
@@ -169,5 +177,102 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             )),
       ]),
     ];
+  }
+
+  List<TableRow> getPricePerUnitTableRow() {
+    List<TableRow> list = [];
+
+    for (var item in productClasses) {
+      String dozenKey = "${item.toLowerCase()}_dozen";
+      String boxKey = "${item.toLowerCase()}_box";
+      num? dozenPrice;
+      num dozenQuantity = 0;
+      num? boxPrice;
+      num boxQuantity = 0;
+      
+      if (orderModel.order.containsKey(dozenKey) && orderModel.order[dozenKey] != null) {
+        if (orderModel.order[dozenKey]!.containsKey("price")) {
+          dozenPrice = orderModel.order[dozenKey]!["price"];
+        }
+        if (orderModel.order[dozenKey]!.containsKey("quantity") && orderModel.order[dozenKey]!["quantity"] != null) {
+          dozenQuantity = orderModel.order[dozenKey]!["quantity"]!;
+        }
+      }
+      if (orderModel.order.containsKey(boxKey) && orderModel.order[boxKey] != null) {
+        if (orderModel.order[boxKey]!.containsKey("price")) {
+          boxPrice = orderModel.order[boxKey]!["price"];
+        }
+        if (orderModel.order[boxKey]!.containsKey("quantity") && orderModel.order[boxKey]!["quantity"] != null) {
+          boxQuantity = orderModel.order[boxKey]!["quantity"]!;
+        }
+      }
+      
+
+      list.add(
+        TableRow(
+          children: [
+            Container(
+              child: Text(item),
+              margin: const EdgeInsets.only(left: 12, right: 16),
+            ),
+            Container(),
+            Container()
+          ]
+        )
+      );
+
+      list.add(
+        TableRow(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("Docena")),
+            Container(
+              height: 40,
+              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+              child: HNComponentTextInput(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                textInputType: const TextInputType.numberWithOptions(),
+                initialValue: dozenQuantity.toString(),
+                isEnabled: false,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("${dozenPrice ?? "- "} €"))
+          ],
+        )
+      );
+
+      list.add(
+        TableRow(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("Caja")),
+            Container(
+              height: 40,
+              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+              child: HNComponentTextInput(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                textInputType: const TextInputType.numberWithOptions(),
+                initialValue: boxQuantity.toString(),
+                isEnabled: false,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("${boxPrice ?? "- "} €"))
+          ]
+        )
+      );
+    }
+
+
+    
+    return list;
+
   }
 }
