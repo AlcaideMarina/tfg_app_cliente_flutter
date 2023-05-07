@@ -135,6 +135,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 child: 
                     CheckboxListTile(
                       title: Text("Pagado"),
+                      enabled: false,
                       value: orderModel.paid,
                       onChanged: (newValue) {},
                       dense: true,
