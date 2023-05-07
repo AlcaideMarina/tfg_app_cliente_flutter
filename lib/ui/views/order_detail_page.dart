@@ -36,6 +36,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   List<String> productClasses = ["XL", "L", "M", "S"];
   final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+
+
   
   @override
   Widget build(BuildContext context) {
@@ -123,10 +125,32 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             columnWidhts: {
               1: const IntrinsicColumnWidth()
             }),
+        SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: 150,
+                child: 
+                    CheckboxListTile(
+                      title: Text("Pagado"),
+                      value: orderModel.paid,
+                      onChanged: (newValue) {},
+                      dense: true,
+                      controlAffinity: ListTileControlAffinity.leading,
+                    ),
+              ),
+            ],
+          ),
+        ),
+        getCompanyComponentSimpleForm('Método de pago', null, TextInputType.text, 
+            Utils().paymentMethodIntToString(orderModel.paymentMethod)),
         getCompanyComponentSimpleForm('Fecha pedido', null, TextInputType.text, dateFormat.format(orderModel.orderDatetime.toDate())),
         getCompanyComponentSimpleForm('Fecha de entrega', null, TextInputType.text, deliveryDatetimeAux),
         getCompanyComponentSimpleForm('Repartidor', null, TextInputType.text, (orderModel.deliveryPerson ?? "-").toString()),
         getCompanyComponentSimpleForm('Albarán', null, TextInputType.text, (orderModel.deliveryNote ?? "-").toString()),
+        getCompanyComponentSimpleForm('Lote', null, TextInputType.text, (orderModel.lot ?? "-").toString()),
         getCompanyComponentSimpleForm('DNI de entrega', null, TextInputType.text, (orderModel.deliveryDni ?? "-").toString()),
       ],
     );

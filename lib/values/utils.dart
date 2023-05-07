@@ -10,6 +10,10 @@ class Utils {
     return constants.paymentMethod[paymentMethodStr] ?? -1;
   }
 
+  String paymentMethodIntToString(int paymentMethodInt) {
+    return getKey(constants.paymentMethod, paymentMethodInt);
+  }
+
   int orderStatusStringToInt(String status) {
     return constants.orderStatus[status] ?? -1;
   }
