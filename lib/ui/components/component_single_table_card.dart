@@ -18,7 +18,7 @@ class SingleTableCard extends StatelessWidget {
   final IconData icono;
   final Color color;
   final HomeMenuOptions homeMenuOption;
-  final String id;
+  final int id;
   final SingleTableCardPositions position;
   final ClientModel clientModel;
 

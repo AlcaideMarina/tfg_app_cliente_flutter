@@ -410,11 +410,14 @@ class _NewOrderPageState extends State<NewOrderPage> {
               int newId = await FirebaseUtils.instance.getNewOrderId(clientModel.doocumentId);
               OrderModel orderModel = OrderModel(
                 datePickerTimestamp!, 
-                clientModel.id, 
+                clientModel.id,
+                clientModel.company,
+                "client_${clientModel.id}", 
                 null, 
                 null, 
                 null, 
                 null, 
+                null,
                 null, 
                 getOrderStructure().toMap(), 
                 Timestamp.now(), 
