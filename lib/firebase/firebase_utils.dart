@@ -49,11 +49,11 @@ class FirebaseUtils {
         .snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getEggPrices() {
+  Future<QuerySnapshot<Map<String, dynamic>>> getEggPrices() async {
     return FirebaseFirestore.instance
         .collection('default_constants')
         .where('constant_name', isEqualTo: 'egg_prices')
-        .snapshots();
+        .get();
   }
 
 }

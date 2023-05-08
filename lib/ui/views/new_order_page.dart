@@ -22,9 +22,10 @@ import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
 
 
 class NewOrderPage extends StatefulWidget {
-  const NewOrderPage(this.clientModel, {Key? key}) : super(key: key);
+  const NewOrderPage(this.clientModel, this.eggPricesMap, {Key? key}) : super(key: key);
 
   final ClientModel clientModel;
+  final Map<String, dynamic> eggPricesMap;
 
   @override
   State<NewOrderPage> createState() => _NewOrderPageState();
@@ -33,6 +34,8 @@ class NewOrderPage extends StatefulWidget {
 // TODO: Faltan todas las validaciones
 class _NewOrderPageState extends State<NewOrderPage> {
   late ClientModel clientModel;
+  late Map<String, dynamic> valuesMap;
+  late EggPricesData productPrices;
   bool showProgress = false;
 
   @override
@@ -41,6 +44,11 @@ class _NewOrderPageState extends State<NewOrderPage> {
     clientModel = widget.clientModel;
     dateController.text = dateFormat.format(minDate);
     datePickerTimestamp = Timestamp.fromDate(minDate);
+    valuesMap = widget.eggPricesMap;
+    productPrices = EggPricesData(
+      valuesMap['xl_box'], valuesMap['xl_dozen'], valuesMap['l_box'], 
+      valuesMap['l_dozen'], valuesMap['m_box'], valuesMap['m_dozen'], 
+      valuesMap['s_box'], valuesMap['s_dozen']);
   }
 
   TextEditingController dateController = TextEditingController();
@@ -49,8 +57,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
   // TODO: Esto se tiene que sacar de las constantes
   List<String> productClasses = ["XL", "L", "M", "S"];
   Map<String, int> productQuantities = {}; 
-  EggPricesData? productPrices;
-  Map<String, dynamic> valuesMap = {};
 
   late String direction;
   String? paymentMethod;
@@ -86,8 +92,62 @@ class _NewOrderPageState extends State<NewOrderPage> {
               style: TextStyle(
                   color: AppTheme.primary, fontSize: 24.0),
             )),
-        body: StreamBuilder(
-                stream: FirebaseUtils.instance.getEggPrices(),
+        body: showProgress ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        child: Center(
+                          child: showProgress
+                              ? const CircularProgressIndicator()
+                              : const SizedBox(),
+                        ),
+                      ),
+                    ],
+                  ) : SafeArea(
+                      top: false,
+                      child: SingleChildScrollView(
+              child: Container(
+                  margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+                  child: Form(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Column(
+                          children: [
+                            Text(
+                              "Por favor, revise los datos que hay a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
+                              textAlign: TextAlign.center,),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              "Recuerde que una vez haya concluido el pedido, no se podrá modificar ni cancelar, salvo con causa justificada llamándonos directamente.",
+                              textAlign: TextAlign.center,),
+                            SizedBox(
+                              height: 32,
+                            ),
+                          ],
+                        ),
+                        getAllFormElements(),
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        getButtonComponent(),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                      ],
+                    ),
+                  )),)
+        
+        
+        
+        
+        
+        
+        
+        /*)FutureBuilder(
+                future: FirebaseUtils.instance.getEggPrices(),
                 builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if(snapshot.connectionState == ConnectionState.active) {
                     if(snapshot.hasData) {
@@ -168,59 +228,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                         );
                   }
                 },
-              ),
-        
-        
-        /*showProgress ?
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      child: Center(
-                        child: showProgress
-                            ? const CircularProgressIndicator()
-                            : const SizedBox(),
-                      ),
-                    ),
-                  ],
-                ) : SafeArea(
-          top: false,
-          child: SingleChildScrollView(
-            child: Container(
-                margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
-                child: Form(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Column(
-                        children: [
-                          Text(
-                            "Por favor, revise los datos que hay a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
-                            textAlign: TextAlign.center,),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            "Recuerde que una vez haya concluido el pedido, no se podrá modificar ni cancelar, salvo con causa justificada llamándonos directamente.",
-                            textAlign: TextAlign.center,),
-                          SizedBox(
-                            height: 32,
-                          ),
-                        ],
-                      ),
-                      getAllFormElements(),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      getButtonComponent(),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                    ],
-                  ),
-                )),
-          ),
-        )*/);
+              ),*/));
   }
 
   Widget getAllFormElements() {
@@ -404,7 +412,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
             ),
             Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text(valuesMap["${item.toLowerCase()}_dozen"].toString() + " €")),
+              child: Text("${valuesMap["${item.toLowerCase()}_dozen"]} €")),
           ],
         )
       );
@@ -432,7 +440,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
             ),
             Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text(valuesMap["${item.toLowerCase()}_dozen"].toString() + " €")),
+              child: Text("${valuesMap["${item.toLowerCase()}_box"]} €")),
           ]
         )
       );
@@ -476,6 +484,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
           });
           if (checkFields()) {
             int newId = await FirebaseUtils.instance.getNewOrderId(clientModel.doocumentId);
+            DBOrderFieldData dbOrderFieldData = getOrderStructure();
+            double totalPrice = getTotalPrice(dbOrderFieldData);
               OrderModel orderModel = OrderModel(
                 datePickerTimestamp!, 
                 clientModel.id,
@@ -487,13 +497,13 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 null, 
                 null,
                 null, 
-                getOrderStructure().toMap(), 
+                dbOrderFieldData.toMap(), 
                 Timestamp.now(), 
                 newId, 
                 false, 
                 Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
                 1, 
-                null);
+                totalPrice);
                 bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
                 if (conf) {
                   if (context.mounted) {
@@ -716,22 +726,52 @@ class _NewOrderPageState extends State<NewOrderPage> {
     }
 
     return DBOrderFieldData(
-      null,
+      xlBox == 0 ? null : productPrices.xlBox!.toDouble(),
       xlBox,
-      null,
+      xlDozen == 0 ? null : productPrices.xlDozen!.toDouble(),
       xlDozen,
-      null,
+      lBox == 0 ? null : productPrices.lBox!.toDouble(),
       lBox,
-      null,
+      lDozen == 0 ? null : productPrices.lDozen!.toDouble(),
       lDozen,
-      null,
+      mBox == 0 ? null : productPrices.mBox!.toDouble(),
       mBox,
-      null,
+      mDozen == 0 ? null : productPrices.mDozen!.toDouble(),
       mDozen,
-      null,
+      sBox == 0 ? null : productPrices.sBox!.toDouble(),
       sBox,
-      null,
+      sDozen == 0 ? null : productPrices.sDozen!.toDouble(),
       sDozen,
     );
+  }
+
+  double getTotalPrice(DBOrderFieldData dbOrderFieldData) {
+    double totalPrice = 0.0;
+
+    if (dbOrderFieldData.xlBoxQuantity != null && dbOrderFieldData.xlBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.xlBoxQuantity as int) * (dbOrderFieldData.xlBoxPrice!.toDouble());
+    }
+    if (dbOrderFieldData.xlDozenQuantity != null && dbOrderFieldData.xlDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.xlDozenQuantity as int) * (dbOrderFieldData.xlDozenQuantity!.toDouble());
+    }
+    if (dbOrderFieldData.lBoxQuantity != null && dbOrderFieldData.lBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.lBoxQuantity as int) * (dbOrderFieldData.lBoxPrice!.toDouble());
+    }
+    if (dbOrderFieldData.lDozenQuantity != null && dbOrderFieldData.lDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.lDozenQuantity as int) * (dbOrderFieldData.lDozenQuantity!.toDouble());
+    }
+    if (dbOrderFieldData.mBoxQuantity != null && dbOrderFieldData.mBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.mBoxQuantity as int) * (dbOrderFieldData.mBoxPrice!.toDouble());
+    }
+    if (dbOrderFieldData.mDozenQuantity != null && dbOrderFieldData.mDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.mDozenQuantity as int) * (dbOrderFieldData.mDozenQuantity!.toDouble());
+    }
+    if (dbOrderFieldData.sBoxQuantity != null && dbOrderFieldData.sBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.sBoxQuantity as int) * (dbOrderFieldData.sBoxPrice!.toDouble());
+    }
+    if (dbOrderFieldData.sDozenQuantity != null && dbOrderFieldData.sDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.sDozenQuantity as int) * (dbOrderFieldData.sDozenQuantity!.toDouble());
+    }
+    return totalPrice;
   }
 }

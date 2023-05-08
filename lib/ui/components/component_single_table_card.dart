@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
+import 'package:hueveria_nieto_clientes/firebase/firebase_utils.dart';
 import 'package:hueveria_nieto_clientes/ui/views/billing_page.dart';
 import 'package:hueveria_nieto_clientes/ui/views/my_orders_page.dart';
 import 'package:hueveria_nieto_clientes/ui/views/my_profile.dart';
@@ -68,7 +69,7 @@ class SingleTableCard extends StatelessWidget {
                           ),
                         )
                       ])),
-              onTap: () {
+              onTap: () async {
                 if (homeMenuOption == HomeMenuOptions.myProfile) {
                   Navigator.push(
                     context,
@@ -91,18 +92,23 @@ class SingleTableCard extends StatelessWidget {
                     ));
                 }
                 if (homeMenuOption == HomeMenuOptions.newOrder) {
+
+                  var future = await FirebaseUtils.instance.getEggPrices();
+                  Map<String, dynamic> valuesMap = future.docs[0].data()["values"];
+                  if (context.mounted){
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NewOrderPage(clientModel),
-                    ));
+                      builder: (context) => NewOrderPage(clientModel, valuesMap),
+                    ));}
                 }
                 if (homeMenuOption == HomeMenuOptions.settings) {
+                  if(context.mounted){
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SettingsPage(clientModel),
-                    ));
+                    ));}
                 }
               },
             )),
