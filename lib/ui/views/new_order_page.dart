@@ -4,6 +4,7 @@ import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/firebase/firebase_utils.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
 import 'package:hueveria_nieto_clientes/model/db_order_field_data.dart';
+import 'package:hueveria_nieto_clientes/model/egg_prices_data.dart';
 import 'package:hueveria_nieto_clientes/model/order_model.dart';
 import 'package:hueveria_nieto_clientes/ui/components/component_dropdown.dart';
 import 'package:hueveria_nieto_clientes/ui/views/my_orders_page.dart';
@@ -34,15 +35,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
   late ClientModel clientModel;
   bool showProgress = false;
 
-  int step = 1;
-
   @override
   void initState() {
     super.initState();
     clientModel = widget.clientModel;
     dateController.text = dateFormat.format(minDate);
     datePickerTimestamp = Timestamp.fromDate(minDate);
-    step = 1;
   }
 
   TextEditingController dateController = TextEditingController();
@@ -51,6 +49,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
   // TODO: Esto se tiene que sacar de las constantes
   List<String> productClasses = ["XL", "L", "M", "S"];
   Map<String, int> productQuantities = {}; 
+  EggPricesData? productPrices;
+  Map<String, dynamic> valuesMap = {};
 
   late String direction;
   String? paymentMethod;
@@ -86,13 +86,97 @@ class _NewOrderPageState extends State<NewOrderPage> {
               style: TextStyle(
                   color: AppTheme.primary, fontSize: 24.0),
             )),
-        body: showProgress ?
+        body: StreamBuilder(
+                stream: FirebaseUtils.instance.getEggPrices(),
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if(snapshot.connectionState == ConnectionState.active) {
+                    if(snapshot.hasData) {
+                      final QuerySnapshot data = snapshot.data;
+                      if (data.docs.isNotEmpty) {
+                        valuesMap = data.docs[0]["values"];
+                        productPrices = EggPricesData(
+                          valuesMap["xl_box"], 
+                          valuesMap["xl_dozen"], 
+                          valuesMap["l_box"], 
+                          valuesMap["l_dozen"], 
+                          valuesMap["m_box"], 
+                          valuesMap["m_dozen"], 
+                          valuesMap["s_box"], 
+                          valuesMap["s_dozen"], 
+                        );
+                        return showProgress ?
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        child: Center(
+                          child: showProgress
+                              ? const CircularProgressIndicator()
+                              : const SizedBox(),
+                        ),
+                      ),
+                    ],
+                  ) : SafeArea(
+                      top: false,
+                      child: SingleChildScrollView(
+              child: Container(
+                  margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+                  child: Form(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Column(
+                          children: [
+                            Text(
+                              "Por favor, revise los datos que hay a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
+                              textAlign: TextAlign.center,),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              "Recuerde que una vez haya concluido el pedido, no se podrá modificar ni cancelar, salvo con causa justificada llamándonos directamente.",
+                              textAlign: TextAlign.center,),
+                            SizedBox(
+                              height: 32,
+                            ),
+                          ],
+                        ),
+                        getAllFormElements(),
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        getButtonComponent(),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                      ],
+                    ),
+                  )),
+                      ),
+                    );
+                      } else {
+                        return  Text("Ha habido un problema",
+                        );
+                      }
+                    } else {
+                        return Text("Ha habido un problema",
+                        );
+                    }
+                  } else {
+                    return CircularProgressIndicator(
+                              color: CustomColors.redPrimaryColor,
+                        );
+                  }
+                },
+              ),
+        
+        
+        /*showProgress ?
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
                       child: Center(
-                        // use ternary operator to decide when to show progress indicator
                         child: showProgress
                             ? const CircularProgressIndicator()
                             : const SizedBox(),
@@ -108,7 +192,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      step == 2 ? const Column(
+                      const Column(
                         children: [
                           Text(
                             "Por favor, revise los datos que hay a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
@@ -123,7 +207,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                             height: 32,
                           ),
                         ],
-                      ) : const SizedBox(),
+                      ),
                       getAllFormElements(),
                       const SizedBox(
                         height: 32,
@@ -136,7 +220,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   ),
                 )),
           ),
-        ));
+        )*/);
   }
 
   Widget getAllFormElements() {
@@ -149,15 +233,18 @@ class _NewOrderPageState extends State<NewOrderPage> {
             direction = value;
           }, null),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow()),
-        // TODO: Esto no se inhabilita en el segundo paso
+        getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
+            columnWidhts: {
+              0: const IntrinsicColumnWidth(),
+              2: const IntrinsicColumnWidth()
+            }),
         getCompanyComponentSimpleForm('Método de pago', null, TextInputType.text, 
-          null, step == 1 ? true : false, step == 1 ? false : true, false,
+          null, true, false, false,
           (value) => {
             paymentMethod = value!,
           }, null),
         getCompanyComponentSimpleForm('Fecha de entrega', null, TextInputType.text, 
-          null, step == 1 ? true : false, true, true, null,
+          null, true, true, true, null,
           () async {
             // TODO: Cambiar el color
             DateTime? pickedDate = await showDatePicker(
@@ -289,6 +376,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
               child: Text(item),
               margin: const EdgeInsets.only(left: 12, right: 16),
             ),
+            Container(),
             Container()
           ]
         )
@@ -311,9 +399,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   String key = "${item.toLowerCase()}_dozen";
                   productQuantities[key] = int.parse(value);
                 },
-                isEnabled: step == 1 ? true : false,
+                isEnabled: true,
               ),
             ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text(valuesMap["${item.toLowerCase()}_dozen"].toString() + " €")),
           ],
         )
       );
@@ -336,9 +427,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   String key = "${item.toLowerCase()}_box";
                   productQuantities[key] = int.parse(value);
                 },
-                isEnabled: step == 1 ? true : false,
+                isEnabled: true,
               ),
             ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text(valuesMap["${item.toLowerCase()}_dozen"].toString() + " €")),
           ]
         )
       );
@@ -376,12 +470,74 @@ class _NewOrderPageState extends State<NewOrderPage> {
   Widget getButtonComponent() {
     return Column(children: [
       HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-        step == 1 ? "GUARDAR" : "CONFIRMAR", null, null, () async { 
+        "CONFIRMAR", null, null, () async { 
           setState(() {
             showProgress = true;
           });
           if (checkFields()) {
-            if (step == 1) {
+            int newId = await FirebaseUtils.instance.getNewOrderId(clientModel.doocumentId);
+              OrderModel orderModel = OrderModel(
+                datePickerTimestamp!, 
+                clientModel.id,
+                clientModel.company,
+                "client_${clientModel.id}", 
+                null, 
+                null, 
+                null, 
+                null, 
+                null,
+                null, 
+                getOrderStructure().toMap(), 
+                Timestamp.now(), 
+                newId, 
+                false, 
+                Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
+                1, 
+                null);
+                bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
+                if (conf) {
+                  if (context.mounted) {
+                    showDialog(
+                      context: context, 
+                      builder: (_) => AlertDialog(
+                        title: const Text("Pedido realizado"),
+                        content: const Text("Su pedido se ha realizado correctamente"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(this.context).pop();
+                    Navigator.pop(context);
+                    // TODO: Cambiar esto - ahora debería ir a ver todos los pedidos, con un flag que indique que tiene que mostrar el popup
+                    Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => MyOrdersPage(clientModel, true)));
+                            }, 
+                            child: const Text("De acuerdo")
+                          )
+                        ],
+                      ));
+                  }
+                } else {
+                  if (context.mounted) {
+                    showDialog(
+                      context: context, 
+                      builder: (_) => AlertDialog(
+                        title: const Text('Se ha producido un error'),
+                        content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('De acuerdo'),
+                            onPressed: () async {
+                              dispose();
+                            },
+                          ),
+                        ],
+                      )
+                    );
+                  }
+                }
+
+
+            /*if (step == 1) {
               showDialog(
                 context: context, 
                 builder: (_) => AlertDialog(
@@ -424,7 +580,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 newId, 
                 false, 
                 Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
-                0, 
+                1, 
                 null);
                 bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
                 if (conf) {
@@ -467,7 +623,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                     );
                   }
                 }
-            }
+            }*/
           } else {
             showDialog(
                 context: context, 
@@ -489,16 +645,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
           });
         }, () { }
       ),
-      step == 2 ? Column(
-        children: [
-          const SizedBox(
-            height: 8,
-          ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-            "Modificar datos", null, null, () { }, () { }),
-        ],
-      ) : const SizedBox()
-      
     ],);
   }
 
@@ -527,16 +673,25 @@ class _NewOrderPageState extends State<NewOrderPage> {
 
   DBOrderFieldData getOrderStructure() {
     int xlBox = 0;
+    int xlBoxPrice = 0;
     int xlDozen = 0;
+    int xlDozenPrice = 0;
     int lBox = 0;
+    int lBoxPrice = 0;
     int lDozen = 0;
+    int lDozenPrice = 0;
     int mBox = 0;
+    int mBoxPrice = 0;
     int mDozen = 0;
+    int mDozenPrice = 0;
     int sBox = 0;
+    int sBoxPrice = 0;
     int sDozen = 0;
+    int sDozenPrice = 0;
 
     if (productQuantities.containsKey("xl_box") && productQuantities['xl_box'] != null){
       xlBox = productQuantities['xl_box']!;
+
     }
     if (productQuantities.containsKey("xl_dozen") && productQuantities['xl_dozen'] != null){
       xlDozen = productQuantities['xl_dozen']!;

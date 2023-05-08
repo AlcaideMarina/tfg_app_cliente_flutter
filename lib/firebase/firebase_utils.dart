@@ -47,6 +47,13 @@ class FirebaseUtils {
         .collection("orders")
         .orderBy("order_datetime", descending: true)
         .snapshots();
-}
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getEggPrices() {
+    return FirebaseFirestore.instance
+        .collection('default_constants')
+        .where('constant_name', isEqualTo: 'egg_prices')
+        .snapshots();
+  }
 
 }
