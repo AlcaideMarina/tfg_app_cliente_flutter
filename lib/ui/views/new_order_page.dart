@@ -479,161 +479,96 @@ class _NewOrderPageState extends State<NewOrderPage> {
     return Column(children: [
       HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
         "CONFIRMAR", null, null, () async { 
-          setState(() {
-            showProgress = true;
-          });
           if (checkFields()) {
             int newId = await FirebaseUtils.instance.getNewOrderId(clientModel.doocumentId);
             DBOrderFieldData dbOrderFieldData = getOrderStructure();
-            double totalPrice = getTotalPrice(dbOrderFieldData);
-              OrderModel orderModel = OrderModel(
-                datePickerTimestamp!, 
-                clientModel.id,
-                clientModel.company,
-                "client_${clientModel.id}", 
-                null, 
-                null, 
-                null, 
-                null, 
-                null,
-                null, 
-                dbOrderFieldData.toMap(), 
-                Timestamp.now(), 
-                newId, 
-                false, 
-                Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
-                1, 
-                totalPrice);
-                bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
-                if (conf) {
-                  if (context.mounted) {
-                    showDialog(
-                      context: context, 
-                      builder: (_) => AlertDialog(
-                        title: const Text("Pedido realizado"),
-                        content: const Text("Su pedido se ha realizado correctamente"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(this.context).pop();
-                    Navigator.pop(context);
-                    // TODO: Cambiar esto - ahora debería ir a ver todos los pedidos, con un flag que indique que tiene que mostrar el popup
-                    Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => MyOrdersPage(clientModel, true)));
-                            }, 
-                            child: const Text("De acuerdo")
-                          )
-                        ],
-                      ));
-                  }
-                } else {
-                  if (context.mounted) {
-                    showDialog(
-                      context: context, 
-                      builder: (_) => AlertDialog(
-                        title: const Text('Se ha producido un error'),
-                        content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('De acuerdo'),
-                            onPressed: () async {
-                              dispose();
-                            },
-                          ),
-                        ],
-                      )
-                    );
-                  }
-                }
-
-
-            /*if (step == 1) {
+            double totalPrice = Utils().roundDouble(getTotalPrice(dbOrderFieldData), 2);
+            if (context.mounted) {
               showDialog(
                 context: context, 
                 builder: (_) => AlertDialog(
-                  title: const Text('Aviso'),
-                  content: const Text('Una vez realizado el pedido, no se podrán modificar los datos directamente. Tendrá que llamarnos y solicitar el cambio. ¿Desea continuar o prefiere revisar los datos?'),
+                  title: const Text("Precio final"),
+                  content: Text("El precio total del pedido será de $totalPrice €. ¿Desea continuar?"),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('Revisar'),
                       onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                        // TODO: No se cambia el topbar
+                        Navigator.of(this.context).pop();
+                      }, 
+                      child: const Text("Atrás")
                     ),
                     TextButton(
-                      child: const Text('Continuar'),
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() {
-                          step = 2;
+                          showProgress = true;
                         });
-                        Navigator.of(context).pop();
-                        //Subir scroll
-                      },
+                        // TODO: No se cambia el topbar
+                        Navigator.of(this.context).pop();
+                        OrderModel orderModel = OrderModel(
+                          datePickerTimestamp!, 
+                          clientModel.id,
+                          clientModel.company,
+                          "client_${clientModel.id}", 
+                          null, 
+                          null, 
+                          null, 
+                          null, 
+                          null,
+                          null, 
+                          dbOrderFieldData.toMap(), 
+                          Timestamp.now(), 
+                          newId, 
+                          false, 
+                          Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
+                          1, 
+                          totalPrice);
+                        bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
+                        if (conf) {
+                          if (context.mounted) {
+                            showDialog(
+                              context: context, 
+                              builder: (_) => AlertDialog(
+                                title: const Text("Pedido realizado"),
+                                content: const Text("Su pedido se ha realizado correctamente"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      // TODO: No se cambia el topbar
+                                      Navigator.of(this.context).pop();
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                        context, MaterialPageRoute(builder: (_) => MyOrdersPage(clientModel, true)));
+                                              }, 
+                                              child: const Text("De acuerdo")
+                                            )
+                                          ],
+                                        ));
+                          }
+                        } else {
+                          if (context.mounted) {
+                            showDialog(
+                              context: context, 
+                              builder: (_) => AlertDialog(
+                                title: const Text('Se ha producido un error'),
+                                content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('De acuerdo'),
+                                    onPressed: () async {
+                                      dispose();
+                                    },
+                                  ),
+                                ],
+                              )
+                            );
+                          }
+                        }
+                      }, 
+                      child: const Text("Continuar")
                     )
                   ],
                 ));
-            } else if (step == 2) {
-              int newId = await FirebaseUtils.instance.getNewOrderId(clientModel.doocumentId);
-              OrderModel orderModel = OrderModel(
-                datePickerTimestamp!, 
-                clientModel.id,
-                clientModel.company,
-                "client_${clientModel.id}", 
-                null, 
-                null, 
-                null, 
-                null, 
-                null,
-                null, 
-                getOrderStructure().toMap(), 
-                Timestamp.now(), 
-                newId, 
-                false, 
-                Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
-                1, 
-                null);
-                bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
-                if (conf) {
-                  if (context.mounted) {
-                    showDialog(
-                      context: context, 
-                      builder: (_) => AlertDialog(
-                        title: const Text("Pedido realizado"),
-                        content: const Text("Su pedido se ha realizado correctamente. En un plazo máximo de 24 horas, nos pondremos en contacto con usted para confirmar los datos. ¡Gracias por la confianza!"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(this.context).pop();
-                    Navigator.pop(context);
-                    // TODO: Cambiar esto - ahora debería ir a ver todos los pedidos, con un flag que indique que tiene que mostrar el popup
-                    Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => MyOrdersPage(clientModel, true)));
-                            }, 
-                            child: const Text("De acuerdo")
-                          )
-                        ],
-                      ));
-                  }
-                } else {
-                  if (context.mounted) {
-                    showDialog(
-                      context: context, 
-                      builder: (_) => AlertDialog(
-                        title: const Text('Se ha producido un error'),
-                        content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('De acuerdo'),
-                            onPressed: () async {
-                              dispose();
-                            },
-                          ),
-                        ],
-                      )
-                    );
-                  }
-                }
-            }*/
+            }
           } else {
             showDialog(
                 context: context, 

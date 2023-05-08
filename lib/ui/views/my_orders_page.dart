@@ -56,7 +56,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
             ),
             toolbarHeight: 56.0,
             title: const Text(
-              'Nuevo pedido',
+              'Mis pedidos',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: 24.0),
             )),
