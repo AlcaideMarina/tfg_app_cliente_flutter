@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
       developer.log('Empieza la función getUserInfo()', name: 'Login');
       ClientModel? currentUser = await getUserInfo();
       developer.log('Función getUserInfo() terminada', name: 'Login');
-      if (currentUser != null) {
+      if (currentUser != null && !currentUser.deleted && currentUser.hasAccount) {
         navigateToMainPage(currentUser);
       } else {
         showDialog(context: context, builder: (_) => AlertDialog(
