@@ -243,12 +243,12 @@ class _BillingPageState extends State<BillingPage> {
 
       if (orderBillingDataListAux.last == item) {
         BillingData billingData = BillingData(
-          paymentByCash, 
-          paymentByReceipt, 
-          paymentByTransfer, 
-          paid, 
-          toBePaid, 
-          totalPrice
+          double.parse((paymentByCash).toStringAsFixed(2)), 
+          double.parse((paymentByReceipt).toStringAsFixed(2)), 
+          double.parse((paymentByTransfer).toStringAsFixed(2)), 
+          double.parse((paid).toStringAsFixed(2)), 
+          double.parse((toBePaid).toStringAsFixed(2)), 
+          double.parse((totalPrice).toStringAsFixed(2))
         );
         BillingContainerData billingContainerData = BillingContainerData(
           initDateTimestamp,
