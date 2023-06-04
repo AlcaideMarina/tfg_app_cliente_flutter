@@ -179,7 +179,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[0].keys.first,
+              initialValue: clientModel.phone[0].values.first.toString(),
               isEnabled: false,
             )),
         HNComponentCellTableForm(
@@ -189,7 +189,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[0].values.first.toString(),
+              initialValue: clientModel.phone[0].keys.first,
               isEnabled: false,
             )),
       ]),
