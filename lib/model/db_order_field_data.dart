@@ -90,43 +90,43 @@ class DBOrderFieldData{
 
     if (json.containsKey("xl_box")) {
       Map<String, dynamic> aux = json["xl_box"]!;
-      if (aux.containsKey("quantity")) xlBoxQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) xlBoxPriceMap = aux["price"];
+      if (aux.containsKey("quantity")) xlBoxQuantityMap = aux["quantity"].toInt();
+      if (aux.containsKey("price")) xlBoxPriceMap = aux["price"].toDouble();
     }
     if (json.containsKey("xl_dozen")) {
       Map<String, dynamic> aux = json["xl_dozen"]!;
-      if (aux.containsKey("quantity")) xlDozenQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) xlDozenPriceMap = aux["price"];
+      if (aux.containsKey("quantity")) xlDozenQuantityMap = aux["quantity"].toInt();
+      if (aux.containsKey("price")) xlDozenPriceMap = aux["price"].toDouble();
     }
     if (json.containsKey("l_box")) {
       Map<String, dynamic> aux = json["l_box"]!;
-      if (aux.containsKey("quantity")) lBoxQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) lBoxPriceMap = aux["price"];
+      if (aux.containsKey("quantity")) lBoxQuantityMap = aux["quantity"].toInt();
+      if (aux.containsKey("price")) lBoxPriceMap = aux["price"].toDouble();
     }
     if (json.containsKey("l_dozen")) {
       Map<String, dynamic> aux = json["l_dozen"]!;
-      if (aux.containsKey("quantity")) lDozenQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) lDozenPriceMap = aux["price"];
+      if (aux.containsKey("quantity")) lDozenQuantityMap = aux["quantity"].toInt();
+      if (aux.containsKey("price")) lDozenPriceMap = aux["price"].toDouble();
     }
     if (json.containsKey("m_box")) {
       Map<String, dynamic> aux = json["m_box"]!;
-      if (aux.containsKey("quantity")) mBoxQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) mBoxPriceMap = aux["price"];
+      if (aux.containsKey("quantity")) mBoxQuantityMap = aux["quantity"].toInt();
+      if (aux.containsKey("price")) mBoxPriceMap = aux["price"].toDouble();
     }
     if (json.containsKey("m_dozen")) {
       Map<String, dynamic> aux = json["m_dozen"]!;
-      if (aux.containsKey("quantity")) mDozenQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) mDozenPriceMap = aux["price"];
+      if (aux.containsKey("quantity")) mDozenQuantityMap = aux["quantity"].toInt();
+      if (aux.containsKey("price")) mDozenPriceMap = aux["price"].toDouble();
     }
     if (json.containsKey("s_box")) {
       Map<String, dynamic> aux = json["s_box"]!;
-      if (aux.containsKey("quantity")) sBoxQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) sBoxPriceMap = aux["price"];
+      if (aux.containsKey("quantity")) sBoxQuantityMap = aux["quantity"].toInt();
+      if (aux.containsKey("price")) sBoxPriceMap = aux["price"].toDouble();
     }
     if (json.containsKey("s_dozen")) {
       Map<String, dynamic> aux = json["s_dozen"]!;
-      if (aux.containsKey("quantity")) sDozenQuantityMap = aux["quantity"];
-      if (aux.containsKey("price")) sDozenPriceMap = aux["price"];
+      if (aux.containsKey("quantity")) sDozenQuantityMap = aux["quantity"].toInt();
+      if (aux.containsKey("price")) sDozenPriceMap = aux["price"].toDouble();
     }
 
     return DBOrderFieldData(
