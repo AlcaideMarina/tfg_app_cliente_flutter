@@ -111,22 +111,26 @@ class _LoginPageState extends State<LoginPage> {
   Future<ClientModel?>? getUserInfo() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseUtils.instance.getUserFromUid(uid!);
-    
-    String id = querySnapshot.docs[0].id;
-    DocumentSnapshot document =
-        await FirebaseFirestore.instance.collection('client_info').doc(id).get();
+    // TODO: Comprobar que sea un cliente
+    if (querySnapshot.docs.isNotEmpty) {
+      String id = querySnapshot.docs[0].id;
+      DocumentSnapshot document =
+          await FirebaseFirestore.instance.collection('client_info').doc(id).get();
 
-    if (document.exists) {
-      final Map<String, dynamic>? userInfo = document.data() as Map<String, dynamic>?;
-      if (userInfo != null) {
-        userInfo['document_id'] = document.id;
-        return ClientModel.fromMap(userInfo);
+      if (document.exists) {
+        final Map<String, dynamic>? userInfo = document.data() as Map<String, dynamic>?;
+        if (userInfo != null) {
+          userInfo['document_id'] = document.id;
+          return ClientModel.fromMap(userInfo);
+        } else {
+          return null;
+        }
       } else {
-        return null;
-      }
+          return null;
+        }
     } else {
-        return null;
-      }
+      return null;
+    }
   }
 
   Future signIn() async {
@@ -150,9 +154,10 @@ class _LoginPageState extends State<LoginPage> {
       if (currentUser != null) {
         navigateToMainPage(currentUser);
       } else {
-        showDialog(context: context, builder: (_) => AlertDialog(
-          title: const Text('Vaya...'),
-          content: const Text('Parece que ha habido un problema. Inténtalo de nuevo más tarde.'),
+        
+      showDialog(context: context, builder: (_) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('El usuario y/o contraseña no son correctas. Por favor, revise los datos e inténtelo de nuevo.'),
           actions: <Widget>[
             TextButton(
               child: const Text('De acuerdo.'),
