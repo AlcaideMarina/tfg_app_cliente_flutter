@@ -19,7 +19,7 @@ class AppTheme {
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(primary)
       )
-    )
+    ),
   );
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(

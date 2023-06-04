@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
@@ -6,6 +7,7 @@ import 'package:hueveria_nieto_clientes/values/constants.dart';
 import '../../custom/app_theme.dart';
 import '../../values/strings_translation.dart';
 import '../components/component_single_table_card.dart';
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.clientModel, {Key? key}) : super(key: key);
@@ -45,7 +47,37 @@ class _HomePageState extends State<HomePage> {
             color: AppTheme.primary,
             fontSize: 24.0
           ),
-        )
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.power_settings_new_outlined),
+            color: CustomColors.redPrimaryColor,
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: const Text('Aviso'),
+                  content: Text("Está seguro de que quiere cerrar sesión"),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Cancelar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text('Continuar'),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        await FirebaseAuth.instance.signOut();
+                        navegateToLogin();
+                      },
+                    )
+                  ],
+                ));
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -106,4 +138,12 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  navegateToLogin() {
+    Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(
+        builder: ((context) => const LoginPage())));
+  }
+
 }
