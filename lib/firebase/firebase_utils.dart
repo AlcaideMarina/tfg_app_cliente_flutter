@@ -41,6 +41,13 @@ class FirebaseUtils {
         .catchError((error) => false);
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getEggPrices() async {
+    return FirebaseFirestore.instance
+        .collection('default_constants')
+        .where('constant_name', isEqualTo: 'egg_prices')
+        .get();
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getOrders(String documentId) {
     return FirebaseFirestore.instance
         .collection('client_info')

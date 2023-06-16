@@ -55,3 +55,6 @@ Map<String, String> monthInSpanish = {
   "11": "Noviembre",
   "12": "Diciembre",
 };
+
+
+List<String> productClasses = ["XL", "L", "M", "S"];
