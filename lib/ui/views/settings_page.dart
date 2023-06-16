@@ -3,6 +3,7 @@ import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 
 import '../../custom/app_theme.dart';
 import '../../model/client_model.dart';
+import 'change_password_page.dart';
 
 class SettingsPage extends StatefulWidget {
 
@@ -95,7 +96,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ListTile(
                     title: Text('Cambiar contraseña', style: TextStyle(fontSize: 15),), 
                     dense: true, 
-                    onTap: () {},
+                    onTap: () {
+                      navigateToChangePassword();
+                    },
                   ),
                   const Divider(),
                   ListTile(
@@ -108,5 +111,12 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
               
     ));
+  }
+
+  navigateToChangePassword() {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: ((context) => ChangePasswordPage(clientModel))));
   }
 }
