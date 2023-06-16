@@ -1,24 +1,23 @@
-import 'dart:convert';
 
 class DBOrderFieldData{
-  final double? xlBoxPrice;
-  final int? xlBoxQuantity;
-  final double? xlDozenPrice;
-  final int? xlDozenQuantity;
-  final double? lBoxPrice;
-  final int? lBoxQuantity;
-  final double? lDozenPrice;
-  final int? lDozenQuantity;
-  final double? mBoxPrice;
-  final int? mBoxQuantity;
-  final double? mDozenPrice;
-  final int? mDozenQuantity;
-  final double? sBoxPrice;
-  final int? sBoxQuantity;
-  final double? sDozenPrice;
-  final int? sDozenQuantity;
+  double? xlBoxPrice;
+  int? xlBoxQuantity;
+  double? xlDozenPrice;
+  int? xlDozenQuantity;
+  double? lBoxPrice;
+  int? lBoxQuantity;
+  double? lDozenPrice;
+  int? lDozenQuantity;
+  double? mBoxPrice;
+  int? mBoxQuantity;
+  double? mDozenPrice;
+  int? mDozenQuantity;
+  double? sBoxPrice;
+  int? sBoxQuantity;
+  double? sDozenPrice;
+  int? sDozenQuantity;
 
-  DBOrderFieldData(
+  DBOrderFieldData({
     this.xlBoxPrice, 
     this.xlBoxQuantity, 
     this.xlDozenPrice, 
@@ -35,6 +34,7 @@ class DBOrderFieldData{
     this.sBoxQuantity, 
     this.sDozenPrice, 
     this.sDozenQuantity
+    }
   );
 
   Map<String, Map<String, num?>> toMap() {
@@ -130,22 +130,22 @@ class DBOrderFieldData{
     }
 
     return DBOrderFieldData(
-      xlBoxPriceMap,
-      xlBoxQuantityMap,
-      xlDozenPriceMap,
-      xlDozenQuantityMap,
-      lBoxPriceMap,
-      lBoxQuantityMap,
-      lDozenPriceMap,
-      lDozenQuantityMap,
-      mBoxPriceMap,
-      mBoxQuantityMap,
-      mDozenPriceMap,
-      mDozenQuantityMap,
-      sBoxPriceMap,
-      sBoxQuantityMap,
-      sDozenPriceMap,
-      sDozenQuantityMap,
+      xlBoxPrice: xlBoxPriceMap,
+      xlBoxQuantity: xlBoxQuantityMap,
+      xlDozenPrice: xlDozenPriceMap,
+      xlDozenQuantity: xlDozenQuantityMap,
+      lBoxPrice: lBoxPriceMap,
+      lBoxQuantity: lBoxQuantityMap,
+      lDozenPrice: lDozenPriceMap,
+      lDozenQuantity: lDozenQuantityMap,
+      mBoxPrice: mBoxPriceMap,
+      mBoxQuantity: mBoxQuantityMap,
+      mDozenPrice: mDozenPriceMap,
+      mDozenQuantity: mDozenQuantityMap,
+      sBoxPrice: sBoxPriceMap,
+      sBoxQuantity: sBoxQuantityMap,
+      sDozenPrice: sDozenPriceMap,
+      sDozenQuantity: sDozenQuantityMap,
     );
   }
   

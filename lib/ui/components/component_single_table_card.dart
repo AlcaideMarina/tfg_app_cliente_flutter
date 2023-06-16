@@ -11,6 +11,7 @@ import 'package:hueveria_nieto_clientes/ui/views/new_order_page.dart';
 import 'package:hueveria_nieto_clientes/ui/views/settings_page.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart';
 
+import '../../firebase/firebase_utils.dart';
 import '../../model/client_model.dart';
 import '../../values/image_routes.dart';
 
@@ -68,7 +69,7 @@ class SingleTableCard extends StatelessWidget {
                           ),
                         )
                       ])),
-              onTap: () {
+              onTap: () async {
                 if (homeMenuOption == HomeMenuOptions.myProfile) {
                   Navigator.push(
                     context,
@@ -91,10 +92,14 @@ class SingleTableCard extends StatelessWidget {
                     ));
                 }
                 if (homeMenuOption == HomeMenuOptions.newOrder) {
+    
+                  var futureEggPrices = await FirebaseUtils.instance.getEggPrices();
+                  Map<String, dynamic> valuesMap = futureEggPrices.docs[0].data()["values"];
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NewOrderPage(clientModel),
+                      builder: (context) => NewOrderPage(clientModel, valuesMap),
                     ));
                 }
                 if (homeMenuOption == HomeMenuOptions.settings) {

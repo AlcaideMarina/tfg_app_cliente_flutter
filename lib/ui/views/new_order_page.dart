@@ -12,6 +12,7 @@ import 'package:hueveria_nieto_clientes/values/utils.dart';
 import 'package:intl/intl.dart';
 
 import '../../custom/app_theme.dart';
+import '../../model/egg_prices_data.dart';
 import '../components/component_cell_table_form.dart';
 import '../components/component_simple_form.dart';
 import '../components/component_table_form.dart';
@@ -21,9 +22,10 @@ import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
 
 
 class NewOrderPage extends StatefulWidget {
-  const NewOrderPage(this.clientModel, {Key? key}) : super(key: key);
+  const NewOrderPage(this.clientModel, this.eggPricesMap, {Key? key}) : super(key: key);
 
   final ClientModel clientModel;
+  final Map<String, dynamic> eggPricesMap;
 
   @override
   State<NewOrderPage> createState() => _NewOrderPageState();
@@ -32,6 +34,8 @@ class NewOrderPage extends StatefulWidget {
 // TODO: Faltan todas las validaciones
 class _NewOrderPageState extends State<NewOrderPage> {
   late ClientModel clientModel;
+  late Map<String, dynamic> valuesMap;
+  late EggPricesData productPrices;
   bool showProgress = false;
 
   int step = 1;
@@ -40,6 +44,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
   void initState() {
     super.initState();
     clientModel = widget.clientModel;
+    valuesMap = widget.eggPricesMap;
+    productPrices = EggPricesData(
+      valuesMap['xl_box'], valuesMap['xl_dozen'], valuesMap['l_box'], 
+      valuesMap['l_dozen'], valuesMap['m_box'], valuesMap['m_dozen'], 
+      valuesMap['s_box'], valuesMap['s_dozen']);
+
     dateController.text = dateFormat.format(minDate);
     datePickerTimestamp = Timestamp.fromDate(minDate);
     step = 1;
@@ -149,10 +159,14 @@ class _NewOrderPageState extends State<NewOrderPage> {
             direction = value;
           }, null),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow()),
+        getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
+            columnWidhts: {
+              0: const IntrinsicColumnWidth(),
+              2: const IntrinsicColumnWidth()
+            }),
         // TODO: Esto no se inhabilita en el segundo paso
         getCompanyComponentSimpleForm('Método de pago', null, TextInputType.text, 
-          null, step == 1 ? true : false, step == 1 ? false : true, false,
+          paymentMethod, step == 1 ? true : false, step == 1 ? false : true, false,
           (value) => {
             paymentMethod = value!,
           }, null),
@@ -213,7 +227,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
           ),
         );
     } else {
-      return HNComponentSimpleForm(
+      return step == 1 
+      ? HNComponentSimpleForm(
         '$label:',
         8,
         40,
@@ -222,12 +237,33 @@ class _NewOrderPageState extends State<NewOrderPage> {
         componentDropdown: 
           HNComponentDropdown(
             items,
-            labelText: labelInputText,
+            initialValue: initialValue,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             textInputType: textInputType,
             isEnabled: isEnabled,
             onChange: onChange,
+          ),
+        )
+      : HNComponentSimpleForm(
+        '$label:',
+        8,
+        40,
+        const EdgeInsets.symmetric(horizontal: 16),
+        EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
+        componentTextInput: 
+          HNComponentTextInput(
+            textCapitalization: textCapitalization,
+            labelText: labelInputText,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            textInputType: textInputType,
+            initialValue: initialValue,
+            isEnabled: isEnabled,
+            readOnly: isEnabled,
+            onChange: onChange,
+            onTap: onTap,
+            textEditingController: textEditingController,
           ),
         );
     }
@@ -281,7 +317,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
   List<TableRow> getPricePerUnitTableRow() {
     List<TableRow> list = [];
 
-    for (var item in productClasses) {
+    for (var item in constants.productClasses) {
       list.add(
         TableRow(
           children: [
@@ -289,6 +325,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
               child: Text(item),
               margin: const EdgeInsets.only(left: 12, right: 16),
             ),
+            Container(),
             Container()
           ]
         )
@@ -309,11 +346,14 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 textInputType: const TextInputType.numberWithOptions(),
                 onChange: (value) {
                   String key = "${item.toLowerCase()}_dozen";
-                  productQuantities[key] = int.parse(value);
+                  productQuantities[key] = int.tryParse(value) ?? 0;
                 },
                 isEnabled: step == 1 ? true : false,
               ),
             ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("${valuesMap["${item.toLowerCase()}_dozen"]} €")),
           ],
         )
       );
@@ -332,20 +372,20 @@ class _NewOrderPageState extends State<NewOrderPage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 onChange: (value) {
-                  // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
                   String key = "${item.toLowerCase()}_box";
-                  productQuantities[key] = int.parse(value);
+                  productQuantities[key] = int.tryParse(value) ?? 0;
                 },
                 isEnabled: step == 1 ? true : false,
               ),
             ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("${valuesMap["${item.toLowerCase()}_box"]} €")),
           ]
         )
       );
     }
 
-
-    
     return list;
 
   }
@@ -377,9 +417,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
     return Column(children: [
       HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
         step == 1 ? "GUARDAR" : "CONFIRMAR", null, null, () async { 
-          setState(() {
-            showProgress = true;
-          });
           if (checkFields()) {
             if (step == 1) {
               showDialog(
@@ -407,65 +444,98 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   ],
                 ));
             } else if (step == 2) {
+              FocusManager.instance.primaryFocus?.unfocus();
+              showAlertDialog(context);
+
               int newId = await FirebaseUtils.instance.getNewOrderId(clientModel.doocumentId);
-              OrderModel orderModel = OrderModel(
-                datePickerTimestamp!, 
-                clientModel.id.toString(), 
-                null, 
-                null, 
-                null, 
-                null, 
-                null, 
-                getOrderStructure().toMap(), 
-                Timestamp.now(), 
-                newId, 
-                false, 
-                Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
-                0, 
-                null);
-                bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
-                if (conf) {
-                  if (context.mounted) {
-                    showDialog(
-                      context: context, 
+              DBOrderFieldData dbOrderFieldData = Utils().getOrderStructure(productQuantities, productPrices);
+              double totalPrice = Utils().roundDouble(getTotalPrice(dbOrderFieldData), 2);
+              if (context.mounted) {
+                  Navigator.of(context).pop();
+                  showDialog(
+                      context: context,
                       builder: (_) => AlertDialog(
-                        title: const Text("Pedido realizado"),
-                        content: const Text("Su pedido se ha realizado correctamente. En un plazo máximo de 24 horas, nos pondremos en contacto con usted para confirmar los datos. ¡Gracias por la confianza!"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(this.context).pop();
-                    Navigator.pop(context);
-                    // TODO: Cambiar esto - ahora debería ir a ver todos los pedidos, con un flag que indique que tiene que mostrar el popup
-                    Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => MyOrdersPage(clientModel, true)));
-                            }, 
-                            child: const Text("De acuerdo")
-                          )
-                        ],
-                      ));
-                  }
-                } else {
-                  if (context.mounted) {
-                    showDialog(
-                      context: context, 
-                      builder: (_) => AlertDialog(
-                        title: const Text('Se ha producido un error'),
-                        content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('De acuerdo'),
-                            onPressed: () async {
-                              dispose();
-                            },
-                          ),
-                        ],
-                      )
-                    );
-                  }
-                }
+                            title: const Text('Precio final'),
+                            content: Text(
+                                'El precio total del pedido será de $totalPrice €. ¿Desea continuar?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(this.context).pop();
+                                }, 
+                                child: const Text("Atrás")
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  // TODO: Guardar pedido
+                                  OrderModel orderModel = OrderModel(
+                                    datePickerTimestamp!, 
+                                    clientModel.id.toString(), 
+                                    null, 
+                                    null, 
+                                    null, 
+                                    null, 
+                                    null, 
+                                    dbOrderFieldData.toMap(), 
+                                    Timestamp.now(), 
+                                    newId, 
+                                    false, 
+                                    Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
+                                    0, 
+                                    null);
+                                    bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
+                                    if (conf) {
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                          context: context, 
+                                          builder: (_) => AlertDialog(
+                                            title: const Text("Pedido realizado"),
+                                            content: const Text("Su pedido se ha realizado correctamente. En un plazo máximo de 24 horas, nos pondremos en contacto con usted para confirmar los datos. ¡Gracias por la confianza!"),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(this.context).pop();
+                                        Navigator.pop(context);
+                                        // TODO: Cambiar esto - ahora debería ir a ver todos los pedidos, con un flag que indique que tiene que mostrar el popup
+                                        Navigator.push(
+                                          context, MaterialPageRoute(builder: (_) => MyOrdersPage(clientModel, true)));
+                                                }, 
+                                                child: const Text("De acuerdo")
+                                              )
+                                            ],
+                                          ));
+                                      }
+                                    } else {
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                          context: context, 
+                                          builder: (_) => AlertDialog(
+                                            title: const Text('Se ha producido un error'),
+                                            content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: const Text('De acuerdo'),
+                                                onPressed: () async {
+                                                  dispose();
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        );
+                                      }
+                                    }
+                                }, 
+                                child: const Text("Continuar")
+                              ),
+                            ],
+                          ));
+              }
+              
             }
           } else {
+            Navigator.of(context).pop();
             showDialog(
                 context: context, 
                 builder: (_) => AlertDialog(
@@ -492,7 +562,11 @@ class _NewOrderPageState extends State<NewOrderPage> {
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-            "Modificar datos", null, null, () { }, () { }),
+            "Modificar datos", null, null, () { 
+              setState(() {
+                step = 1;
+              });
+            }, () { }),
         ],
       ) : const SizedBox()
       
@@ -505,6 +579,18 @@ class _NewOrderPageState extends State<NewOrderPage> {
     } else {
       return false;
     }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 
   bool isOrder() {
@@ -522,58 +608,34 @@ class _NewOrderPageState extends State<NewOrderPage> {
     }
   }
 
-  DBOrderFieldData getOrderStructure() {
-    int xlBox = 0;
-    int xlDozen = 0;
-    int lBox = 0;
-    int lDozen = 0;
-    int mBox = 0;
-    int mDozen = 0;
-    int sBox = 0;
-    int sDozen = 0;
+  double getTotalPrice(DBOrderFieldData dbOrderFieldData) {
+    double totalPrice = 0.0;
 
-    if (productQuantities.containsKey("xl_box") && productQuantities['xl_box'] != null){
-      xlBox = productQuantities['xl_box']!;
+    if (dbOrderFieldData.xlBoxQuantity != null && dbOrderFieldData.xlBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.xlBoxQuantity as int) * (dbOrderFieldData.xlBoxPrice!.toDouble());
     }
-    if (productQuantities.containsKey("xl_dozen") && productQuantities['xl_dozen'] != null){
-      xlDozen = productQuantities['xl_dozen']!;
+    if (dbOrderFieldData.xlDozenQuantity != null && dbOrderFieldData.xlDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.xlDozenQuantity as int) * (dbOrderFieldData.xlDozenQuantity!.toDouble());
     }
-    if (productQuantities.containsKey("l_box") && productQuantities['l_box'] != null){
-      lBox = productQuantities['l_box']!;
+    if (dbOrderFieldData.lBoxQuantity != null && dbOrderFieldData.lBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.lBoxQuantity as int) * (dbOrderFieldData.lBoxPrice!.toDouble());
     }
-    if (productQuantities.containsKey("l_dozen") && productQuantities['l_dozen'] != null){
-      lDozen = productQuantities['l_dozen']!;
+    if (dbOrderFieldData.lDozenQuantity != null && dbOrderFieldData.lDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.lDozenQuantity as int) * (dbOrderFieldData.lDozenQuantity!.toDouble());
     }
-    if (productQuantities.containsKey("m_box") && productQuantities['m_box'] != null){
-      mBox = productQuantities['m_box']!;
+    if (dbOrderFieldData.mBoxQuantity != null && dbOrderFieldData.mBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.mBoxQuantity as int) * (dbOrderFieldData.mBoxPrice!.toDouble());
     }
-    if (productQuantities.containsKey("m_dozen") && productQuantities['m_dozen'] != null){
-      mDozen = productQuantities['m_dozen']!;
+    if (dbOrderFieldData.mDozenQuantity != null && dbOrderFieldData.mDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.mDozenQuantity as int) * (dbOrderFieldData.mDozenQuantity!.toDouble());
     }
-    if (productQuantities.containsKey("s_box") && productQuantities['s_box'] != null){
-      sBox = productQuantities['s_box']!;
+    if (dbOrderFieldData.sBoxQuantity != null && dbOrderFieldData.sBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.sBoxQuantity as int) * (dbOrderFieldData.sBoxPrice!.toDouble());
     }
-    if (productQuantities.containsKey("s_dozen") && productQuantities['s_dozen'] != null){
-      sDozen = productQuantities['s_dozen']!;
+    if (dbOrderFieldData.sDozenQuantity != null && dbOrderFieldData.sDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.sDozenQuantity as int) * (dbOrderFieldData.sDozenQuantity!.toDouble());
     }
-
-    return DBOrderFieldData(
-      null,
-      xlBox,
-      null,
-      xlDozen,
-      null,
-      lBox,
-      null,
-      lDozen,
-      null,
-      mBox,
-      null,
-      mDozen,
-      null,
-      sBox,
-      null,
-      sDozen,
-    );
+    return totalPrice;
   }
+
 }
