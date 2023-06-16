@@ -468,6 +468,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
                               TextButton(
                                 onPressed: () async {
                                   // TODO: Guardar pedido
+                                  Navigator.of(this.context).pop();
+                                  showAlertDialog(context);
+                                  
                                   OrderModel orderModel = OrderModel(
                                     datePickerTimestamp!, 
                                     clientModel.id.toString(), 
