@@ -143,7 +143,7 @@ class _BillingPageState extends State<BillingPage> {
 
     for (var item in list) {
       if (item != null && item.data() != null) {
-        final OrderModel order = OrderModel.fromMap(item.data() as Map<String, dynamic>);
+        final OrderModel order = OrderModel.fromMap(item.data() as Map<String, dynamic>, item.id);
         orderBillingModelList.add(
           OrderBillingData(
             order.orderId, 

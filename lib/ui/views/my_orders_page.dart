@@ -79,7 +79,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                 itemBuilder: (context, i) {
                                   final OrderModel order =
                                       OrderModel.fromMap(orderList[i].data()
-                                          as Map<String, dynamic>);
+                                          as Map<String, dynamic>, orderList[i].id);
                                   return Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 32, vertical: 8),

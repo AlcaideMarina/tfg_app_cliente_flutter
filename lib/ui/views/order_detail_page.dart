@@ -85,7 +85,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     String deliveryDatetimeAux;
     if (statusApproxDeliveryDatetimeList.contains(orderModel.status)) {
       String status = Utils().getKey(constants.orderStatus, orderModel.status);
-      deliveryDatetimeAux = "$status - ${dateFormat.format(orderModel.approxDatetime.toDate())}";
+      deliveryDatetimeAux = "$status - ${dateFormat.format(orderModel.approxDeliveryDatetime.toDate())}";
     } else if (orderModel.status == 4) {
       deliveryDatetimeAux = dateFormat.format(orderModel.deliveryDatetime!.toDate());
     } else if (orderModel.status == 5) {
@@ -102,7 +102,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       if (orderModel.deliveryDatetime != null) {
         dt = dateFormat.format(orderModel.deliveryDatetime!.toDate());
       } else {
-        dt = dateFormat.format(orderModel.approxDatetime.toDate());
+        dt = dateFormat.format(orderModel.approxDeliveryDatetime.toDate());
       }
       deliveryDatetimeAux = dt;
     }

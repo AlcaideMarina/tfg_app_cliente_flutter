@@ -461,30 +461,34 @@ class _NewOrderPageState extends State<NewOrderPage> {
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(this.context).pop();
+                                  Navigator.of(context).pop();
                                 }, 
                                 child: const Text("Atrás")
                               ),
                               TextButton(
                                 onPressed: () async {
                                   // TODO: Guardar pedido
-                                  Navigator.of(this.context).pop();
+                                  Navigator.of(context).pop();
                                   showAlertDialog(context);
                                   
                                   OrderModel orderModel = OrderModel(
                                     datePickerTimestamp!, 
-                                    clientModel.id.toString(), 
+                                    clientModel.id,
+                                    clientModel.company, 
+                                    "client_${clientModel.id}", 
                                     null, 
                                     null, 
                                     null, 
                                     null, 
-                                    null, 
+                                    null,
+                                    null,
                                     dbOrderFieldData.toMap(), 
                                     Timestamp.now(), 
                                     newId, 
                                     false, 
                                     Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
                                     0, 
+                                    totalPrice,
                                     null);
                                     bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
                                     if (conf) {
@@ -494,7 +498,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                           context: context, 
                                           builder: (_) => AlertDialog(
                                             title: const Text("Pedido realizado"),
-                                            content: const Text("Su pedido se ha realizado correctamente. En un plazo máximo de 24 horas, nos pondremos en contacto con usted para confirmar los datos. ¡Gracias por la confianza!"),
+                                            content: const Text("Su pedido se ha realizado correctamente."),
                                             actions: <Widget>[
                                               TextButton(
                                                 onPressed: () {
@@ -538,7 +542,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
               
             }
           } else {
-            Navigator.of(context).pop();
             showDialog(
                 context: context, 
                 builder: (_) => AlertDialog(
