@@ -31,7 +31,7 @@ final Map<String, int> paymentMethod = {
 
 final Map<String, int> orderStatus = {
   "Pendiente de precio": 0,
-  "pedido pendiente": 1,
+  "Pedido pendiente": 1,
   "En reparto": 2,
   "Entregado": 3,
   "Intento de entrega": 4,

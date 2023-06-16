@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                     Icons.person_outline_outlined,
                     CustomColors.blackColor,
                     HomeMenuOptions.myProfile,
-                    clientModel.id,
+                    clientModel.id.toString(),
                     SingleTableCardPositions.leftPosition,
                     clientModel
                   ),
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                     Icons.person_outline_outlined,
                     CustomColors.blackColor,
                     HomeMenuOptions.billing,
-                    clientModel.id,
+                    clientModel.id.toString(),
                     SingleTableCardPositions.rightPosition,
                     clientModel
                   )
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                     Icons.person_outline_outlined,
                     CustomColors.blackColor,
                     HomeMenuOptions.myOrders,
-                    clientModel.id,
+                    clientModel.id.toString(),
                     SingleTableCardPositions.leftPosition,
                     clientModel
                   ),
@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                     Icons.person_outline_outlined,
                     CustomColors.blackColor,
                     HomeMenuOptions.newOrder,
-                    clientModel.id,
+                    clientModel.id.toString(),
                     SingleTableCardPositions.rightPosition,
                     clientModel
                   )
@@ -128,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                 Icons.person_outline_outlined,
                 CustomColors.blackColor,
                 HomeMenuOptions.settings,
-                clientModel.id,
+                clientModel.id.toString(),
                 SingleTableCardPositions.centerPosition,
                 clientModel
               ),

@@ -10,7 +10,7 @@ class ClientModel {
   final String direction;
   final String email;
   final bool hasAccount;
-  final String id;
+  final int id;
   final List<Map<String, int>> phone;
   final int postalCode;
   final String province;
