@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/model/billing_data.dart';
+import 'package:hueveria_nieto_clientes/values/utils.dart';
 
 import '../../custom/app_theme.dart';
 
@@ -58,21 +59,21 @@ class _BillingDetailPageState extends State<BillingDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text("Pagos al contado:"),
-                  Text("${billingData.paymentByCash.toString()} €")
+                  Text("${Utils().roundDouble(billingData.paymentByCash, 2).toString()} €")
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text("Pagos por recibo:"),
-                  Text("${billingData.paymentByReceipt.toString()} €")
+                  Text("${Utils().roundDouble(billingData.paymentByReceipt, 2).toString()} €")
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text("Pagos por transferencia:"),
-                  Text("${billingData.paymentByTransfer.toString()} €")
+                  Text("${Utils().roundDouble(billingData.paymentByTransfer, 2).toString()} €")
                 ],
               ),
               const SizedBox(
@@ -82,14 +83,14 @@ class _BillingDetailPageState extends State<BillingDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text("Pagado hasta ahora:"),
-                  Text("${billingData.paid.toString()} €")
+                  Text("${Utils().roundDouble(billingData.paid, 2).toString()} €")
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text("Pendiente de pago:"),
-                  Text("${billingData.toBePaid.toString()} €")
+                  Text("${Utils().roundDouble(billingData.toBePaid, 2).toString()} €")
                 ],
               ),
               const SizedBox(
@@ -99,7 +100,7 @@ class _BillingDetailPageState extends State<BillingDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text("Pago total:"),
-                  Text("${billingData.totalPrice.toString()} €")
+                  Text("${Utils().roundDouble(billingData.totalPrice, 2).toString()} €")
                 ],
               ),
             ],
