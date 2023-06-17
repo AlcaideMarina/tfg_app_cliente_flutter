@@ -487,7 +487,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                     newId, 
                                     false, 
                                     Utils().paymentMethodStringToInt(paymentMethod ?? ""), 
-                                    0, 
+                                    1, 
                                     totalPrice,
                                     null);
                                     bool conf = await FirebaseUtils.instance.saveNewOrder(clientModel.doocumentId, orderModel);
