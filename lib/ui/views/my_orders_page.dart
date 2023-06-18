@@ -99,9 +99,9 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                         return Container(
                             margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                             child: const HNComponentPanel(
-                              title: 'No hay clientes',
+                              title: 'No hay pedidos',
                               text:
-                                  "No hay registro de clientes activos en la base de datos.",
+                                  "No hay registro de pedidos en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -118,7 +118,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                           child: const HNComponentPanel(
                             title: 'No hay clientes',
                             text:
-                                "No hay registro de clientes activos en la base de datos.",
+                                "No hay registro de pedidos en la base de datos.",
                           ));
                     }
                   }

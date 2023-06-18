@@ -179,7 +179,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           builder: (_) => AlertDialog(
                 title: const Text('Formulario incompleto'),
                 content: const Text(
-                    'Por favor, revise los datos e inténtelo de nuevo.'),
+                    'Debe rellenar todos los campos que se muestran. Por favor, revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),

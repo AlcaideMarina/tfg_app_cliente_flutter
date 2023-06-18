@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                 context: context,
                 builder: (_) => AlertDialog(
                   title: const Text('Aviso'),
-                  content: Text("Está seguro de que quiere cerrar sesión"),
+                  content: Text("¿Está seguro de que quiere cerrar sesión?"),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('Cancelar'),
