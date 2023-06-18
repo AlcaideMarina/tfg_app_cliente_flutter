@@ -89,14 +89,17 @@ class HNButton {
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.redPrimaryColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.whiteColor);
+        textStyle =
+            customTextStyle ?? const TextStyle(color: CustomColors.whiteColor);
         break;
 
       case ButtonTypes.redWhiteBoldRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.redPrimaryColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.whiteColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold, color: CustomColors.whiteColor);
         break;
 
       case ButtonTypes.grayBlackRoundedButton:
@@ -104,7 +107,8 @@ class HNButton {
         backgroundColor =
             customBackgroundColor ?? CustomColors.redGraySecondaryColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.blackColor);
+        textStyle =
+            customTextStyle ?? const TextStyle(color: CustomColors.blackColor);
         break;
 
       case ButtonTypes.grayBlackBoldRoundedButton:
@@ -112,49 +116,61 @@ class HNButton {
         backgroundColor =
             customBackgroundColor ?? CustomColors.redGraySecondaryColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.blackColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold, color: CustomColors.blackColor);
         break;
 
       case ButtonTypes.whiteRedRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.redPrimaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(color: CustomColors.redPrimaryColor);
         break;
 
       case ButtonTypes.whiteRedBoldRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.redPrimaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: CustomColors.redPrimaryColor);
         break;
 
       case ButtonTypes.whiteBlackRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.blackColor);
+        textStyle =
+            customTextStyle ?? const TextStyle(color: CustomColors.blackColor);
         break;
 
       case ButtonTypes.whiteBlackBoldRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.blackColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold, color: CustomColors.blackColor);
         break;
 
       case ButtonTypes.redWhiteCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.redPrimaryColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.whiteColor);
+        textStyle =
+            customTextStyle ?? const TextStyle(color: CustomColors.whiteColor);
         break;
 
       case ButtonTypes.redWhiteBoldCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.redPrimaryColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.whiteColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold, color: CustomColors.whiteColor);
         break;
 
       case ButtonTypes.grayBlackCricleButton:
@@ -162,7 +178,9 @@ class HNButton {
         backgroundColor =
             customBackgroundColor ?? CustomColors.redGraySecondaryColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.blackColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold, color: CustomColors.blackColor);
         break;
 
       case ButtonTypes.grayBlackBoldCricleButton:
@@ -170,35 +188,44 @@ class HNButton {
         backgroundColor =
             customBackgroundColor ?? CustomColors.redGraySecondaryColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.blackColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold, color: CustomColors.blackColor);
         break;
 
       case ButtonTypes.whiteRedCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.blackColor);
+        textStyle =
+            customTextStyle ?? const TextStyle(color: CustomColors.blackColor);
         break;
 
       case ButtonTypes.whiteRedBoldCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.redPrimaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: CustomColors.redPrimaryColor);
         break;
 
       case ButtonTypes.whiteBlackCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.blackColor);
+        textStyle =
+            customTextStyle ?? const TextStyle(color: CustomColors.blackColor);
         break;
 
       case ButtonTypes.whiteBlackBoldCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.blackColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold, color: CustomColors.blackColor);
         break;
 
       case ButtonTypes.blackGrayRoundedButton:
@@ -206,93 +233,116 @@ class HNButton {
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor =
             customOnPrimaryColor ?? CustomColors.redGraySecondaryColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.redGraySecondaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(color: CustomColors.redGraySecondaryColor);
         break;
       case ButtonTypes.blackGrayBoldRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor =
             customOnPrimaryColor ?? CustomColors.redGraySecondaryColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.redGraySecondaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: CustomColors.redGraySecondaryColor);
         break;
       case ButtonTypes.blackWhiteRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.whiteColor);
+        textStyle =
+            customTextStyle ?? const TextStyle(color: CustomColors.whiteColor);
         break;
       case ButtonTypes.blackWhiteBoldRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.whiteColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold, color: CustomColors.whiteColor);
         break;
       case ButtonTypes.blackRedRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.redPrimaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(color: CustomColors.redPrimaryColor);
         break;
       case ButtonTypes.blackRedBoldRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.redPrimaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: CustomColors.redPrimaryColor);
         break;
       case ButtonTypes.blackGrayCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor =
             customOnPrimaryColor ?? CustomColors.redGraySecondaryColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.redGraySecondaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(color: CustomColors.redGraySecondaryColor);
         break;
       case ButtonTypes.blackGrayBoldCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor =
             customOnPrimaryColor ?? CustomColors.redGraySecondaryColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.redGraySecondaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: CustomColors.redGraySecondaryColor);
         break;
       case ButtonTypes.blackWhiteCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.whiteColor);
+        textStyle =
+            customTextStyle ?? const TextStyle(color: CustomColors.whiteColor);
         break;
       case ButtonTypes.blackWhiteBoldCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.whiteColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold, color: CustomColors.whiteColor);
         break;
       case ButtonTypes.blackRedCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-        textStyle = customTextStyle ?? const TextStyle(color: CustomColors.redPrimaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(color: CustomColors.redPrimaryColor);
         break;
       case ButtonTypes.blackRedBoldCricleButton:
         radius = customRadius ?? circleRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
         onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-        textStyle = customTextStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: CustomColors.redPrimaryColor);
+        textStyle = customTextStyle ??
+            const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: CustomColors.redPrimaryColor);
         break;
     }
 
-    return ComponentButton(text,
-        leftIcon: leftIcon,
-        rightIcon: rightIcon,
-        radius: radius,
-        textStyle: textStyle,
-        onPressed: onPressed,
-        onLongPressed: onLongPressed,
-        autofocus: autofocus,
-        clipBehavior: clipBehavior,
-        backgroundColor: backgroundColor,
-        onPrimaryColor: onPrimaryColor,
-        elevation: elevation,
-        padding: padding,
-        borderSide: borderSide,
+    return ComponentButton(
+      text,
+      leftIcon: leftIcon,
+      rightIcon: rightIcon,
+      radius: radius,
+      textStyle: textStyle,
+      onPressed: onPressed,
+      onLongPressed: onLongPressed,
+      autofocus: autofocus,
+      clipBehavior: clipBehavior,
+      backgroundColor: backgroundColor,
+      onPrimaryColor: onPrimaryColor,
+      elevation: elevation,
+      padding: padding,
+      borderSide: borderSide,
     );
   }
 }

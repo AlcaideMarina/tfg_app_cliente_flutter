@@ -17,12 +17,8 @@ class HNComponentSimpleForm extends StatelessWidget {
   final EdgeInsets containerMargin;
   final EdgeInsets? textMargin;
 
-  const HNComponentSimpleForm(
-      this.label,
-      this.spaceBetween,
-      this.textInputHeight,
-      this.textInputMargin,
-      this.containerMargin,
+  const HNComponentSimpleForm(this.label, this.spaceBetween,
+      this.textInputHeight, this.textInputMargin, this.containerMargin,
       {Key? key,
       this.componentTextInput,
       this.componentDropdown,
@@ -41,10 +37,11 @@ class HNComponentSimpleForm extends StatelessWidget {
             height: spaceBetween,
           ),
           HNComponentCellTableForm(
-              textInputHeight, 
-              textInputMargin, 
-              componentTextInput: componentTextInput,
-              componentDropdown: componentDropdown,),
+            textInputHeight,
+            textInputMargin,
+            componentTextInput: componentTextInput,
+            componentDropdown: componentDropdown,
+          ),
         ],
       ),
     );

@@ -7,12 +7,6 @@ class OrderBillingData {
   final double? totalPrice;
   final bool paid;
 
-  OrderBillingData(
-    this.orderId, 
-    this.orderDatetime, 
-    this.paymentMethod, 
-    this.totalPrice, 
-    this.paid
-  );
-
+  OrderBillingData(this.orderId, this.orderDatetime, this.paymentMethod,
+      this.totalPrice, this.paid);
 }

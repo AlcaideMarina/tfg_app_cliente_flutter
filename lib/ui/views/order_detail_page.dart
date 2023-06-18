@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,13 +11,13 @@ import '../components/component_table_form.dart';
 import '../components/component_text_input.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
 
-
 class OrderDetailPage extends StatefulWidget {
-  const OrderDetailPage(this.clientModel, this.orderModel, {Key? key}) : super(key: key);
+  const OrderDetailPage(this.clientModel, this.orderModel, {Key? key})
+      : super(key: key);
 
   final ClientModel clientModel;
   final OrderModel orderModel;
-  
+
   @override
   State<OrderDetailPage> createState() => _OrderDetailPageState();
 }
@@ -36,10 +35,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   List<String> productClasses = ["XL", "L", "M", "S"];
   final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
-  
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -49,8 +49,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Ver pedido',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: 24.0),
+              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
             )),
         body: SafeArea(
           top: false,
@@ -68,7 +67,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       ),
                       Text(
                         "No se puede modificar ni anular el pedido. Para cualquier duda o problema, ppóngase en contacto con nosotros.",
-                        textAlign: TextAlign.center,),
+                        textAlign: TextAlign.center,
+                      ),
                       const SizedBox(
                         height: 8,
                       ),
@@ -80,14 +80,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Widget getAllFormElements() {
-
     List<int> statusApproxDeliveryDatetimeList = [0, 1, 2];
     String deliveryDatetimeAux;
     if (statusApproxDeliveryDatetimeList.contains(orderModel.status)) {
       String status = Utils().getKey(constants.orderStatus, orderModel.status);
-      deliveryDatetimeAux = "$status - ${dateFormat.format(orderModel.approxDeliveryDatetime.toDate())}";
+      deliveryDatetimeAux =
+          "$status - ${dateFormat.format(orderModel.approxDeliveryDatetime.toDate())}";
     } else if (orderModel.status == 4) {
-      deliveryDatetimeAux = dateFormat.format(orderModel.deliveryDatetime!.toDate());
+      deliveryDatetimeAux =
+          dateFormat.format(orderModel.deliveryDatetime!.toDate());
     } else if (orderModel.status == 5) {
       String status = Utils().getKey(constants.orderStatus, orderModel.status);
       String dt;
@@ -110,24 +111,32 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Empresa', null, TextInputType.text, clientModel.company),
-        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, clientModel.direction),
-        getCompanyComponentSimpleForm('CIF', null, TextInputType.text, clientModel.cif, textCapitalization: TextCapitalization.characters),
+        getCompanyComponentSimpleForm(
+            'Empresa', null, TextInputType.text, clientModel.company),
+        getCompanyComponentSimpleForm(
+            'Dirección', null, TextInputType.text, clientModel.direction),
+        getCompanyComponentSimpleForm(
+            'CIF', null, TextInputType.text, clientModel.cif,
+            textCapitalization: TextCapitalization.characters),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
+        getComponentTableForm('Pedido', getPricePerUnitTableRow(),
             columnWidhts: {
               0: const IntrinsicColumnWidth(),
               2: const IntrinsicColumnWidth()
             }),
-        getComponentTableForm('Precio total', getTotalPriceComponentSimpleForm(),
-            columnWidhts: {
-              1: const IntrinsicColumnWidth()
-            }),
-        getCompanyComponentSimpleForm('Fecha pedido', null, TextInputType.text, dateFormat.format(orderModel.orderDatetime.toDate())),
-        getCompanyComponentSimpleForm('Fecha de entrega', null, TextInputType.text, deliveryDatetimeAux),
-        getCompanyComponentSimpleForm('Repartidor', null, TextInputType.text, (orderModel.deliveryPerson ?? "-").toString()),
-        getCompanyComponentSimpleForm('Albarán', null, TextInputType.text, (orderModel.deliveryNote ?? "-").toString()),
-        getCompanyComponentSimpleForm('DNI de entrega', null, TextInputType.text, (orderModel.deliveryDni ?? "-").toString()),
+        getComponentTableForm(
+            'Precio total', getTotalPriceComponentSimpleForm(),
+            columnWidhts: {1: const IntrinsicColumnWidth()}),
+        getCompanyComponentSimpleForm('Fecha pedido', null, TextInputType.text,
+            dateFormat.format(orderModel.orderDatetime.toDate())),
+        getCompanyComponentSimpleForm(
+            'Fecha de entrega', null, TextInputType.text, deliveryDatetimeAux),
+        getCompanyComponentSimpleForm('Repartidor', null, TextInputType.text,
+            (orderModel.deliveryPerson ?? "-").toString()),
+        getCompanyComponentSimpleForm('Albarán', null, TextInputType.text,
+            (orderModel.deliveryNote ?? "-").toString()),
+        getCompanyComponentSimpleForm('DNI de entrega', null,
+            TextInputType.text, (orderModel.deliveryDni ?? "-").toString()),
       ],
     );
   }
@@ -138,20 +147,20 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     double topMargin = 4;
     double bottomMargin = 4;
     return HNComponentSimpleForm(
-        '$label:',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          isEnabled: false,
-          initialValue: value,
-        ),);
+      '$label:',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: labelInputText,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        isEnabled: false,
+        initialValue: value,
+      ),
+    );
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -173,8 +182,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+            40, const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
               textInputType: TextInputType.number,
               contentPadding:
@@ -183,8 +191,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               isEnabled: false,
             )),
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
               textCapitalization: TextCapitalization.words,
               contentPadding:
@@ -194,9 +201,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             )),
       ]),
       TableRow(children: [
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 16, right: 8),
             componentTextInput: HNComponentTextInput(
               textInputType: TextInputType.number,
               contentPadding:
@@ -204,9 +209,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               initialValue: clientModel.phone[1].keys.first,
               isEnabled: false,
             )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 8, right: 16),
             componentTextInput: HNComponentTextInput(
               textCapitalization: TextCapitalization.words,
               contentPadding:
@@ -229,84 +232,77 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       num? boxPrice;
       num boxQuantity = 0;
 
-      if (orderModel.order.containsKey(dozenKey) && orderModel.order[dozenKey] != null) {
+      if (orderModel.order.containsKey(dozenKey) &&
+          orderModel.order[dozenKey] != null) {
         if (orderModel.order[dozenKey]!.containsKey("price")) {
           dozenPrice = orderModel.order[dozenKey]!["price"];
         }
-        if (orderModel.order[dozenKey]!.containsKey("quantity") && orderModel.order[dozenKey]!["quantity"] != null) {
+        if (orderModel.order[dozenKey]!.containsKey("quantity") &&
+            orderModel.order[dozenKey]!["quantity"] != null) {
           dozenQuantity = orderModel.order[dozenKey]!["quantity"]!;
         }
       }
-      if (orderModel.order.containsKey(boxKey) && orderModel.order[boxKey] != null) {
+      if (orderModel.order.containsKey(boxKey) &&
+          orderModel.order[boxKey] != null) {
         if (orderModel.order[boxKey]!.containsKey("price")) {
           boxPrice = orderModel.order[boxKey]!["price"];
         }
-        if (orderModel.order[boxKey]!.containsKey("quantity") && orderModel.order[boxKey]!["quantity"] != null) {
+        if (orderModel.order[boxKey]!.containsKey("quantity") &&
+            orderModel.order[boxKey]!["quantity"] != null) {
           boxQuantity = orderModel.order[boxKey]!["quantity"]!;
         }
       }
-      
 
-      list.add(
-        TableRow(
-          children: [
-            Container(
-              child: Text(item),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        )
-      );
+      list.add(TableRow(children: [
+        Container(
+          margin: const EdgeInsets.only(left: 12, right: 16),
+          child: Text(item),
+        ),
+        Container(),
+        Container()
+      ]));
 
-      list.add(
-        TableRow(
-          children: [
-            Container(
+      list.add(TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: dozenQuantity.toString(),
-                isEnabled: false,
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, right: 16, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              initialValue: dozenQuantity.toString(),
+              isEnabled: false,
             ),
-            Container(
+          ),
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("${dozenPrice ?? "- "} €"))
-          ],
-        )
-      );
+        ],
+      ));
 
-      list.add(
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: boxQuantity.toString(),
-                isEnabled: false,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${boxPrice ?? "- "} €"))
-          ]
-        )
-      );
+      list.add(TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Caja")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, right: 16, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            initialValue: boxQuantity.toString(),
+            isEnabled: false,
+          ),
+        ),
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("${boxPrice ?? "- "} €"))
+      ]));
     }
 
     return list;
@@ -315,7 +311,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   List<TableRow> getTotalPriceComponentSimpleForm() {
     double topMargin = 4;
     double bottomMargin = 4;
-    
+
     List<TableRow> list = [];
     bool pricePending = true;
     String totalPriceAux = "Pendiente de precio";
@@ -324,31 +320,26 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       totalPriceAux = orderModel.totalPrice.toString();
     }
 
-    list.add(
-      TableRow(
-        children: [
-          Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: totalPriceAux,
-                isEnabled: false,
-              ),
-            ),
-          pricePending 
-            ? Container() 
-            : Container(
-              child: Text("€"),
+    list.add(TableRow(children: [
+      Container(
+        height: 40,
+        margin: const EdgeInsets.only(left: 8, right: 16, bottom: 0),
+        child: HNComponentTextInput(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          textInputType: const TextInputType.numberWithOptions(),
+          initialValue: totalPriceAux,
+          isEnabled: false,
+        ),
+      ),
+      pricePending
+          ? Container()
+          : Container(
               margin: const EdgeInsets.only(left: 12, right: 16),
+              child: Text("€"),
             )
-        ]
-      )
-    );
+    ]));
 
     return list;
   }
-
 }

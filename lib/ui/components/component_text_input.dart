@@ -46,7 +46,7 @@ class HNComponentTextInput extends StatelessWidget {
       this.icon,
       this.isDense,
       this.isEnabled,
-      this.contentPadding, 
+      this.contentPadding,
       this.textEditingController,
       this.backgroundColor,
       this.textColor})

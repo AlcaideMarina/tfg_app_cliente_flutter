@@ -1,19 +1,8 @@
-
 import 'package:intl/intl.dart';
 
-enum SingleTableCardPositions {
-  leftPosition,
-  rightPosition,
-  centerPosition
-}
+enum SingleTableCardPositions { leftPosition, rightPosition, centerPosition }
 
-enum HomeMenuOptions {
-  myProfile,
-  billing,
-  myOrders,
-  newOrder,
-  settings
-}
+enum HomeMenuOptions { myProfile, billing, myOrders, newOrder, settings }
 
 final Map<HomeMenuOptions, String> mapHomeMenuOptions = {
   HomeMenuOptions.myProfile: "Mi perfil",
@@ -55,6 +44,5 @@ Map<String, String> monthInSpanish = {
   "11": "Noviembre",
   "12": "Diciembre",
 };
-
 
 List<String> productClasses = ["XL", "L", "M", "S"];

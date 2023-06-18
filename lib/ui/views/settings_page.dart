@@ -6,7 +6,6 @@ import '../../model/client_model.dart';
 import 'change_password_page.dart';
 
 class SettingsPage extends StatefulWidget {
-
   final ClientModel clientModel;
 
   const SettingsPage(this.clientModel, {Key? key}) : super(key: key);
@@ -26,7 +25,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -34,89 +32,101 @@ class _SettingsPageState extends State<SettingsPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black, //change your color here
+              color: Colors.black,
             ),
             toolbarHeight: 56.0,
             title: const Text(
               'Ajustes',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: 24.0),
+              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
             )),
         body: Stack(
           children: [
             Positioned(
-              bottom: 0,
-              width: MediaQuery.of(context).size.width,
-              child: Container(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 1,
-                      color: CustomColors.redPrimaryColor,
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(16),
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          const SizedBox(width: double.infinity, child: Text("CONTACTO")),
-                          const SizedBox(
-                            height: 16,
+                bottom: 0,
+                width: MediaQuery.of(context).size.width,
+                child: Container(
+                  width: double.infinity,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 1,
+                          color: CustomColors.redPrimaryColor,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(16),
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                  width: double.infinity,
+                                  child: Text("CONTACTO")),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: const Column(children: [
+                                  SizedBox(
+                                      width: double.infinity,
+                                      child: Text(
+                                          "Dirección: Calle MAtadero 80, Bajo - 15002, A Coruña")),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  SizedBox(
+                                      width: double.infinity,
+                                      child: Text(
+                                          "Teléfono: 981204709  -  981209405")),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  SizedBox(
+                                      width: double.infinity,
+                                      child: Text(
+                                          "Correo: hueverianieto@gmail.com"))
+                                ]),
+                              )
+                            ],
                           ),
-                          Container(
-                            width: double.infinity,
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            child: const Column(
-                              children: [
-                                SizedBox(width: double.infinity, child: Text("Dirección: Calle MAtadero 80, Bajo - 15002, A Coruña")),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                SizedBox(width: double.infinity, child: Text("Teléfono: 981204709  -  981209405")),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                SizedBox(width: double.infinity, child: Text("Correo: hueverianieto@gmail.com"))
-                              ]
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ]
-                ),
-              )
-            ),
+                        )
+                      ]),
+                )),
             ListView(
-                padding: const EdgeInsets.all(8),
-                children: <Widget>[
-                  ListTile(
-                    title: Text('Cambiar contraseña', style: TextStyle(fontSize: 15),), 
-                    dense: true, 
-                    onTap: () {
-                      navigateToChangePassword();
-                    },
+              padding: const EdgeInsets.all(8),
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    'Cambiar contraseña',
+                    style: TextStyle(fontSize: 15),
                   ),
-                  const Divider(),
-                  ListTile(
-                    title: Text('Cambiar idioma', style: TextStyle(fontSize: 15),), 
-                    dense: true, 
-                    onTap: () {},
+                  dense: true,
+                  onTap: () {
+                    navigateToChangePassword();
+                  },
+                ),
+                const Divider(),
+                ListTile(
+                  title: Text(
+                    'Cambiar idioma',
+                    style: TextStyle(fontSize: 15),
                   ),
-                ],
-          ),
+                  dense: true,
+                  onTap: () {},
+                ),
+              ],
+            ),
           ],
-              
-    ));
+        ));
   }
 
   navigateToChangePassword() {
     Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: ((context) => ChangePasswordPage(clientModel))));
+        context,
+        MaterialPageRoute(
+            builder: ((context) => ChangePasswordPage(clientModel))));
   }
 }

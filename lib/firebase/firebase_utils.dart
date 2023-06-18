@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../model/order_model.dart';
 
 class FirebaseUtils {
-
   static FirebaseUtils? _instance;
   FirebaseUtils._() : super();
 
@@ -35,10 +34,9 @@ class FirebaseUtils {
         .collection("orders")
         .add(orderModel.toMap())
         .then((value) {
-          var a = value;
-          return true;
-        })
-        .catchError((error) => false);
+      var a = value;
+      return true;
+    }).catchError((error) => false);
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getEggPrices() async {
@@ -57,24 +55,22 @@ class FirebaseUtils {
         .snapshots();
   }
 
-  Future<bool?> changePassword(String currentPassword, String newPassword) async {
+  Future<bool?> changePassword(
+      String currentPassword, String newPassword) async {
     final user = FirebaseAuth.instance.currentUser;
     final cred = EmailAuthProvider.credential(
         email: user!.email!, password: currentPassword);
-    
+
     bool conf = false;
-    await user
-      .reauthenticateWithCredential(cred)
-      .then((value) async {
-        await user.updatePassword(newPassword).then((_) {
-          conf = true;
-        }).catchError((error) {
-          conf = false;
-        });
-      }).catchError((err) {
+    await user.reauthenticateWithCredential(cred).then((value) async {
+      await user.updatePassword(newPassword).then((_) {
+        conf = true;
+      }).catchError((error) {
         conf = false;
       });
+    }).catchError((err) {
+      conf = false;
+    });
     return conf;
   }
-
 }

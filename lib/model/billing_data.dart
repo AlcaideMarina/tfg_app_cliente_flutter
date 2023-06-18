@@ -1,4 +1,3 @@
-
 class BillingData {
   double paymentByCash = 0;
   double paymentByReceipt = 0;
@@ -7,13 +6,6 @@ class BillingData {
   double toBePaid = 0;
   double totalPrice = 0;
 
-  BillingData(
-    this.paymentByCash,
-    this.paymentByReceipt,
-    this.paymentByTransfer,
-    this.paid,
-    this.toBePaid,
-    this.totalPrice
-  );
-
+  BillingData(this.paymentByCash, this.paymentByReceipt, this.paymentByTransfer,
+      this.paid, this.toBePaid, this.totalPrice);
 }

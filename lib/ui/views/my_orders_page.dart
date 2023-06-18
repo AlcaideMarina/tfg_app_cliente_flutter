@@ -13,16 +13,12 @@ import '../components/component_panel.dart';
 import '../components/constants/hn_button.dart';
 import 'dart:developer' as developer;
 
-
 class MyOrdersPage extends StatefulWidget {
-
   final ClientModel clientModel;
   final bool fromNewOrderPage;
 
-  const MyOrdersPage(
-    this.clientModel, 
-    this.fromNewOrderPage,
-    {Key? key}) : super(key: key);
+  const MyOrdersPage(this.clientModel, this.fromNewOrderPage, {Key? key})
+      : super(key: key);
 
   @override
   State<MyOrdersPage> createState() => _MyOrdersPageState();
@@ -44,7 +40,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
-    
+
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -52,18 +48,18 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black, //change your color here
+              color: Colors.black,
             ),
             toolbarHeight: 56.0,
             title: const Text(
               'Nuevo pedido',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: 24.0),
+              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
             )),
         body: Column(
           children: [
             StreamBuilder(
-                stream: FirebaseUtils.instance.getOrders(clientModel.doocumentId),
+                stream:
+                    FirebaseUtils.instance.getOrders(clientModel.doocumentId),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
@@ -77,22 +73,30 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                 scrollDirection: Axis.vertical,
                                 itemCount: orderList.length,
                                 itemBuilder: (context, i) {
-                                  final OrderModel order =
-                                      OrderModel.fromMap(orderList[i].data()
-                                          as Map<String, dynamic>, orderList[i].id);
+                                  final OrderModel order = OrderModel.fromMap(
+                                      orderList[i].data()
+                                          as Map<String, dynamic>,
+                                      orderList[i].id);
                                   return Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 32, vertical: 8),
                                     child: HNComponentOrders(
-                                        order.orderDatetime,
-                                        order.orderId.toString(),
-                                        Utils().getOrderSummary(DBOrderFieldData.fromMap(order.order)),
-                                        order.totalPrice,
-                                        order.status,
-                                        order.deliveryDni,
-                                        onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (_) => OrderDetailPage(clientModel, order)));
-                                        },),
+                                      order.orderDatetime,
+                                      order.orderId.toString(),
+                                      Utils().getOrderSummary(
+                                          DBOrderFieldData.fromMap(
+                                              order.order)),
+                                      order.totalPrice,
+                                      order.status,
+                                      order.deliveryDni,
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) => OrderDetailPage(
+                                                    clientModel, order)));
+                                      },
+                                    ),
                                   );
                                 }));
                       } else {

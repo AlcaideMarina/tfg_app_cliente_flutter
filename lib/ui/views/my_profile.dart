@@ -6,7 +6,6 @@ import '../components/component_cell_table_form.dart';
 import '../components/component_simple_form.dart';
 import '../components/component_table_form.dart';
 import '../components/component_text_input.dart';
-import '../components/constants/hn_button.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage(this.clientModel, {Key? key}) : super(key: key);
@@ -17,7 +16,6 @@ class MyProfilePage extends StatefulWidget {
   State<MyProfilePage> createState() => _MyProfilePageState();
 }
 
-// TODO: Faltan todas las validaciones
 class _MyProfilePageState extends State<MyProfilePage> {
   late ClientModel clientModel;
 
@@ -41,7 +39,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
   late String namePhone2;
   Map<String, double> prices = {};
   bool hasAccount = false;
-  // TODO: Mirar otra forma de contar - ¿mapas?
   String? user;
   String? emailAccount;
 
@@ -90,13 +87,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black, //change your color here
+              color: Colors.black,
             ),
             toolbarHeight: 56.0,
             title: const Text(
               'Mi perfil',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: 24.0),
+              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
             )),
         body: SafeArea(
           top: false,
@@ -113,7 +109,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       ),
                       Text(
                         "Lamentablemente, no está permitida la modificación de los datos de su perfil. Si desean modificar alguno, por favor, llámenos a Huevería Nieto, y estaremos encantados de atenderle.",
-                        textAlign: TextAlign.center,),
+                        textAlign: TextAlign.center,
+                      ),
                       const SizedBox(
                         height: 8,
                       ),
@@ -128,17 +125,26 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Empresa', null, TextInputType.text, clientModel.company),
-        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, clientModel.direction),
-        getCompanyComponentSimpleForm('Ciudad', null, TextInputType.text, clientModel.city),
-        getCompanyComponentSimpleForm('Provincia', null, TextInputType.text, clientModel.province),
-        getCompanyComponentSimpleForm('Código postal', null, TextInputType.number, clientModel.postalCode.toString()),
-        getCompanyComponentSimpleForm('CIF', null, TextInputType.text, clientModel.cif, textCapitalization: TextCapitalization.characters),
+        getCompanyComponentSimpleForm(
+            'Empresa', null, TextInputType.text, clientModel.company),
+        getCompanyComponentSimpleForm(
+            'Dirección', null, TextInputType.text, clientModel.direction),
+        getCompanyComponentSimpleForm(
+            'Ciudad', null, TextInputType.text, clientModel.city),
+        getCompanyComponentSimpleForm(
+            'Provincia', null, TextInputType.text, clientModel.province),
+        getCompanyComponentSimpleForm('Código postal', null,
+            TextInputType.number, clientModel.postalCode.toString()),
+        getCompanyComponentSimpleForm(
+            'CIF', null, TextInputType.text, clientModel.cif,
+            textCapitalization: TextCapitalization.characters),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getCompanyComponentSimpleForm(
-            'Usuario', null, TextInputType.emailAddress, clientModel.user, textCapitalization: TextCapitalization.none),
+            'Usuario', null, TextInputType.emailAddress, clientModel.user,
+            textCapitalization: TextCapitalization.none),
         getCompanyComponentSimpleForm(
-            'Correo', null, TextInputType.emailAddress, clientModel.email, textCapitalization: TextCapitalization.none),
+            'Correo', null, TextInputType.emailAddress, clientModel.email,
+            textCapitalization: TextCapitalization.none),
       ],
     );
   }
@@ -156,20 +162,20 @@ class _MyProfilePageState extends State<MyProfilePage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        '$label:',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          isEnabled: false,
-          initialValue: value,
-        ),);
+      '$label:',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: labelInputText,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        isEnabled: false,
+        initialValue: value,
+      ),
+    );
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -197,8 +203,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+            40, const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
               textInputType: TextInputType.number,
               contentPadding:
@@ -207,8 +212,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               isEnabled: false,
             )),
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
               textCapitalization: TextCapitalization.words,
               contentPadding:
@@ -218,9 +222,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             )),
       ]),
       TableRow(children: [
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 16, right: 8),
             componentTextInput: HNComponentTextInput(
               textInputType: TextInputType.number,
               contentPadding:
@@ -228,9 +230,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               initialValue: clientModel.phone[1].keys.first,
               isEnabled: false,
             )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 8, right: 16),
             componentTextInput: HNComponentTextInput(
               textCapitalization: TextCapitalization.words,
               contentPadding:
@@ -255,7 +255,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     contUser++;
 
     return HNComponentSimpleForm(
-      label + ':',
+      '$label:',
       8,
       40,
       const EdgeInsets.only(left: 0),
@@ -270,6 +270,4 @@ class _MyProfilePageState extends State<MyProfilePage> {
       textMargin: const EdgeInsets.only(left: 24),
     );
   }
-
-  
 }

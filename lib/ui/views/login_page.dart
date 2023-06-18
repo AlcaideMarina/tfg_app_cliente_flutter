@@ -46,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 48,
                     ),
-                    // TODO: Esto será el usuario, no el correo
                     HNComponentTextInput(
                       labelText: 'Correo',
                       textInputType: TextInputType.emailAddress,
@@ -98,27 +97,26 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   navigateToMainPage(ClientModel clientModel) {
-    // TODO: Evitar que al dar al botón de atrás, vuelva aquí - investigar
     Navigator.pushAndRemoveUntil(
-      context, 
-      MaterialPageRoute(
-        builder: (_) => HomePage(clientModel)
-      ), 
-      (route) => false);
+        context,
+        MaterialPageRoute(builder: (_) => HomePage(clientModel)),
+        (route) => false);
   }
 
-  // TODO: Esto debería estar en una clase aparte
   Future<ClientModel?>? getUserInfo() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseUtils.instance.getUserFromUid(uid!);
-    // TODO: Comprobar que sea un cliente
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseUtils.instance.getUserFromUid(uid!);
     if (querySnapshot.docs.isNotEmpty) {
       String id = querySnapshot.docs[0].id;
-      DocumentSnapshot document =
-          await FirebaseFirestore.instance.collection('client_info').doc(id).get();
+      DocumentSnapshot document = await FirebaseFirestore.instance
+          .collection('client_info')
+          .doc(id)
+          .get();
 
       if (document.exists) {
-        final Map<String, dynamic>? userInfo = document.data() as Map<String, dynamic>?;
+        final Map<String, dynamic>? userInfo =
+            document.data() as Map<String, dynamic>?;
         if (userInfo != null) {
           userInfo['document_id'] = document.id;
           return ClientModel.fromMap(userInfo);
@@ -126,50 +124,52 @@ class _LoginPageState extends State<LoginPage> {
           return null;
         }
       } else {
-          return null;
-        }
+        return null;
+      }
     } else {
       return null;
     }
   }
 
   Future signIn() async {
-    // TODO: añadir un Circular Progress Indicator - que no se pueda quitar
-    // TODO: hacer un componente de pop-up
-    // TODO: Fix - si hay algún error, no se quita el circular progress indicator
     try {
       showDialog(
-        context: context, 
-        builder: (_) => const Center(
-          child: CircularProgressIndicator()));
+          context: context,
+          builder: (_) => const Center(child: CircularProgressIndicator()));
 
-      developer.log('Empieza la función signInWithEmailAndPassword()', name: 'Login');
+      developer.log('Empieza la función signInWithEmailAndPassword()',
+          name: 'Login');
       // TODO: Esto va muy lento - investigar
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: user.trim(), password: password);
-      developer.log('Función signInWithEmailAndPassword() terminada', name: 'Login');
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: user.trim(), password: password);
+      developer.log('Función signInWithEmailAndPassword() terminada',
+          name: 'Login');
       developer.log('Empieza la función getUserInfo()', name: 'Login');
       ClientModel? currentUser = await getUserInfo();
       developer.log('Función getUserInfo() terminada', name: 'Login');
       if (currentUser != null) {
         navigateToMainPage(currentUser);
       } else {
-        
-      showDialog(context: context, builder: (_) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('El usuario y/o contraseña no son correctas. Por favor, revise los datos e inténtelo de nuevo.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('De acuerdo.'),
-              onPressed: () {
-                setState(() {
-                  // TODO: borrar contraseña
-                });
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ));
+        if (context.mounted) {
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: const Text(
+                        'El usuario y/o contraseña no son correctas. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          setState(() {
+                            // TODO: borrar contraseña
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+        }
       }
     } on FirebaseAuthException catch (e) {
       String errorMessage =

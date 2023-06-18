@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../../custom/app_theme.dart';
@@ -13,7 +12,6 @@ class ChangePasswordPage extends StatefulWidget {
 
   final ClientModel clientModel;
 
-  
   @override
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
@@ -42,8 +40,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Cambiar contraseña',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: 24),
+              style: TextStyle(color: AppTheme.primary, fontSize: 24),
             )),
         body: SafeArea(
           top: false,
@@ -54,16 +51,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentSimpleForm('Contraseña actual', null, TextInputType.text,
+                      getComponentSimpleForm(
+                          'Contraseña actual', null, TextInputType.text,
                           (value) {
                         oldPass = value;
                       }),
-                      getComponentSimpleForm('Nueva contraseña', null, TextInputType.text,
+                      getComponentSimpleForm(
+                          'Nueva contraseña', null, TextInputType.text,
                           (value) {
                         newPass1 = value;
                       }),
-                      getComponentSimpleForm('Repita la nueva contraseña', null, TextInputType.text,
-                          (value) {
+                      getComponentSimpleForm('Repita la nueva contraseña', null,
+                          TextInputType.text, (value) {
                         newPass2 = value;
                       }),
                       const SizedBox(
@@ -87,27 +86,27 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     double bottomMargin = 4;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          obscureText: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          onChange: onChange,
-        ),);
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: labelInputText,
+        obscureText: true,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+      ),
+    );
   }
-  
+
   Widget getButtonsComponent() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Cambiar contraseña', null, null, updatePassword, () {}),
+      child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+          'Cambiar contraseña', null, null, updatePassword, () {}),
     );
   }
 
@@ -117,60 +116,65 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
     if (oldPass != "" && newPass1 != "" && newPass2 != null) {
       if (newPass1 == newPass2) {
-        bool? firebaseAuthConf = await FirebaseUtils.instance.changePassword(oldPass, newPass1);
+        bool? firebaseAuthConf =
+            await FirebaseUtils.instance.changePassword(oldPass, newPass1);
         if (firebaseAuthConf == true) {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Contraseña actualizada'),
-                    content: const Text(
-                        'La información se ha actualizado correctamente. A partir de ahora, cuando inicie sesión, hágalo con la nueva contraseña.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.of(context)
+          if (context.mounted) {
+            Navigator.of(context).pop();
+            showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                      title: const Text('Contraseña actualizada'),
+                      content: const Text(
+                          'La información se ha actualizado correctamente. A partir de ahora, cuando inicie sesión, hágalo con la nueva contraseña.'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('De acuerdo.'),
+                          onPressed: () {
+                            Navigator.of(context)
                               ..pop()
                               ..pop();
-                        },
-                      )
-                    ],
-                  ));
+                          },
+                        )
+                      ],
+                    ));
+          }
         } else {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Error'),
-                    content: const Text(
-                        'Se ha producido un error cuando se estaban actualizado los datos. Por favor, revise los datos e inténtelo de nuevo.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ));
+          if (context.mounted) {
+            Navigator.of(context).pop();
+            showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                      title: const Text('Error'),
+                      content: const Text(
+                          'Se ha producido un error cuando se estaban actualizado los datos. Por favor, revise los datos e inténtelo de nuevo.'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('De acuerdo.'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    ));
+          }
         }
       } else {
         showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: const Text('Las contraseñas no coinciden'),
-                content: const Text(
-                    'El campo de repetición de contraseña debe ser exactamente igual que el de "Nuevva contraseña". Por favor, revise los datos e inténtelo de nuevo.'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('De acuerdo.'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              ));
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Las contraseñas no coinciden'),
+                  content: const Text(
+                      'El campo de repetición de contraseña debe ser exactamente igual que el de "Nuevva contraseña". Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
       }
     } else {
       Navigator.of(context).pop();
@@ -189,7 +193,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   )
                 ],
               ));
-      }
+    }
   }
 
   showAlertDialog(BuildContext context) {
@@ -203,5 +207,4 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       },
     );
   }
-
 }

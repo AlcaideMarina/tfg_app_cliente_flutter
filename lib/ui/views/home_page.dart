@@ -5,12 +5,11 @@ import 'package:hueveria_nieto_clientes/model/client_model.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart';
 
 import '../../custom/app_theme.dart';
-import '../../values/strings_translation.dart';
 import '../components/component_single_table_card.dart';
 import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage(this.clientModel, {Key? key}) : super(key: key);
+  const HomePage(this.clientModel, {Key? key}) : super(key: key);
 
   final ClientModel clientModel;
 
@@ -19,7 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   late ClientModel clientModel;
 
   @override
@@ -32,21 +30,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
-    
+
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        //leading: const Icon(Icons.menu_rounded, color: AppTheme.primary,),
         toolbarHeight: 56.0,
         title: const Text(
-          "Home", 
-          style: TextStyle(
-            color: AppTheme.primary,
-            fontSize: 24.0
-          ),
+          "Home",
+          style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
         ),
         actions: [
           IconButton(
@@ -54,27 +48,28 @@ class _HomePageState extends State<HomePage> {
             color: CustomColors.redPrimaryColor,
             onPressed: () {
               showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: const Text('Aviso'),
-                  content: Text("¿Está seguro de que quiere cerrar sesión?"),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('Cancelar'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    TextButton(
-                      child: const Text('Continuar'),
-                      onPressed: () async {
-                        Navigator.of(context).pop();
-                        await FirebaseAuth.instance.signOut();
-                        navegateToLogin();
-                      },
-                    )
-                  ],
-                ));
+                  context: context,
+                  builder: (_) => AlertDialog(
+                        title: const Text('Aviso'),
+                        content:
+                            Text("¿Está seguro de que quiere cerrar sesión?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Cancelar'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Continuar'),
+                            onPressed: () async {
+                              Navigator.of(context).pop();
+                              await FirebaseAuth.instance.signOut();
+                              navegateToLogin();
+                            },
+                          )
+                        ],
+                      ));
             },
           ),
         ],
@@ -86,52 +81,47 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TableRow(children: [
                   SingleTableCard(
-                    Icons.person_outline_outlined,
-                    CustomColors.blackColor,
-                    HomeMenuOptions.myProfile,
-                    clientModel.id.toString(),
-                    SingleTableCardPositions.leftPosition,
-                    clientModel
-                  ),
+                      Icons.person_outline_outlined,
+                      CustomColors.blackColor,
+                      HomeMenuOptions.myProfile,
+                      clientModel.id.toString(),
+                      SingleTableCardPositions.leftPosition,
+                      clientModel),
                   SingleTableCard(
-                    Icons.person_outline_outlined,
-                    CustomColors.blackColor,
-                    HomeMenuOptions.billing,
-                    clientModel.id.toString(),
-                    SingleTableCardPositions.rightPosition,
-                    clientModel
-                  )
+                      Icons.person_outline_outlined,
+                      CustomColors.blackColor,
+                      HomeMenuOptions.billing,
+                      clientModel.id.toString(),
+                      SingleTableCardPositions.rightPosition,
+                      clientModel)
                 ]),
                 TableRow(children: [
                   SingleTableCard(
-                    Icons.person_outline_outlined,
-                    CustomColors.blackColor,
-                    HomeMenuOptions.myOrders,
-                    clientModel.id.toString(),
-                    SingleTableCardPositions.leftPosition,
-                    clientModel
-                  ),
+                      Icons.person_outline_outlined,
+                      CustomColors.blackColor,
+                      HomeMenuOptions.myOrders,
+                      clientModel.id.toString(),
+                      SingleTableCardPositions.leftPosition,
+                      clientModel),
                   SingleTableCard(
-                    Icons.person_outline_outlined,
-                    CustomColors.blackColor,
-                    HomeMenuOptions.newOrder,
-                    clientModel.id.toString(),
-                    SingleTableCardPositions.rightPosition,
-                    clientModel
-                  )
+                      Icons.person_outline_outlined,
+                      CustomColors.blackColor,
+                      HomeMenuOptions.newOrder,
+                      clientModel.id.toString(),
+                      SingleTableCardPositions.rightPosition,
+                      clientModel)
                 ]),
               ],
             ),
             SizedBox(
-              width: _width/2 -16,
+              width: _width / 2 - 16,
               child: SingleTableCard(
-                Icons.person_outline_outlined,
-                CustomColors.blackColor,
-                HomeMenuOptions.settings,
-                clientModel.id.toString(),
-                SingleTableCardPositions.centerPosition,
-                clientModel
-              ),
+                  Icons.person_outline_outlined,
+                  CustomColors.blackColor,
+                  HomeMenuOptions.settings,
+                  clientModel.id.toString(),
+                  SingleTableCardPositions.centerPosition,
+                  clientModel),
             )
           ],
         ),
@@ -141,9 +131,6 @@ class _HomePageState extends State<HomePage> {
 
   navegateToLogin() {
     Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(
-        builder: ((context) => const LoginPage())));
+        context, MaterialPageRoute(builder: ((context) => const LoginPage())));
   }
-
 }
