@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
-import 'dart:developer' as developer;
 
 import '../../firebase/firebase_utils.dart';
 import '../../model/client_model.dart';
@@ -26,12 +25,12 @@ String password = '';
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    final double _width = MediaQuery.of(context).size.width;
-    final double _height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
 
     final topBackground = Container(
-      height: _height * 0.55,
-      width: _width,
+      height: height * 0.55,
+      width: width,
       color: CustomColors.redGrayLightSecondaryColor,
     );
 
@@ -44,9 +43,9 @@ class _LoginPageState extends State<LoginPage> {
             alignment: Alignment.topCenter,
             child: SafeArea(
               child: Container(
-                margin: EdgeInsets.only(top: _height * 0.1),
+                margin: EdgeInsets.only(top: height * 0.1),
                 child: Image.asset(ImageRoutes.getRoute('ic_logo'),
-                    width: _width * 0.75),
+                    width: width * 0.75),
               ),
             ),
           ),
@@ -64,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                       offset: Offset(0.0, 5.0)),
                 ],
               ),
-              margin: EdgeInsets.only(left: 24.0, right: 24.0, top: _height * 0.4),
+              margin: EdgeInsets.only(left: 24.0, right: 24.0, top: height * 0.4),
               width: double.infinity,
               child: Form(
                 child: Column(
@@ -155,16 +154,9 @@ class _LoginPageState extends State<LoginPage> {
           context: context,
           builder: (_) => const Center(child: CircularProgressIndicator()));
 
-      developer.log('Empieza la función signInWithEmailAndPassword()',
-          name: 'Login');
-      // TODO: Esto va muy lento - investigar
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: user.trim(), password: password);
-      developer.log('Función signInWithEmailAndPassword() terminada',
-          name: 'Login');
-      developer.log('Empieza la función getUserInfo()', name: 'Login');
       ClientModel? currentUser = await getUserInfo();
-      developer.log('Función getUserInfo() terminada', name: 'Login');
       if (currentUser != null) {
         navigateToMainPage(currentUser);
       } else {
@@ -179,9 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                       TextButton(
                         child: const Text('De acuerdo.'),
                         onPressed: () {
-                          setState(() {
-                            // TODO: borrar contraseña
-                          });
+                          setState(() {});
                           Navigator.of(context).pop();
                         },
                       )
@@ -199,15 +189,13 @@ class _LoginPageState extends State<LoginPage> {
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Vaya...'),
+                title: const Text('Error'),
                 content: Text(errorMessage),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
-                      setState(() {
-                        // TODO: borrar contraseña
-                      });
+                      setState(() {});
                       Navigator.of(context).pop();
                     },
                   )
