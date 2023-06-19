@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'dart:developer' as developer;
 
 import '../../firebase/firebase_utils.dart';
@@ -28,24 +29,46 @@ class _LoginPageState extends State<LoginPage> {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
 
+    final topBackground = Container(
+      height: _height * 0.55,
+      width: _width,
+      color: CustomColors.redGrayLightSecondaryColor,
+    );
+
     return Scaffold(
-        body: SafeArea(
-          top: false,
-          child: SingleChildScrollView(
+      backgroundColor: CustomColors.redPrimaryColor,
+      body: Stack(
+        children: [
+          topBackground,
+          Align(
+            alignment: Alignment.topCenter,
+            child: SafeArea(
+              child: Container(
+                margin: EdgeInsets.only(top: _height * 0.1),
+                child: Image.asset(ImageRoutes.getRoute('ic_logo'),
+                    width: _width * 0.75),
+              ),
+            ),
+          ),
+          SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              decoration: const BoxDecoration(
+                color: CustomColors.whiteColor,
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.black26, //CustomColor.shadowColor,
+                      blurRadius: 16.0,
+                      spreadRadius: 1.0,
+                      offset: Offset(0.0, 5.0)),
+                ],
+              ),
+              margin: EdgeInsets.only(left: 24.0, right: 24.0, top: _height * 0.4),
               width: double.infinity,
               child: Form(
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(
-                      height: 96,
-                    ),
-                    Image.asset(ImageRoutes.getRoute('ic_logo'),
-                        width: 218, height: 287),
-                    const SizedBox(
-                      height: 48,
-                    ),
                     HNComponentTextInput(
                       labelText: 'Correo',
                       textInputType: TextInputType.emailAddress,
@@ -56,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     const SizedBox(
-                      height: 24,
+                      height: 8,
                     ),
                     HNComponentTextInput(
                       labelText: 'Contraseña',
@@ -68,24 +91,19 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     const SizedBox(
-                      height: 24,
+                      height: 32,
                     ),
-                    const SizedBox(height: 56)
+                    HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+                        .getTypedButton("ACCEDER", null, null,
+                            getIsButtonEnabled() ? signIn : null, null),
                   ],
                 ),
               ),
             ),
           ),
-        ),
-        bottomSheet: Container(
-          margin: const EdgeInsets.all(24),
-          child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-              "ACCEDER",
-              null,
-              null,
-              getIsButtonEnabled() ? signIn : null,
-              null),
-        ));
+        ],
+      ),
+    );
   }
 
   bool getIsButtonEnabled() {
