@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart';
+import 'package:hueveria_nieto_clientes/values/image_routes.dart';
 
 import '../../custom/app_theme.dart';
 import '../components/component_single_table_card.dart';
@@ -40,12 +41,11 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: 56.0,
         title: const Text(
           "Home",
-          style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
+          style: TextStyle(fontSize: 18),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.power_settings_new_outlined),
-            color: CustomColors.redPrimaryColor,
+            icon: Image.asset(ImageRoutes.getRoute('ic_logout'), width: 24, height: 24,),
             onPressed: () {
               showDialog(
                   context: context,
@@ -77,41 +77,44 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Table(
-              children: [
-                TableRow(children: [
-                  SingleTableCard(
-                      Icons.person_outline_outlined,
-                      CustomColors.blackColor,
-                      HomeMenuOptions.myProfile,
-                      clientModel.id.toString(),
-                      SingleTableCardPositions.leftPosition,
-                      clientModel),
-                  SingleTableCard(
-                      Icons.person_outline_outlined,
-                      CustomColors.blackColor,
-                      HomeMenuOptions.billing,
-                      clientModel.id.toString(),
-                      SingleTableCardPositions.rightPosition,
-                      clientModel)
-                ]),
-                TableRow(children: [
-                  SingleTableCard(
-                      Icons.person_outline_outlined,
-                      CustomColors.blackColor,
-                      HomeMenuOptions.myOrders,
-                      clientModel.id.toString(),
-                      SingleTableCardPositions.leftPosition,
-                      clientModel),
-                  SingleTableCard(
-                      Icons.person_outline_outlined,
-                      CustomColors.blackColor,
-                      HomeMenuOptions.newOrder,
-                      clientModel.id.toString(),
-                      SingleTableCardPositions.rightPosition,
-                      clientModel)
-                ]),
-              ],
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 16),
+              child: Table(
+                children: [
+                  TableRow(children: [
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        HomeMenuOptions.myProfile,
+                        clientModel.id.toString(),
+                        SingleTableCardPositions.leftPosition,
+                        clientModel),
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        HomeMenuOptions.billing,
+                        clientModel.id.toString(),
+                        SingleTableCardPositions.rightPosition,
+                        clientModel)
+                  ]),
+                  TableRow(children: [
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        HomeMenuOptions.myOrders,
+                        clientModel.id.toString(),
+                        SingleTableCardPositions.leftPosition,
+                        clientModel),
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        HomeMenuOptions.newOrder,
+                        clientModel.id.toString(),
+                        SingleTableCardPositions.rightPosition,
+                        clientModel)
+                  ]),
+                ],
+              ),
             ),
             SizedBox(
               width: _width / 2 - 16,
