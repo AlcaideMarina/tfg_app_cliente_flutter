@@ -58,7 +58,10 @@ class _BillingPageState extends State<BillingPage> {
                 margin: const EdgeInsets.all(16),
                 child: const Text(
                     "En esta sección, podrá consultar la facturación de cada mes. A continuación, se muestran los meses disponibles.\nRecuerde que la facturación del mes vigente no es definitiva.",
-                    textAlign: TextAlign.center,)),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic
+                    ),)),
             Container(
               width: double.infinity,
               height: 1,
