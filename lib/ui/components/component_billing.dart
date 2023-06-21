@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_clientes/model/billing_container_data.dart';
+import 'package:hueveria_nieto_clientes/values/image_routes.dart';
 
 import '../../custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
@@ -39,11 +40,15 @@ class HNComponentBilling extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(right: 8),
+                  margin: const EdgeInsets.only(right: 8),
                   child: Text(orderDatetimeSpanish),
                 ),
               ),
-              const Icon(Icons.arrow_right_alt_outlined)
+              Image.asset(
+                ImageRoutes.getRoute('ic_next_arrow'),
+                width: 24,
+                height: 24,
+              )
             ],
           ),
         ));

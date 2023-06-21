@@ -45,15 +45,25 @@ class _BillingPageState extends State<BillingPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black, //change your color here
+              color: CustomColors.whiteColor,
             ),
             toolbarHeight: 56.0,
             title: const Text(
               'Facturación',
-              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
+              style: TextStyle(fontSize: 18.0),
             )),
         body: Column(
           children: [
+            Container(
+                margin: const EdgeInsets.all(16),
+                child: const Text(
+                    "En esta sección, podrá consultar la facturación de cada mes. A continuación, se muestran los meses disponibles.\nRecuerde que la facturación del mes vigente no es definitiva.",
+                    textAlign: TextAlign.center,)),
+            Container(
+              width: double.infinity,
+              height: 1,
+              color: CustomColors.redPrimaryColor,
+            ),
             StreamBuilder(
                 stream:
                     FirebaseUtils.instance.getOrders(clientModel.doocumentId),
@@ -87,9 +97,18 @@ class _BillingPageState extends State<BillingPage> {
                                   } else {
                                     isCurrentMonth = false;
                                   }
+
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (i == 0) {
+                                    top = 24;
+                                  }
+                                  if (i == billingContainerDataList.length) {
+                                    bottom = 16;
+                                  }
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
+                                    margin: EdgeInsets.fromLTRB(
+                                        24, top, 24, bottom),
                                     child: HNComponentBilling(() {
                                       Navigator.push(
                                           context,

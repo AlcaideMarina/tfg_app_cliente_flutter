@@ -1,4 +1,8 @@
 class ImageRoutes {
+
+  static const String folder = 'assets/';
+  static const String fileType = '.png';
+
   static String getRoute(String key) {
     return imageRoutesMap[key] ?? "assets/ic_new_logo.png";
   }
@@ -11,5 +15,6 @@ class ImageRoutes {
     'ic_orders': 'assets/ic_orders.png',
     'ic_settings': 'assets/ic_settings.png',
     'ic_users': 'assets/ic_users.png',
+    'ic_next_arrow': '${folder}ic_next_arrow$fileType',
   };
 }
