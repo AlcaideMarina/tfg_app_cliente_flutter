@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:intl/intl.dart';
 
 import '../../custom/app_theme.dart';
@@ -8,6 +9,7 @@ import '../../values/utils.dart';
 import '../components/component_cell_table_form.dart';
 import '../components/component_simple_form.dart';
 import '../components/component_table_form.dart';
+import '../components/component_table_form_with_subtitles.dart';
 import '../components/component_text_input.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
 
@@ -44,12 +46,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black, //change your color here
+              color: CustomColors.whiteColor
             ),
             toolbarHeight: 56.0,
             title: const Text(
-              'Ver pedido',
-              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
+              'Detalle de pedido',
+              style: TextStyle(fontSize: 18.0),
             )),
         body: SafeArea(
           top: false,
@@ -60,7 +62,16 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("ID pedido: ${orderModel.orderId.toString()}"),
+                      Row(
+                        children: [
+                          const Text("ID pedido:", style: TextStyle(fontWeight: FontWeight.bold),),
+                          const SizedBox(width: 8,),
+                          Text(orderModel.orderId.toString()),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
                       getAllFormElements(),
                       const SizedBox(
                         height: 32,
@@ -119,14 +130,29 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             'CIF', null, TextInputType.text, clientModel.cif,
             textCapitalization: TextCapitalization.characters),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow(),
-            columnWidhts: {
-              0: const IntrinsicColumnWidth(),
-              2: const IntrinsicColumnWidth()
-            }),
+        getComponentTableWithSubtitlesForm('Pedido', getPricePerUnitTableRow()),
         getComponentTableForm(
             'Precio total', getTotalPriceComponentSimpleForm(),
             columnWidhts: {1: const IntrinsicColumnWidth()}),
+        SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: 150,
+                child: CheckboxListTile(
+                  title: Text("Pagado"),
+                  enabled: false,
+                  value: orderModel.paid,
+                  onChanged: (newValue) {},
+                  dense: true,
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
+              ),
+            ],
+          ),
+        ),
         getCompanyComponentSimpleForm('Fecha pedido', null, TextInputType.text,
             dateFormat.format(orderModel.orderDatetime.toDate())),
         getCompanyComponentSimpleForm(
@@ -160,6 +186,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         isEnabled: false,
         initialValue: value,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -169,12 +196,27 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     double bottomMargin = 4;
 
     return HNComponentTableForm(
-      label,
+      "$label:",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
+  }
+
+  Widget getComponentTableWithSubtitlesForm(String label, List<Widget> children,) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentTableFormWithSubtitles(
+      label + ":",
+      8,
+      TableCellVerticalAlignment.middle,
+      children,
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -221,10 +263,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     ];
   }
 
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
+  List<Widget> getPricePerUnitTableRow() {
+    List<Widget> list = [];
 
-    for (var item in productClasses) {
+    for (var item in constants.productClasses) {
       String dozenKey = "${item.toLowerCase()}_dozen";
       String boxKey = "${item.toLowerCase()}_box";
       num? dozenPrice;
@@ -253,58 +295,72 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         }
       }
 
-      list.add(TableRow(children: [
+      list.add(
         Container(
+          child: Text("Huevos tamaño " + item + ":", style: const TextStyle(fontWeight: FontWeight.bold)),
           margin: const EdgeInsets.only(left: 12, right: 16),
-          child: Text(item),
-        ),
-        Container(),
-        Container()
-      ]));
+        ));
+      list.add(
+        const SizedBox(height: 4,)
+      );
 
-      list.add(TableRow(
-        children: [
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-          Container(
-            height: 40,
-            margin: const EdgeInsets.only(left: 8, right: 16, bottom: 0),
-            child: HNComponentTextInput(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              textInputType: const TextInputType.numberWithOptions(),
-              initialValue: dozenQuantity.toString(),
-              isEnabled: false,
+      list.add(
+        Table(
+          columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              2: FixedColumnWidth(96)
+            },
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: [
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: const Text("Docena")),
+                Container(
+                  height: 40,
+                  margin: const EdgeInsets.only(left: 0, right: 4, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    labelText: dozenQuantity.toString(),
+                    isEnabled: false,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only( right: 16),
+                    child: Text("${dozenPrice ?? "-"} €/ud", textAlign: TextAlign.end,)),
+              ],
             ),
-          ),
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${dozenPrice ?? "- "} €"))
-        ],
-      ));
-
-      list.add(TableRow(children: [
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("Caja")),
-        Container(
-          height: 40,
-          margin: const EdgeInsets.only(left: 8, right: 16, bottom: 0),
-          child: HNComponentTextInput(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            textInputType: const TextInputType.numberWithOptions(),
-            initialValue: boxQuantity.toString(),
-            isEnabled: false,
-          ),
-        ),
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("${boxPrice ?? "- "} €"))
-      ]));
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: const Text("Caja")),
+                Container(
+                  height: 40,
+                  margin: const EdgeInsets.only(left: 0, right: 4, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    labelText: boxQuantity.toString(),
+                    isEnabled: false,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(right: 16),
+                    child: Text("${boxPrice ?? "-"} €/ud", textAlign: TextAlign.end,)),
+              ]
+            )
+          ]
+        ));
+        
+      list.add(
+        const SizedBox(height: 4,)
+      );
     }
-
     return list;
   }
 
