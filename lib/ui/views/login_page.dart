@@ -150,17 +150,20 @@ class _LoginPageState extends State<LoginPage> {
 
   Future signIn() async {
     try {
-      showDialog(
-          context: context,
-          builder: (_) => const Center(child: CircularProgressIndicator()));
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
 
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: user.trim(), password: password);
       ClientModel? currentUser = await getUserInfo();
       if (currentUser != null) {
-        navigateToMainPage(currentUser);
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          navigateToMainPage(currentUser);
+        }
       } else {
         if (context.mounted) {
+        Navigator.of(context).pop();
           showDialog(
               context: context,
               builder: (_) => AlertDialog(
@@ -186,6 +189,7 @@ class _LoginPageState extends State<LoginPage> {
         errorMessage = FirebaseAuthConstants.loginErrors[e.code] ?? "";
       }
 
+      Navigator.of(context).pop();
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -202,5 +206,17 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ));
     }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }
