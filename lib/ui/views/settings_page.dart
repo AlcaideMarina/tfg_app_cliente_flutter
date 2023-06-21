@@ -32,19 +32,19 @@ class _SettingsPageState extends State<SettingsPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black,
+              color: CustomColors.whiteColor,
             ),
             toolbarHeight: 56.0,
             title: const Text(
               'Ajustes',
-              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
+              style: TextStyle(fontSize: 18.0),
             )),
         body: Stack(
           children: [
             Positioned(
                 bottom: 0,
                 width: MediaQuery.of(context).size.width,
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,13 +55,21 @@ class _SettingsPageState extends State<SettingsPage> {
                           color: CustomColors.redPrimaryColor,
                         ),
                         Container(
-                          margin: const EdgeInsets.all(16),
+                          margin: const EdgeInsets.all(24),
                           width: double.infinity,
                           child: Column(
                             children: [
                               const SizedBox(
                                   width: double.infinity,
-                                  child: Text("CONTACTO")),
+                                  child: Text(
+                                    "CONTACTO",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.italic
+                                    ),
+                                  )
+                              ),
                               const SizedBox(
                                 height: 16,
                               ),
@@ -72,22 +80,70 @@ class _SettingsPageState extends State<SettingsPage> {
                                 child: const Column(children: [
                                   SizedBox(
                                       width: double.infinity,
-                                      child: Text(
-                                          "Dirección: Calle MAtadero 80, Bajo - 15002, A Coruña")),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Dirección:  ",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Text("Calle Matadero 80, Bajo - 15002, A Coruña",
+                                              style: TextStyle(
+                                                fontStyle: FontStyle.italic
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                   SizedBox(
                                     height: 8,
                                   ),
                                   SizedBox(
                                       width: double.infinity,
-                                      child: Text(
-                                          "Teléfono: 981204709  -  981209405")),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Teléfono:  ",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Text("981204709  -  981209405",
+                                              style: TextStyle(
+                                                fontStyle: FontStyle.italic
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                   SizedBox(
                                     height: 8,
                                   ),
                                   SizedBox(
                                       width: double.infinity,
-                                      child: Text(
-                                          "Correo: hueverianieto@gmail.com"))
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Correo:  ",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Text("hueverianieto@gmail.com",
+                                              style: TextStyle(
+                                                fontStyle: FontStyle.italic
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                 ]),
                               )
                             ],
@@ -99,7 +155,7 @@ class _SettingsPageState extends State<SettingsPage> {
               padding: const EdgeInsets.all(8),
               children: <Widget>[
                 ListTile(
-                  title: Text(
+                  title: const Text(
                     'Cambiar contraseña',
                     style: TextStyle(fontSize: 15),
                   ),
@@ -108,15 +164,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     navigateToChangePassword();
                   },
                 ),
-                const Divider(),
-                ListTile(
-                  title: Text(
-                    'Cambiar idioma',
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  dense: true,
-                  onTap: () {},
-                ),
+                const Divider()
               ],
             ),
           ],
