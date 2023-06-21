@@ -16,13 +16,15 @@ class HNComponentSimpleForm extends StatelessWidget {
   final HNComponentDropdown? componentDropdown;
   final EdgeInsets containerMargin;
   final EdgeInsets? textMargin;
+  final TextStyle? textStyle;
 
   const HNComponentSimpleForm(this.label, this.spaceBetween,
       this.textInputHeight, this.textInputMargin, this.containerMargin,
       {Key? key,
       this.componentTextInput,
       this.componentDropdown,
-      this.textMargin})
+      this.textMargin,
+      this.textStyle})
       : super(key: key);
 
   @override
@@ -32,7 +34,12 @@ class HNComponentSimpleForm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(margin: textMargin, child: Text(label)),
+          Container(
+              margin: textMargin,
+              child: Text(
+                label,
+                style: textStyle,
+              )),
           SizedBox(
             height: spaceBetween,
           ),

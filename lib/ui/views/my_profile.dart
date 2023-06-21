@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
 
 import '../../custom/app_theme.dart';
@@ -87,18 +88,18 @@ class _MyProfilePageState extends State<MyProfilePage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black,
+              color: CustomColors.whiteColor,
             ),
             toolbarHeight: 56.0,
             title: const Text(
               'Mi perfil',
-              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
+              style: TextStyle(fontSize: 18.0),
             )),
         body: SafeArea(
           top: false,
           child: SingleChildScrollView(
             child: Container(
-                margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+                margin: const EdgeInsets.fromLTRB(24, 8, 24, 8),
                 child: Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +175,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
         textInputType: textInputType,
         isEnabled: false,
         initialValue: value,
+        backgroundColor: CustomColors.backgroundTextFieldDisabled,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -190,12 +193,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
     contCompany++;
 
     return HNComponentTableForm(
-      label,
+      "$label:",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -210,6 +214,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[0].keys.first,
               isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
             )),
         HNComponentCellTableForm(
             40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
@@ -219,6 +224,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[0].values.first.toString(),
               isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
             )),
       ]),
       TableRow(children: [
@@ -229,6 +235,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[1].keys.first,
               isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
             )),
         HNComponentCellTableForm(40, const EdgeInsets.only(left: 8, right: 16),
             componentTextInput: HNComponentTextInput(
@@ -237,6 +244,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[1].values.first.toString(),
               isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
             )),
       ]),
     ];
