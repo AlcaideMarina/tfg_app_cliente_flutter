@@ -10,8 +10,6 @@ import '../../custom/app_theme.dart';
 import '../../custom/custom_colors.dart';
 import '../../model/order_model.dart';
 import '../components/component_panel.dart';
-import '../components/constants/hn_button.dart';
-import 'dart:developer' as developer;
 
 class MyOrdersPage extends StatefulWidget {
   final ClientModel clientModel;
@@ -48,12 +46,12 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black,
+              color: CustomColors.whiteColor,
             ),
             toolbarHeight: 56.0,
             title: const Text(
-              'Nuevo pedido',
-              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
+              'Mis pedidos',
+              style: TextStyle(fontSize: 18.0),
             )),
         body: Column(
           children: [
@@ -77,9 +75,12 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                       orderList[i].data()
                                           as Map<String, dynamic>,
                                       orderList[i].id);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (i == 0) top = 16;
+                                  if (i == orderList.length - 1) bottom = 16;
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                     child: HNComponentOrders(
                                       order.orderDatetime,
                                       order.orderId.toString(),
