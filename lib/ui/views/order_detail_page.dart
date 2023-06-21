@@ -211,7 +211,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     double bottomMargin = 4;
 
     return HNComponentTableFormWithSubtitles(
-      label + ":",
+      "$label:",
       8,
       TableCellVerticalAlignment.middle,
       children,

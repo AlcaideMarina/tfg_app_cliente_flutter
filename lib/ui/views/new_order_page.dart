@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/firebase/firebase_utils.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
 import 'package:hueveria_nieto_clientes/model/db_order_field_data.dart';
@@ -14,6 +15,7 @@ import '../../model/egg_prices_data.dart';
 import '../components/component_cell_table_form.dart';
 import '../components/component_simple_form.dart';
 import '../components/component_table_form.dart';
+import '../components/component_table_form_with_subtitles.dart';
 import '../components/component_text_input.dart';
 import '../components/constants/hn_button.dart';
 import 'package:hueveria_nieto_clientes/values/constants.dart' as constants;
@@ -88,12 +90,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black,
+              color: CustomColors.whiteColor,
             ),
             toolbarHeight: 56.0,
             title: const Text(
               'Nuevo pedido',
-              style: TextStyle(color: AppTheme.primary, fontSize: 24.0),
+              style: TextStyle(fontSize: 18.0),
             )),
         body: showProgress
             ? Column(
@@ -112,39 +114,68 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 top: false,
                 child: SingleChildScrollView(
                   child: Container(
-                      margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+                      margin: const EdgeInsets.symmetric(vertical: 16),
                       child: Form(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             step == 2
-                                ? const Column(
+                                ? Column(
                                     children: [
-                                      Text(
-                                        "Por favor, revise los datos que hay a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
-                                        textAlign: TextAlign.center,
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                                        child: const Column(
+                                          children: [
+                                            Text(
+                                              "Por favor, revise los datos que hay a continuación y pulse en el botón de 'CONFIRMAR' para formalizar el pedido.",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontStyle: FontStyle.italic
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text(
+                                              "Recuerde que una vez haya concluido el pedido, no se podrá modificar ni cancelar, salvo con causa justificada llamándonos directamente.",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontStyle: FontStyle.italic
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      SizedBox(
-                                        height: 8,
+                                      const SizedBox(
+                                        height: 16,
                                       ),
-                                      Text(
-                                        "Recuerde que una vez haya concluido el pedido, no se podrá modificar ni cancelar, salvo con causa justificada llamándonos directamente.",
-                                        textAlign: TextAlign.center,
+                                      Container(
+                                        width: double.infinity,
+                                        height: 1,
+                                        color: CustomColors.redGraySecondaryColor,
                                       ),
-                                      SizedBox(
-                                        height: 32,
+                                      const SizedBox(
+                                        height: 16,
                                       ),
                                     ],
                                   )
                                 : const SizedBox(),
-                            getAllFormElements(),
-                            const SizedBox(
-                              height: 32,
-                            ),
-                            getButtonComponent(),
-                            const SizedBox(
-                              height: 8,
-                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 24),
+                              child: Column(
+                                children: [
+                                  getAllFormElements(),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  getButtonComponent(),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                ]
+                              )
+                            )
+                            
                           ],
                         ),
                       )),
@@ -159,10 +190,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
         direction = value;
       }, null),
       getComponentTableForm('Teléfono', getTelephoneTableRow()),
-      getComponentTableForm('Pedido', getPricePerUnitTableRow(), columnWidhts: {
-        0: const IntrinsicColumnWidth(),
-        2: const IntrinsicColumnWidth()
-      }),
+      getComponentTableWithSubtitlesForm('Pedido', getPricePerUnitTableRow()),
+      const SizedBox(height: 16,),
       getCompanyComponentSimpleForm(
           'Método de pago',
           null,
@@ -238,6 +267,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
           onTap: onTap,
           textEditingController: textEditingController,
         ),
+        textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       );
     } else {
       return step == 1
@@ -259,6 +289,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 isEnabled: isEnabled,
                 onChange: onChange,
               ),
+              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             )
           : HNComponentSimpleForm(
               '$label:',
@@ -282,6 +313,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 onTap: onTap,
                 textEditingController: textEditingController,
               ),
+              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             );
     }
   }
@@ -292,12 +324,27 @@ class _NewOrderPageState extends State<NewOrderPage> {
     double bottomMargin = 4;
 
     return HNComponentTableForm(
-      label,
+      "$label:",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
+  }
+
+  Widget getComponentTableWithSubtitlesForm(String label, List<Widget> children,) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentTableFormWithSubtitles(
+      "$label:",
+      8,
+      TableCellVerticalAlignment.middle,
+      children,
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -326,66 +373,80 @@ class _NewOrderPageState extends State<NewOrderPage> {
     ];
   }
 
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
+  List<Widget> getPricePerUnitTableRow() {
+    List<Widget> list = [];
+
 
     for (var item in constants.productClasses) {
-      list.add(TableRow(children: [
+
+      list.add(
         Container(
+          child: Text("Huevos tamaño " + item + ":", style: const TextStyle(fontWeight: FontWeight.bold)),
           margin: const EdgeInsets.only(left: 12, right: 16),
-          child: Text(item),
-        ),
-        Container(),
-        Container()
-      ]));
+        ));
+      list.add(
+        const SizedBox(height: 4,)
+      );
 
-      list.add(TableRow(
-        children: [
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-          Container(
-            height: 40,
-            margin: const EdgeInsets.only(left: 8, right: 16, bottom: 0),
-            child: HNComponentTextInput(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              textInputType: const TextInputType.numberWithOptions(),
-              onChange: (value) {
-                String key = "${item.toLowerCase()}_dozen";
-                productQuantities[key] = int.tryParse(value) ?? 0;
-              },
-              isEnabled: step == 1 ? true : false,
-            ),
-          ),
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${valuesMap["${item.toLowerCase()}_dozen"]} €")),
-        ],
-      ));
-
-      list.add(TableRow(children: [
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("Caja")),
-        Container(
-          height: 40,
-          margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-          child: HNComponentTextInput(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            textInputType: const TextInputType.numberWithOptions(),
-            onChange: (value) {
-              String key = "${item.toLowerCase()}_box";
-              productQuantities[key] = int.tryParse(value) ?? 0;
+      list.add(
+        Table(
+          columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              2: FixedColumnWidth(96)
             },
-            isEnabled: step == 1 ? true : false,
-          ),
-        ),
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("${valuesMap["${item.toLowerCase()}_box"]} €")),
-      ]));
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: [
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("Docena")),
+                Container(
+                  height: 40,
+                  margin: const EdgeInsets.only(left: 8, right: 16, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    onChange: (value) {
+                      String key = "${item.toLowerCase()}_dozen";
+                      productQuantities[key] = int.tryParse(value) ?? 0;
+                    },
+                    isEnabled: step == 1 ? true : false,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("${valuesMap["${item.toLowerCase()}_dozen"]} €")),
+              ]
+            ),
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("Caja")),
+                Container(
+                  height: 40,
+                  margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    onChange: (value) {
+                      String key = "${item.toLowerCase()}_box";
+                      productQuantities[key] = int.tryParse(value) ?? 0;
+                    },
+                    isEnabled: step == 1 ? true : false,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("${valuesMap["${item.toLowerCase()}_box"]} €")),
+              ]
+            )
+          ],
+        )
+      );
     }
 
     return list;
@@ -646,9 +707,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           (dbOrderFieldData.xlBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.xlDozenQuantity != null &&
-        dbOrderFieldData.xlDozenQuantity != null) {
+        dbOrderFieldData.xlDozenPrice != null) {
       totalPrice += (dbOrderFieldData.xlDozenQuantity as int) *
-          (dbOrderFieldData.xlDozenQuantity!.toDouble());
+          (dbOrderFieldData.xlDozenPrice!.toDouble());
     }
     if (dbOrderFieldData.lBoxQuantity != null &&
         dbOrderFieldData.lBoxPrice != null) {
@@ -656,9 +717,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           (dbOrderFieldData.lBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.lDozenQuantity != null &&
-        dbOrderFieldData.lDozenQuantity != null) {
+        dbOrderFieldData.lDozenPrice != null) {
       totalPrice += (dbOrderFieldData.lDozenQuantity as int) *
-          (dbOrderFieldData.lDozenQuantity!.toDouble());
+          (dbOrderFieldData.lDozenPrice!.toDouble());
     }
     if (dbOrderFieldData.mBoxQuantity != null &&
         dbOrderFieldData.mBoxPrice != null) {
@@ -666,9 +727,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           (dbOrderFieldData.mBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.mDozenQuantity != null &&
-        dbOrderFieldData.mDozenQuantity != null) {
+        dbOrderFieldData.mDozenPrice != null) {
       totalPrice += (dbOrderFieldData.mDozenQuantity as int) *
-          (dbOrderFieldData.mDozenQuantity!.toDouble());
+          (dbOrderFieldData.mDozenPrice!.toDouble());
     }
     if (dbOrderFieldData.sBoxQuantity != null &&
         dbOrderFieldData.sBoxPrice != null) {
@@ -676,9 +737,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           (dbOrderFieldData.sBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.sDozenQuantity != null &&
-        dbOrderFieldData.sDozenQuantity != null) {
+        dbOrderFieldData.sDozenPrice != null) {
       totalPrice += (dbOrderFieldData.sDozenQuantity as int) *
-          (dbOrderFieldData.sDozenQuantity!.toDouble());
+          (dbOrderFieldData.sDozenPrice!.toDouble());
     }
     return totalPrice;
   }
