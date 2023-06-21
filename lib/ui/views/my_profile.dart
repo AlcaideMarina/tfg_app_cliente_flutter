@@ -99,18 +99,35 @@ class _MyProfilePageState extends State<MyProfilePage> {
           top: false,
           child: SingleChildScrollView(
             child: Container(
-                margin: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                margin: const EdgeInsets.symmetric(vertical: 16),
                 child: Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getAllFormElements(),
-                      const SizedBox(
-                        height: 32,
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        child: getAllFormElements(),
                       ),
-                      Text(
-                        "Lamentablemente, no está permitida la modificación de los datos de su perfil. Si desean modificar alguno, por favor, llámenos a Huevería Nieto, y estaremos encantados de atenderle.",
-                        textAlign: TextAlign.center,
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: CustomColors.redGraySecondaryColor,
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        child: const Text(
+                          "Lamentablemente, no está permitida la modificación de los datos de su perfil. Si desean modificar alguno, por favor, llámenos a Huevería Nieto, y estaremos encantados de atenderle.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic
+                          ),
+                        ),
                       ),
                       const SizedBox(
                         height: 8,
