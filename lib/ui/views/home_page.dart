@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 16),
+              margin: const EdgeInsets.only(top: 16),
               child: Table(
                 children: [
                   TableRow(children: [
@@ -125,7 +125,8 @@ class _HomePageState extends State<HomePage> {
                   clientModel.id.toString(),
                   SingleTableCardPositions.centerPosition,
                   clientModel),
-            )
+            ),
+            SizedBox(height: 16,)
           ],
         ),
       ),
