@@ -40,7 +40,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Cambiar contraseña',
-              style: TextStyle(color: AppTheme.primary, fontSize: 24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,

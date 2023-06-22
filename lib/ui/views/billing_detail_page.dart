@@ -75,7 +75,7 @@ class _BillingDetailPageState extends State<BillingDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          "Pagos al contado:",
+                          "Compras al contado:",
                           style: TextStyle(
                             fontWeight: FontWeight.bold
                           ),
@@ -94,7 +94,7 @@ class _BillingDetailPageState extends State<BillingDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          "Pagos por recibo:",
+                          "Compras por recibo:",
                           style: TextStyle(
                             fontWeight: FontWeight.bold
                           ),),
@@ -111,7 +111,7 @@ class _BillingDetailPageState extends State<BillingDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          "Pagos por transferencia:",
+                          "Compras por transferencia:",
                           style: TextStyle(
                             fontWeight: FontWeight.bold
                           ),),
@@ -175,7 +175,7 @@ class _BillingDetailPageState extends State<BillingDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "PAGO TOTAL:",
+                      "PRECIO TOTAL:",
                       style: TextStyle(
                         fontWeight: FontWeight.bold
                       ),),

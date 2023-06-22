@@ -57,28 +57,49 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           top: false,
           child: SingleChildScrollView(
             child: Container(
-                margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+                margin: const EdgeInsets.symmetric(vertical: 16),
                 child: Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          const Text("ID pedido:", style: TextStyle(fontWeight: FontWeight.bold),),
-                          const SizedBox(width: 8,),
-                          Text(orderModel.orderId.toString()),
-                        ],
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Text("ID pedido:", style: TextStyle(fontWeight: FontWeight.bold),),
+                                const SizedBox(width: 8,),
+                                Text(orderModel.orderId.toString()),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            getAllFormElements(),
+                          ],
+                        ),
                       ),
                       const SizedBox(
-                        height: 12,
+                        height: 16,
                       ),
-                      getAllFormElements(),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: CustomColors.redGraySecondaryColor,
+                      ),
                       const SizedBox(
-                        height: 32,
+                        height: 16,
                       ),
-                      Text(
-                        "No se puede modificar ni anular el pedido. Para cualquier duda o problema, ppóngase en contacto con nosotros.",
-                        textAlign: TextAlign.center,
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        child: const Text(
+                          "No se puede modificar ni anular el pedido. Para cualquier duda o problema, póngase en contacto con nosotros.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic
+                          )
+                        ),
                       ),
                       const SizedBox(
                         height: 8,
