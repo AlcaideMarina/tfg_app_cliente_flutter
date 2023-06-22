@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../custom/app_theme.dart';
+import '../../custom/custom_colors.dart';
 import '../../firebase/firebase_utils.dart';
 import '../../model/client_model.dart';
 import '../components/component_simple_form.dart';
@@ -35,7 +36,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black, //change your color here
+              color: CustomColors.whiteColor,
             ),
             toolbarHeight: 56.0,
             title: const Text(
