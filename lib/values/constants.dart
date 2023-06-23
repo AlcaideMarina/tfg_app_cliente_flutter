@@ -1,19 +1,8 @@
-
 import 'package:intl/intl.dart';
 
-enum SingleTableCardPositions {
-  leftPosition,
-  rightPosition,
-  centerPosition
-}
+enum SingleTableCardPositions { leftPosition, rightPosition, centerPosition }
 
-enum HomeMenuOptions {
-  myProfile,
-  billing,
-  myOrders,
-  newOrder,
-  settings
-}
+enum HomeMenuOptions { myProfile, billing, myOrders, newOrder, settings }
 
 final Map<HomeMenuOptions, String> mapHomeMenuOptions = {
   HomeMenuOptions.myProfile: "Mi perfil",
@@ -31,7 +20,7 @@ final Map<String, int> paymentMethod = {
 
 final Map<String, int> orderStatus = {
   "Pendiente de precio": 0,
-  "pedido pendiente": 1,
+  "Pedido pendiente": 1,
   "En reparto": 2,
   "Entregado": 3,
   "Intento de entrega": 4,
@@ -55,3 +44,5 @@ Map<String, String> monthInSpanish = {
   "11": "Noviembre",
   "12": "Diciembre",
 };
+
+List<String> productClasses = ["XL", "L", "M", "S"];

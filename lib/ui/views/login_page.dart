@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
+import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 
 import '../../firebase/firebase_utils.dart';
 import '../../model/client_model.dart';
@@ -25,28 +25,49 @@ String password = '';
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    final double _width = MediaQuery.of(context).size.width;
-    final double _height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+
+    final topBackground = Container(
+      height: height * 0.55,
+      width: width,
+      color: CustomColors.redGrayLightSecondaryColor,
+    );
 
     return Scaffold(
-        body: SafeArea(
-          top: false,
-          child: SingleChildScrollView(
+      backgroundColor: CustomColors.redPrimaryColor,
+      body: Stack(
+        children: [
+          topBackground,
+          Align(
+            alignment: Alignment.topCenter,
+            child: SafeArea(
+              child: Container(
+                margin: EdgeInsets.only(top: height * 0.1),
+                child: Image.asset(ImageRoutes.getRoute('ic_logo'),
+                    width: width * 0.75),
+              ),
+            ),
+          ),
+          SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              decoration: const BoxDecoration(
+                color: CustomColors.whiteColor,
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 16.0,
+                      spreadRadius: 1.0,
+                      offset: Offset(0.0, 5.0)),
+                ],
+              ),
+              margin: EdgeInsets.only(left: 24.0, right: 24.0, top: height * 0.4),
               width: double.infinity,
               child: Form(
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(
-                      height: 96,
-                    ),
-                    Image.asset(ImageRoutes.getRoute('ic_logo'),
-                        width: 218, height: 287),
-                    const SizedBox(
-                      height: 48,
-                    ),
-                    // TODO: Esto será el usuario, no el correo
                     HNComponentTextInput(
                       labelText: 'Correo',
                       textInputType: TextInputType.emailAddress,
@@ -57,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     const SizedBox(
-                      height: 24,
+                      height: 8,
                     ),
                     HNComponentTextInput(
                       labelText: 'Contraseña',
@@ -69,24 +90,19 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     const SizedBox(
-                      height: 24,
+                      height: 32,
                     ),
-                    const SizedBox(height: 56)
+                    HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+                        .getTypedButton("ACCEDER", null, null,
+                            getIsButtonEnabled() ? signIn : null, null),
                   ],
                 ),
               ),
             ),
           ),
-        ),
-        bottomSheet: Container(
-          margin: const EdgeInsets.all(24),
-          child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-              "ACCEDER",
-              null,
-              null,
-              getIsButtonEnabled() ? signIn : null,
-              null),
-        ));
+        ],
+      ),
+    );
   }
 
   bool getIsButtonEnabled() {
@@ -98,73 +114,73 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   navigateToMainPage(ClientModel clientModel) {
-    // TODO: Evitar que al dar al botón de atrás, vuelva aquí - investigar
     Navigator.pushAndRemoveUntil(
-      context, 
-      MaterialPageRoute(
-        builder: (_) => HomePage(clientModel)
-      ), 
-      (route) => false);
+        context,
+        MaterialPageRoute(builder: (_) => HomePage(clientModel)),
+        (route) => false);
   }
 
-  // TODO: Esto debería estar en una clase aparte
   Future<ClientModel?>? getUserInfo() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseUtils.instance.getUserFromUid(uid!);
-    
-    String id = querySnapshot.docs[0].id;
-    DocumentSnapshot document =
-        await FirebaseFirestore.instance.collection('client_info').doc(id).get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseUtils.instance.getUserFromUid(uid!);
+    if (querySnapshot.docs.isNotEmpty) {
+      String id = querySnapshot.docs[0].id;
+      DocumentSnapshot document = await FirebaseFirestore.instance
+          .collection('client_info')
+          .doc(id)
+          .get();
 
-    if (document.exists) {
-      final Map<String, dynamic>? userInfo = document.data() as Map<String, dynamic>?;
-      if (userInfo != null) {
-        userInfo['document_id'] = document.id;
-        return ClientModel.fromMap(userInfo);
+      if (document.exists) {
+        final Map<String, dynamic>? userInfo =
+            document.data() as Map<String, dynamic>?;
+        if (userInfo != null) {
+          userInfo['document_id'] = document.id;
+          return ClientModel.fromMap(userInfo);
+        } else {
+          return null;
+        }
       } else {
         return null;
       }
     } else {
-        return null;
-      }
+      return null;
+    }
   }
 
   Future signIn() async {
-    // TODO: añadir un Circular Progress Indicator - que no se pueda quitar
-    // TODO: hacer un componente de pop-up
-    // TODO: Fix - si hay algún error, no se quita el circular progress indicator
     try {
-      showDialog(
-        context: context, 
-        builder: (_) => const Center(
-          child: CircularProgressIndicator()));
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
 
-      developer.log('Empieza la función signInWithEmailAndPassword()', name: 'Login');
-      // TODO: Esto va muy lento - investigar
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: user.trim(), password: password);
-      developer.log('Función signInWithEmailAndPassword() terminada', name: 'Login');
-      developer.log('Empieza la función getUserInfo()', name: 'Login');
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: user.trim(), password: password);
       ClientModel? currentUser = await getUserInfo();
-      developer.log('Función getUserInfo() terminada', name: 'Login');
       if (currentUser != null) {
-        navigateToMainPage(currentUser);
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          navigateToMainPage(currentUser);
+        }
       } else {
-        showDialog(context: context, builder: (_) => AlertDialog(
-          title: const Text('Vaya...'),
-          content: const Text('Parece que ha habido un problema. Inténtalo de nuevo más tarde.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('De acuerdo.'),
-              onPressed: () {
-                setState(() {
-                  // TODO: borrar contraseña
-                });
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ));
+        if (context.mounted) {
+        Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: const Text(
+                        'El usuario y/o contraseña no son correctas. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          setState(() {});
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+        }
       }
     } on FirebaseAuthException catch (e) {
       String errorMessage =
@@ -173,23 +189,34 @@ class _LoginPageState extends State<LoginPage> {
         errorMessage = FirebaseAuthConstants.loginErrors[e.code] ?? "";
       }
 
+      Navigator.of(context).pop();
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Vaya...'),
+                title: const Text('Error'),
                 content: Text(errorMessage),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
-                      setState(() {
-                        // TODO: borrar contraseña
-                      });
+                      setState(() {});
                       Navigator.of(context).pop();
                     },
                   )
                 ],
               ));
     }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }

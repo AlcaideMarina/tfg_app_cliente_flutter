@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 
@@ -13,14 +12,10 @@ class StringsTranslation {
 
   static final Map<String, Map<String, String>> _localizedValues = {
     ///Español
-    'es': {
-      "hueveria_nieto": "Huevería Nieto"
-    },
+    'es': {"hueveria_nieto": "Huevería Nieto"},
 
     ///Francés
-    'gl': {
-      "hueveria_nieto": "Huevería Nieto" // TODO Traducir
-    }
+    'gl': {"hueveria_nieto": "Huevería Nieto"}
   };
 
   String translate(String key) {

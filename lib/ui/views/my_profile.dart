@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_clientes/custom/custom_colors.dart';
 import 'package:hueveria_nieto_clientes/model/client_model.dart';
 
 import '../../custom/app_theme.dart';
@@ -6,7 +7,6 @@ import '../components/component_cell_table_form.dart';
 import '../components/component_simple_form.dart';
 import '../components/component_table_form.dart';
 import '../components/component_text_input.dart';
-import '../components/constants/hn_button.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage(this.clientModel, {Key? key}) : super(key: key);
@@ -17,7 +17,6 @@ class MyProfilePage extends StatefulWidget {
   State<MyProfilePage> createState() => _MyProfilePageState();
 }
 
-// TODO: Faltan todas las validaciones
 class _MyProfilePageState extends State<MyProfilePage> {
   late ClientModel clientModel;
 
@@ -41,7 +40,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
   late String namePhone2;
   Map<String, double> prices = {};
   bool hasAccount = false;
-  // TODO: Mirar otra forma de contar - ¿mapas?
   String? user;
   String? emailAccount;
 
@@ -90,30 +88,47 @@ class _MyProfilePageState extends State<MyProfilePage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black, //change your color here
+              color: CustomColors.whiteColor,
             ),
             toolbarHeight: 56.0,
             title: const Text(
               'Mi perfil',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: 24.0),
+              style: TextStyle(fontSize: 18.0),
             )),
         body: SafeArea(
           top: false,
           child: SingleChildScrollView(
             child: Container(
-                margin: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+                margin: const EdgeInsets.symmetric(vertical: 16),
                 child: Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getAllFormElements(),
-                      const SizedBox(
-                        height: 32,
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        child: getAllFormElements(),
                       ),
-                      Text(
-                        "Lamentablemente, no está permitida la modificación de los datos de su perfil. Si desean modificar alguno, por favor, llámenos a Huevería Nieto, y estaremos encantados de atenderle.",
-                        textAlign: TextAlign.center,),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: CustomColors.redGraySecondaryColor,
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        child: const Text(
+                          "Lamentablemente, no está permitida la modificación de los datos de su perfil. Si desean modificar alguno, por favor, llámenos a Huevería Nieto, y estaremos encantados de atenderle.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic
+                          ),
+                        ),
+                      ),
                       const SizedBox(
                         height: 8,
                       ),
@@ -128,17 +143,26 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Empresa', null, TextInputType.text, clientModel.company),
-        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, clientModel.direction),
-        getCompanyComponentSimpleForm('Ciudad', null, TextInputType.text, clientModel.city),
-        getCompanyComponentSimpleForm('Provincia', null, TextInputType.text, clientModel.province),
-        getCompanyComponentSimpleForm('Código postal', null, TextInputType.number, clientModel.postalCode.toString()),
-        getCompanyComponentSimpleForm('CIF', null, TextInputType.text, clientModel.cif, textCapitalization: TextCapitalization.characters),
+        getCompanyComponentSimpleForm(
+            'Empresa', null, TextInputType.text, clientModel.company),
+        getCompanyComponentSimpleForm(
+            'Dirección', null, TextInputType.text, clientModel.direction),
+        getCompanyComponentSimpleForm(
+            'Ciudad', null, TextInputType.text, clientModel.city),
+        getCompanyComponentSimpleForm(
+            'Provincia', null, TextInputType.text, clientModel.province),
+        getCompanyComponentSimpleForm('Código postal', null,
+            TextInputType.number, clientModel.postalCode.toString()),
+        getCompanyComponentSimpleForm(
+            'CIF', null, TextInputType.text, clientModel.cif,
+            textCapitalization: TextCapitalization.characters),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getCompanyComponentSimpleForm(
-            'Usuario', null, TextInputType.emailAddress, clientModel.user, textCapitalization: TextCapitalization.none),
+            'Usuario', null, TextInputType.emailAddress, clientModel.user,
+            textCapitalization: TextCapitalization.none),
         getCompanyComponentSimpleForm(
-            'Correo', null, TextInputType.emailAddress, clientModel.email, textCapitalization: TextCapitalization.none),
+            'Correo', null, TextInputType.emailAddress, clientModel.email,
+            textCapitalization: TextCapitalization.none),
       ],
     );
   }
@@ -156,20 +180,22 @@ class _MyProfilePageState extends State<MyProfilePage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        '$label:',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          isEnabled: false,
-          initialValue: value,
-        ),);
+      '$label:',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: labelInputText,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        isEnabled: false,
+        initialValue: value,
+        backgroundColor: CustomColors.backgroundTextFieldDisabled,
+      ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -184,12 +210,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
     contCompany++;
 
     return HNComponentTableForm(
-      label,
+      "$label:",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -197,46 +224,44 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+            40, const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[0].keys.first,
               isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
             )),
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[0].values.first.toString(),
               isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
             )),
       ]),
       TableRow(children: [
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 16, right: 8),
             componentTextInput: HNComponentTextInput(
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[1].keys.first,
               isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
             )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 8, right: 16),
             componentTextInput: HNComponentTextInput(
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               initialValue: clientModel.phone[1].values.first.toString(),
               isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
             )),
       ]),
     ];
@@ -255,7 +280,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     contUser++;
 
     return HNComponentSimpleForm(
-      label + ':',
+      '$label:',
       8,
       40,
       const EdgeInsets.only(left: 0),
@@ -270,6 +295,4 @@ class _MyProfilePageState extends State<MyProfilePage> {
       textMargin: const EdgeInsets.only(left: 24),
     );
   }
-
-  
 }

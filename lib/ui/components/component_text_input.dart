@@ -13,7 +13,6 @@ class HNComponentTextInput extends StatelessWidget {
   final Function(String)? onChange;
   final Future Function()? onTap;
   final bool readOnly;
-  // validator
   final AutovalidateMode? autovalidateMode;
   final String? hintText;
   final String? labelText;
@@ -37,7 +36,6 @@ class HNComponentTextInput extends StatelessWidget {
       this.onChange,
       this.onTap,
       this.readOnly = false,
-      // this.validator,
       this.autovalidateMode,
       this.hintText,
       this.labelText,
@@ -46,7 +44,7 @@ class HNComponentTextInput extends StatelessWidget {
       this.icon,
       this.isDense,
       this.isEnabled,
-      this.contentPadding, 
+      this.contentPadding,
       this.textEditingController,
       this.backgroundColor,
       this.textColor})
@@ -77,7 +75,7 @@ class HNComponentTextInput extends StatelessWidget {
       decoration: InputDecoration(
         filled: backgroundColor != null,
         fillColor: backgroundColor,
-        isDense: isDense,
+        isDense: true,
         contentPadding: contentPadding,
         hintText: hintText,
         labelText: labelText,

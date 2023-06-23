@@ -10,7 +10,7 @@ class ClientModel {
   final String direction;
   final String email;
   final bool hasAccount;
-  final String id;
+  final int id;
   final List<Map<String, int>> phone;
   final int postalCode;
   final String province;
@@ -19,22 +19,21 @@ class ClientModel {
   final String doocumentId;
 
   ClientModel(
-    this.cif, 
-    this.city, 
-    this.company, 
-    this.createdBy, 
-    this.deleted, 
-    this.direction, 
-    this.email, 
-    this.hasAccount, 
-    this.id,
-    this.phone, 
-    this.postalCode, 
-    this.province, 
-    this.uid, 
-    this.user, 
-    this.doocumentId
-  );
+      this.cif,
+      this.city,
+      this.company,
+      this.createdBy,
+      this.deleted,
+      this.direction,
+      this.email,
+      this.hasAccount,
+      this.id,
+      this.phone,
+      this.postalCode,
+      this.province,
+      this.uid,
+      this.user,
+      this.doocumentId);
 
   factory ClientModel.fromJson(String str) =>
       ClientModel.fromMap(jsonDecode(str));
@@ -50,7 +49,8 @@ class ClientModel {
         });
       } catch (e) {
         phoneMap.add({'no-info': 0});
-        developer.log('Error - ClientModel - ClientModel.fromMap() - phones: $e');
+        developer
+            .log('Error - ClientModel - ClientModel.fromMap() - phones: $e');
       }
     });
 

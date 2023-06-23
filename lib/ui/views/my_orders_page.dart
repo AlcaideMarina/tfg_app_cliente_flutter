@@ -10,19 +10,13 @@ import '../../custom/app_theme.dart';
 import '../../custom/custom_colors.dart';
 import '../../model/order_model.dart';
 import '../components/component_panel.dart';
-import '../components/constants/hn_button.dart';
-import 'dart:developer' as developer;
-
 
 class MyOrdersPage extends StatefulWidget {
-
   final ClientModel clientModel;
   final bool fromNewOrderPage;
 
-  const MyOrdersPage(
-    this.clientModel, 
-    this.fromNewOrderPage,
-    {Key? key}) : super(key: key);
+  const MyOrdersPage(this.clientModel, this.fromNewOrderPage, {Key? key})
+      : super(key: key);
 
   @override
   State<MyOrdersPage> createState() => _MyOrdersPageState();
@@ -44,7 +38,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
-    
+
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -52,18 +46,18 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black, //change your color here
+              color: CustomColors.whiteColor,
             ),
             toolbarHeight: 56.0,
             title: const Text(
-              'Nuevo pedido',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: 24.0),
+              'Mis pedidos',
+              style: TextStyle(fontSize: 18.0),
             )),
         body: Column(
           children: [
             StreamBuilder(
-                stream: FirebaseUtils.instance.getOrders(clientModel.doocumentId),
+                stream:
+                    FirebaseUtils.instance.getOrders(clientModel.doocumentId),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
@@ -77,31 +71,42 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                 scrollDirection: Axis.vertical,
                                 itemCount: orderList.length,
                                 itemBuilder: (context, i) {
-                                  final OrderModel order =
-                                      OrderModel.fromMap(orderList[i].data()
-                                          as Map<String, dynamic>);
+                                  final OrderModel order = OrderModel.fromMap(
+                                      orderList[i].data()
+                                          as Map<String, dynamic>,
+                                      orderList[i].id);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (i == 0) top = 16;
+                                  if (i == orderList.length - 1) bottom = 16;
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                     child: HNComponentOrders(
-                                        order.orderDatetime,
-                                        order.orderId.toString(),
-                                        Utils().getOrderSummary(DBOrderFieldData.fromMap(order.order)),
-                                        order.totalPrice,
-                                        order.status,
-                                        order.deliveryDni,
-                                        onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (_) => OrderDetailPage(clientModel, order)));
-                                        },),
+                                      order.orderDatetime,
+                                      order.orderId.toString(),
+                                      Utils().getOrderSummary(
+                                          DBOrderFieldData.fromMap(
+                                              order.order)),
+                                      order.totalPrice,
+                                      order.status,
+                                      order.deliveryDni,
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) => OrderDetailPage(
+                                                    clientModel, order)));
+                                      },
+                                    ),
                                   );
                                 }));
                       } else {
                         return Container(
                             margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                             child: const HNComponentPanel(
-                              title: 'No hay clientes',
+                              title: 'No hay pedidos',
                               text:
-                                  "No hay registro de clientes activos en la base de datos.",
+                                  "No hay registro de pedidos en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -118,7 +123,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                           child: const HNComponentPanel(
                             title: 'No hay clientes',
                             text:
-                                "No hay registro de clientes activos en la base de datos.",
+                                "No hay registro de pedidos en la base de datos.",
                           ));
                     }
                   }

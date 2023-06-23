@@ -7,13 +7,13 @@ import '../../custom/custom_colors.dart';
 /// Also, you can create a new button by calling directy to this section.
 
 class ComponentButton extends StatelessWidget {
-  final String text; // Style
-  final IconData? leftIcon; // Style
-  final IconData? rightIcon; // Style
+  final String text;
+  final IconData? leftIcon;
+  final IconData? rightIcon;
   final TextStyle textStyle;
   final double radius;
-  final VoidCallback? onPressed; // TODO: Lo suyo sería que no fuera nulable
-  final VoidCallback? onLongPressed; // TODO: Lo suyo sería que no fuera nulable
+  final VoidCallback? onPressed;
+  final VoidCallback? onLongPressed;
   final bool autofocus;
   final Clip clipBehavior;
   final Color backgroundColor;
@@ -40,8 +40,7 @@ class ComponentButton extends StatelessWidget {
       this.borderSide = const BorderSide(style: BorderStyle.none),
       this.animationDuration})
       : super(key: key);
-
-  // TODO: añadir una función que calcule los márgenes de los iconos
+      
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
